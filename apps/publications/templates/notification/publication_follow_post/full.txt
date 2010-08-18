@@ -1,0 +1,5 @@
+{% load i18n %}{% url profile_detail username=publication.author.username as author_url %}
+{% url publication_details username=publication.author.username id=publication.id as publication_url %}
+{% blocktrans with publication.author as publication_author and publication.title as publication_title %}<a href="{{ author_url }}">{{ publication_author }}</a> publicou <a href="{{ publication_url }}">{{ publication_title }}</a>.
+
+http://{{ current_site }}{{ publication_url }}{% endblocktrans %}
