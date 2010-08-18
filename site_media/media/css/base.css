@@ -214,6 +214,10 @@ td {
     top: 65px;
 }
 
+.ctrlHolder_error .textinput, .ctrlHolder_error .passwordinput {
+    border: inset red 2px;
+}
+
 #div_id_remember {
     position: relative;
     top: 20px;
