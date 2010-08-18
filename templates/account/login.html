@@ -1,0 +1,51 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load uni_form %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Login" %}{% endblock %}
+
+{% block body %}
+
+    <div id="cont_login">
+        <div class="login_img">
+            <img src="{{ MEDIA_URL }}images/tintz_login.png">
+            
+        </div>
+        
+        <div class="hline_top"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+        
+        <form class="login_form" method="POST" action="">
+            <fieldset>        
+                {{ form|as_uni_form }}
+                <div class="form_block">
+                    <input type="image" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
+                </div>
+            </fieldset>
+        </form>
+        <div class="form_block">
+        <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+        {% if user.is_authenticated %}
+            <p><span class="warning">{% trans "Note" %}</span>: {% blocktrans %}Voc&ecirc; j&aacute; est&aacute; logado como {{ user }}.{% endblocktrans %}</p>
+        {% else %}
+            {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+            {% url acct_signup as signup_url %}
+            {% endifsetting %}
+        {% endif %}    
+        </div> 
+        
+            <ul class="initial_links">
+            <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
+            <li><a href="">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+            <li><a href="">{% trans "O que &eacute; Tintz?" %}</a></li>
+            </ul>
+    
+    </div>   
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    $("#id_username").focus();
+</script>
+{% endblock %}

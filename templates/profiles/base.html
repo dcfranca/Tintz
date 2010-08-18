@@ -1,0 +1,14 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block subnav %}
+    {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url following user %} ">{% trans "Seguindo" %}</a></li>
+            <li><a href="{% url followers other_user %}">{% trans "Seguidores" %}</a></li>
+        </ul>    
+    {% else %}
+        &nbsp;
+    {% endif %}
+{% endblock %}

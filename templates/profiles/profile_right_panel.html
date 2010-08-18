@@ -1,0 +1,61 @@
+{% load i18n %}
+{% load avatar_tags %}
+{% load pagination_tags %}
+
+<!--div class="adsense"></div-->
+
+{% if publications %}
+    <div class="profile_publications">
+        <div class="right_publications_title">{% trans "Publica&ccedil;&otilde;es" %}</div>        
+        <table nowrap>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        {% for publication in publications %}
+        {% if forloop.counter0|divisibleby:"2" %}<tr>{% endif %}
+            <td>
+                <div class="details"><a href="{% url publication_details publication.author publication.id %}" title="{{ publication.title }}"> <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail128_name }}"/> </a></div>
+            </td>
+        {% if forloop.counter0|add:"1"|divisibleby:"2" %}</tr>{% endif %}
+        {% endfor %}
+        {% if publications|length|divisibleby:"2" %}{% else %}</tr>{% endif %}
+        </table>        
+        <a href="{% url publications other_user %}">Mais</a>
+    </div>
+{% endif %}
+
+{% if followings %}
+    <div class="profile_following">
+        <div class="right_following_title">{% trans "Seguidos" %}</div>
+        <table nowrap>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        {% for following in followings %}
+            {% if forloop.counter0|divisibleby:"5" %}<tr>{% endif %}
+                <td>
+                    <div class="details"><a href="{% url profile_detail following.username %}" title="{{ following.get_profile.first_name }} {{ following.get_profile.last_name }}">{% avatar following 40 %}</a></div>
+                    <div class="details"><a href="{% url profile_detail following.username %}" title="{{ following.get_profile.first_name }} {{ following.get_profile.last_name }}">{{ following.first_name }}</a></div>
+                </td>
+            {% if forloop.counter0|add:"1"|divisibleby:"5" %}</tr>{% endif %}
+        {% endfor %}        
+        {% if followings|length|divisibleby:"5" %}{% else %}</tr>{% endif %}
+        </table>
+       <a href="{% url following other_user %}">Mais</a>
+    </div>
+{% endif %}
+
+{% if followers %}
+    <div class="profile_followers">
+        <div class="right_followers_title">{% trans "Seguidores" %}</div>
+        <table nowrap>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            {% for follower in followers %}
+                {% if forloop.counter0|divisibleby:"5" %}<tr>{% endif %}
+                    <td>
+                        <div class="details"><a href="{% url profile_detail follower.username %}" title="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}">{% avatar follower 40 %}</a></div>
+                        <div class="details"><a href="{% url profile_detail follower.username %}" title="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}">{{ follower.first_name }}</a></div>
+                    </td>
+                {% if forloop.counter0|add:"1"|divisibleby:"5" %}</tr>{% endif %}
+            {% endfor %}        
+            {% if followers|length|divisibleby:"5" %}{% else %}</tr>{% endif %}
+        </table>
+        <a href="{% url followers other_user %}">Mais</a>
+    </div>
+{% endif %}

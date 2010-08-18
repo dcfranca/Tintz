@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load svn_app_version %}
+{% load analytics %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block extra_head_base %}
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+
+    <div id="tabhead_container">
+        
+        {% block logo_link_image %}
+            <div class="logo">
+            <a href="{% url home %}" title="Tintz"><img src="{{ MEDIA_URL }}images/logo_80.png"></img></a>
+            </div>
+        {% endblock %}
+        
+        {% block login %}
+            <div class="login">
+            {% if user.is_authenticated %}
+                <b>{{ user }}</b> | <a href="{% url acct_email %}">{% trans "Minha conta" %}</a> | {% if user.is_staff %}<a href="/admin/">{% trans "Admin" %}</a> | {% endif %}<a href="{% url acct_logout %}">{% trans "Sair" %}</a>
+            {% else %}
+                <a href="{% url acct_login %}">{% trans "Login" %}</a> {% trans "ou" %} <a href="{% url acct_signup %}"><b>{% trans "Cadastre-se" %}</b></a>
+            {% endif %}
+            </div>
+        {% endblock %}
+        
+
+        {% block home_menu %}
+            {% if user.is_authenticated %}
+            <div class="top_menu">
+            <ul>
+                    <li><a href="{% url home %} ">{% trans "Início" %}</a></li>
+                    <li><a href="{% url acct_email %}">{% trans "Notícias" %}</a></li>
+                </ul>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% block search %}
+            {% if user.is_authenticated %}
+               <div id="search">
+             	<form action="{% url search_prepare %}" method="post">
+                    <fieldset>
+                    <input type="text" name="search_text" maxlength="100">
+                    <input type="image" src="{{MEDIA_URL}}/images/simplicio-icon-set/32x32/search.png" name="image">
+                    </fieldset>
+            </form>		
+               </div>
+            {% endif %}
+        {% endblock %}
+        
+        <div id="subnav">{% block subnav %}{% endblock %}</div>
+    </div>
+
+    {% if messages %}
+        <ul id="messages">
+        {% for message in messages %}
+            <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "Limpar" %}</small></a> {{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if other_user.id %}
+        <div id="center_panel_container">{% block center_panel %}{% endblock %}</div>
+        <div id="left_panel_container">{% include "profiles/profile_left_panel.html" %}</div>        
+        <div id="right_panel_container">{% include "profiles/profile_right_panel.html" %}</div>
+    {% endif %} 
+</div>                       
+{% endblock %}
+
+{% block footer %}
+<div class="legal">
+    {% trans "&copy; 2009 Tint" %}
+    - <a href="{% url about %}">{% trans "Sobre" %}</a>
+    - <a href="{% url terms %}">{% trans "Termos de servi&ccedil;o" %}</a>
+    - <a href="{% url privacy %}">{% trans "Pol&iacute;tica de privacidade" %}</a>
+    - Powered by <a href="http://www.djangoproject.com" target=_blank>Django</a>
+</div>
+{% endblock %}
+
+{% block extra_body_base %}
+    {% urchin %}
+    <script src="{{ MEDIA_URL }}base.js" type="text/javascript"></script>
+    {% block extra_body %}{% endblock %}
+{% endblock %}

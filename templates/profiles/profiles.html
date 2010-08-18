@@ -1,0 +1,39 @@
+{% extends "profiles/base.html" %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load avatar_tags %}
+{% load humanize %}
+
+{% block head_title %}{% blocktrans %}{{ title }}{% endblocktrans %}{% endblock %}
+
+{% block center_panel %}
+    {% if user.is_authenticated %}
+       <div class="tintz-title">{% blocktrans %}{{ title }}{% endblocktrans %}</div>
+       <div class="friends">
+        {% autopaginate other_profiles 10 %}
+	   {% if other_profiles %}
+	      <table>
+              <tr><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr>
+              {% for profile in other_profiles %}
+    	         {% if forloop.counter0|divisibleby:"5" %}<tr>{% endif %}	         
+                 <td nowrap>
+    	         <div class="avatar"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{% avatar profile 50 %}</a> </div>
+	             <div class="details"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{{ profile.get_profile.first_name }}</a></div>
+                 </td>
+                 {% if forloop.counter0|add:"1"|divisibleby:"5" %}</tr>{% endif %}
+	      {% endfor %}
+	      {% if other_profiles|length|divisibleby:"5" %}{% else %}</tr>{% endif %}
+	      </table>
+            {% else %}
+            {% endif %}	  
+	 {% paginate %}
+       </div>
+
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
+    {% endif %}
+{% endblock %}

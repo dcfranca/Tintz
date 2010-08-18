@@ -1,0 +1,97 @@
+{% extends "profiles/base.html" %}
+
+{% load i18n %}
+{% load app_plugins %}
+{% load uni_form %}
+
+{% block head_title %}{% blocktrans %}Perfil de {% endblocktrans %}{{ other_user.get_profile.first_name }}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
+    {% endif %}     
+{% endblock %}
+
+
+{% block center_panel %}   
+    
+    <div class='tintz-title'>Perfil</div>
+
+    <div id="center_panel_container">
+        {% if user.is_authenticated %}
+            {% if is_me %}	
+                {% if is_edit %}
+                    <div id="basic-form">
+                        <fieldset>
+                            <legend>{% trans "Perfil" %}</legend>
+                            <form enctype="multipart/form-data"  action="" method="POST" id="publication_form">
+                                <table>
+                                    <tr><td colspan="2">{{ profile_form.non_field_errors }}</td></tr>
+                                    {% for field in profile_form %}
+                                        {% if field.errors %}
+                                            <tr><td>{{ field.errors }}</td></tr>
+                                        {% endif %}
+                                        <tr><td width="100px" valign="top">{{ field.label_tag }}:</td><td>{{ field }}</td></tr>
+                                        {% if field.help_text %}
+                                            <tr><td colspan="2"><span>{{ field.help_text }}</span></td></tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <tr><td width="150px"></td><td><input type="hidden" name="action" value="update" /><input type="submit" value="Atualizar" class="follow_button" /></td></tr>
+                                </table>
+                            </form>
+                        </fieldset>
+                    </div>
+                {% else %} {# not is_edit #}
+                    <div class="profile_info">
+                        <table>
+                        <tr>
+                        <td><b>{% trans "Idade" %}</b>: </td><td> {{ other_user.get_profile.age }}</td>
+                        </tr>
+                        <tr>
+                        {% if other_user.get_profile.about %}<td><b>{% trans "Sobre" %}</b>: </td><td> {{ other_user.get_profile.about }}</td>{% endif %}
+                        <tr>
+                        <tr>
+                        {% if other_user.get_profile.interests %}<td><b>{% trans "Interesses" %}</b>: </td><td> {{ other_user.get_profile.interests }}</td>{% endif %}
+                        <tr>
+                        {% if other_user.get_profile.location%}<td><b>{% trans "Cidade" %}</b>: </td><td> {{ other_user.get_profile.location }}</td> {% endif %}
+                        <tr>
+                        {% if other_user.get_profile.state%}<td><b>{% trans "Estado" %}</b>: </td><td> {{ other_user.get_profile.state }}</td> {% endif %}
+                        <tr>
+                        {% if other_user.get_profile.country%}<td><b>{% trans "Pa&iacute;s" %}</b>: </td><td> {{ other_user.get_profile.country }}</td> {% endif %}
+                        <tr>
+                        {% if other_user.get_profile.website %}<td><b>{% trans "Website" %}</b>: </td><td> <a href="{{ other_user.get_profile.website }}">{{ other_user.get_profile.website }}</a></td>{% endif %}
+                        </table>
+                    </div>
+                    <form method="POST" action="">
+                        <div class="form_block">
+                            <input type="hidden" name="action" value="edit" />
+                            <input type="submit" value="{% trans "Editar Perfil" %}" class="follow_button"/>
+                        </div>
+                    </form>                
+        {% endif %} {# end is_edit #}
+        {% else %} {# not is_me #}
+            <form method="POST" action="">
+                <div class="follow_button">
+                {% if is_follow %}
+                    <input type="hidden" name="action" value="unfollow" />
+                    <input type="submit" value="{% trans "Deixar de Seguir" %}" />
+                {%else%}
+                    <input type="hidden" name="action" value="follow" />
+                    <input type="submit" value="{% trans "Seguir" %}" />
+                {%endif%}
+                </div>
+            </form>                
+        {% endif %} {# is me #}
+        {% else %} {# not user.is_authenticated #}
+            {% url acct_signup as signup_url %}
+            {% url acct_login as login_url %}
+        <p>{% blocktrans %}<a href="{{ signup_url }}">Cadastrar</a> and <a href="{{ login_url }}">Login </a> para interagir com essa pessoa.{% endblocktrans %}</p>
+        {% endif %} {# user.is_authenticated #}
+    </div>
+
+{% endblock %}
+
+
