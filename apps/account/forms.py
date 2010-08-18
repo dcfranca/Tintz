@@ -26,8 +26,10 @@ alnum_re = re.compile(r'^\w+$')
 
 class LoginForm(forms.Form):
 
-    username = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput())
-    password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False))
+    username = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(),
+                error_messages = {'required': u'Campo obrigatório.' } )
+    password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False),
+                error_messages = {'required': u'Campo obrigatório.' } )
     remember = forms.BooleanField(label=_(u"Lembrar"), required=False)
 
     user = None
@@ -66,39 +68,40 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
 
     username  = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(), 
-                               error_messages = {'required': u'Este campo é obrigatório.' } )     
-    first_name      = forms.CharField(label=_(u'Nome'),  max_length=30, widget=forms.TextInput(), 
-                                 error_messages = {'required': u'Este campo é obrigatório.' } ) 
-    last_name = forms.CharField(label=_(u'Sobrenome'),  max_length=70, widget=forms.TextInput(), 
-                                 error_messages = {'required': u'Este campo é obrigatório.' } )
+                               error_messages = {'required': u'Campo é obrigatório.' } )     
+    #first_name      = forms.CharField(label=_(u'Nome'),  max_length=30, widget=forms.TextInput(), 
+    #                             error_messages = {'required': u'Este campo é obrigatório.' } ) 
+    #last_name = forms.CharField(label=_(u'Sobrenome'),  max_length=70, widget=forms.TextInput(), 
+    #                             error_messages = {'required': u'Este campo é obrigatório.' } )
 
-    birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'),  widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True, 
-                                 error_messages = {'required': u'Este campo é obrigatório.', 'invalid':u'Informe uma data válida.' } )
+    #birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'),  widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True, 
+    #                             error_messages = {'required': u'Este campo é obrigatório.', 'invalid':u'Informe uma data válida.' } )
 
     email       = forms.EmailField(label=_(u"Email"), required=True, widget=forms.TextInput(), 
-                                              error_messages = {'required': u'Este campo é obrigatório.' } )
+                                              error_messages = {'required': u'Campo obrigatório.' } )
 
     password1  = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False), 
-                                error_messages = {'required': u'Este campo é obrigatório.' } ) 
+                                error_messages = {'required': u'Campo obrigatório.' } ) 
     password2  = forms.CharField(label=_(u"Redigite a Senha"), widget=forms.PasswordInput(render_value=False), 
-                                error_messages = {'required': u'Este campo é obrigatório.' } ) 
+                                error_messages = {'required': u'Campo obrigatório.' } ) 
 
-    about     = forms.CharField(label=u'Sobre', widget=forms.Textarea,  required=False)
-    interests = forms.CharField(label=u'Interesses', widget=forms.Textarea,  required=False)
+    #about     = forms.CharField(label=u'Sobre', widget=forms.Textarea,  required=False)
+    #interests = forms.CharField(label=u'Interesses', widget=forms.Textarea,  required=False)
     
-    location = forms.CharField(label=u'Cidade',  required=False)    
+    #location = forms.CharField(label=u'Cidade',  required=False)    
     
-    state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
+    #state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
     
-    country  = forms.CharField(label=u'País', required=False)    
+    #country  = forms.CharField(label=u'País', required=False)    
     
 
-    website  = forms.URLField(label=u'Website', required=False)
+    #website  = forms.URLField(label=u'Website', required=False)
         
-    #confirmation_key = forms.CharField(max_length=40, required=False, widget=forms.HiddenInput(), 
-    #                                   error_messages = {'required': u'Este campo é obrigatório.' } )
+    confirmation_key = forms.CharField(max_length=40, required=False, widget=forms.HiddenInput(), 
+                                       error_messages = {'required': u'Este campo é obrigatório.' } )
     
 
+    
     def clean_username(self):
         if not alnum_re.search(self.cleaned_data["username"]):
             raise forms.ValidationError(_(u"Nome de Usuário deve conter apenas letras, números e underscores."))
@@ -108,6 +111,7 @@ class SignupForm(forms.Form):
             return self.cleaned_data["username"]
         raise forms.ValidationError(_(u"Usuário já existe. Escolha outro."))
 
+    
     def clean(self):
         if "password1" in self.cleaned_data and "password2" in self.cleaned_data:
             if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
@@ -117,110 +121,74 @@ class SignupForm(forms.Form):
     def save(self):
         logging.debug("Signup.Save - Enter")
         
-        logging.debug("Signup - save: retrieving info")
         logging.debug("Signup - save: username")
         username = self.cleaned_data["username"]
-        logging.debug("Signup - save: first_name")
-        first_name   = self.cleaned_data["first_name"]
-        logging.debug("Signup - save: last_name")
-        last_name   = self.cleaned_data["last_name"]
-        logging.debug("Signup - save: birth_date 1")
-        birth_date = self.cleaned_data["birth_date"]
-        logging.debug("Signup - save: about")
-        about = self.cleaned_data["about"]
-        logging.debug("Signup - save: interests")
-        interests = self.cleaned_data["interests"]
-        logging.debug("Signup - save: birth_date 2")
-        birth_date = self.cleaned_data["birth_date"]
-        logging.debug("Signup - save: location")
-        location = self.cleaned_data["location"]
-        logging.debug("Signup - save: state")
-        state = self.cleaned_data["state"]
-        logging.debug("Signup - save: country")
-        country = self.cleaned_data["country"]
-        logging.debug("Signup - save: website")
-        website = self.cleaned_data["website"]
         logging.debug("Signup - save: email")        
         email = self.cleaned_data["email"]
         logging.debug("Signup - save: password1")
         password = self.cleaned_data["password1"]
         
-        logging.debug("Signup.Save - Birth_Date = %s" % birth_date)
-        
         # @@@ clean up some of the repetition below -- DRY!
 
-#        if confirmed:
-#            logging.debug("Signup.Save - Step 2")
-#            if email == join_invitation.contact.email:
-#                logging.debug("Signup.Save - Step 3")
-#                new_user = User.objects.create_user(username, email, password)                
-#                join_invitation.accept(new_user) # should go before creation of EmailAddress below
-#                new_user.message_set.create(message=ugettext(u"Seu email já foi verificado"))
-#                # already verified so can just create
-#                EmailAddress(user=new_user, email=email, verified=True, primary=True).save()                
-#                #create_profile(new_user,  name=fullname)
-#                profile, created = Profile.objects.get_or_create(user=new_user)
-#                profile.first_name = first_name
-#                profile.last_name = last_name
-#                profile.about = about
-#                profile.interests = interests
-#                profile.birth_date = birth_date
-#                profile.location = location
-#                profile.state = state
-#                profile.country = country
-#                profile.website = website  
-#                logging.debug("Signup.Save - 1 >> Saving Profile with Birth_date = %s" % profile.birth_date)              
-#                profile.save()                
-#                logging.debug("Signup.Save - 1 >> Saved Ok")
-#            else:
-#                logging.debug("Signup.Save - Step 4")
-#                new_user = User.objects.create_user(username, "", password)
-#                #create_profile(new_user, name=fullname)
-#                profile, created = Profile.objects.get_or_create(user=new_user)
-#                profile.first_name = first_name
-#                profile.last_name = last_name
-#                profile.about = about
-#                profile.interests = interests
-#                profile.birth_date = birth_date
-#                profile.location = location
-#                profile.state = state
-#                profile.country = country
-#                profile.website = website
-#                logging.debug("Signup.Save - 2 >> Saving Profile with Birth_date = %s" % profile.birth_date)
-#                profile.save()
-#                
-#                logging.debug("Signup.Save - 2 >> Saved Ok")
-#                
-#                join_invitation.accept(new_user) # should go before creation of EmailAddress below
-#                if email:
-#                    new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
-#                    EmailAddress.objects.add_email(new_user, email)                
-#            return username, password,  email # required for authenticate()
-#        else:
-        logging.debug("Signup.Save - Step 5 username: %s - password: %s" % (username, password) )
-        new_user = User.objects.create_user("daniel", "daniel.franca@gmail.com", "daniel")
-        logging.debug("Signup.Save - Step 5.1" )
-        create_profile(new_user, name=username)
-        logging.debug("Signup.Save - Step 6")
-        profile, created = Profile.objects.get_or_create(user=new_user)
-        #profile, created = Profile.objects.get_or_create(user=new_user)
-        logging.debug("Signup.Save - Step 7")
-        profile.first_name = first_name
-        profile.last_name = last_name
-        profile.about = about
-        profile.interests = interests
-        profile.birth_date = birth_date
-        profile.location = location
-        profile.state = state
-        profile.country = country
-        profile.website = website
-        logging.debug("Signup.Save - Step 8")
-        logging.debug("Signup.Save - 3 >> Saving Profile with Birth_date = %s" % profile.birth_date)
-        profile.save()
-        logging.debug("Signup.Save - 3 >> Saved Ok")
-        if email:
-            new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
-            EmailAddress.objects.add_email(new_user, email)
+        if confirmed:
+            logging.debug("Signup.Save - Step 2")
+            if email == join_invitation.contact.email:
+                logging.debug("Signup.Save - Step 3")
+                new_user = User.objects.create_user(username, email, password)                
+                join_invitation.accept(new_user) # should go before creation of EmailAddress below
+                new_user.message_set.create(message=ugettext(u"Seu email já foi verificado"))
+                # already verified so can just create
+                EmailAddress(user=new_user, email=email, verified=True, primary=True).save()                
+                #create_profile(new_user,  name=fullname)
+                profile, created = Profile.objects.get_or_create(user=new_user)
+                #profile.first_name = first_name
+                #profile.last_name = last_name
+                #profile.about = about
+                #profile.interests = interests
+                #profile.birth_date = birth_date
+                #profile.location = location
+                #profile.state = state
+                #profile.country = country
+                #profile.website = website  
+                profile.save()                
+            else:
+                new_user = User.objects.create_user(username, "", password)
+                #create_profile(new_user, name=fullname)
+                profile, created = Profile.objects.get_or_create(user=new_user)
+                #profile.first_name = first_name
+                #profile.last_name = last_name
+                #profile.about = about
+                #profile.interests = interests
+                #profile.birth_date = birth_date
+                #profile.location = location
+                #profile.state = state
+                #profile.country = country
+                #profile.website = website
+                profile.save()
+                
+                join_invitation.accept(new_user) # should go before creation of EmailAddress below
+                if email:
+                    new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
+                    EmailAddress.objects.add_email(new_user, email)                
+            return username, password,  email # required for authenticate()
+        else:
+            new_user = User.objects.create_user("daniel", "daniel.franca@gmail.com", "daniel")
+            create_profile(new_user, name=username)
+            profile, created = Profile.objects.get_or_create(user=new_user)
+            #profile.first_name = first_name
+            #profile.last_name = last_name
+            #profile.about = about
+            #profile.interests = interests
+            #profile.birth_date = birth_date
+            #profile.location = location
+            #profile.state = state
+            #profile.country = country
+            #profile.website = website
+            profile.save()
+            if email:
+                new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
+                EmailAddress.objects.add_email(new_user, email)
+        
         return username, password,  email # required for authenticate()
 
 

@@ -38,6 +38,8 @@ def login(request, form_class=LoginForm,
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
 
+    #import pdb; pdb.set_trace()
+    
     logging.debug("Signup - Enter")
 
     if success_url is None:
@@ -52,14 +54,14 @@ def signup(request, form_class=SignupForm,
                 message=_("Login efetuado com sucesso para %(username)s.") % {
                 'username': user.username
             })
-            #send_email_confirmation(request,  email)
+            send_email_confirmation(request,  email)
             return HttpResponseRedirect(success_url)
     else:
         form = form_class()
     
     logging.debug("Signup - Leave")
     return render_to_response(template_name, {
-        "signup_form": form,
+        "form": form,
     }, context_instance=RequestContext(request))
 
 @login_required

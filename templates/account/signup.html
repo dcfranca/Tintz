@@ -2,49 +2,52 @@
 
 {% load i18n %}
 {% load uni_form %}
+{% load ifsetting_tag %}
 
-{% block head_title %}{% trans "Cadastro" %}{% endblock %}
+{% block head_title %}{% trans "Login" %}{% endblock %}
 
 {% block body %}
-    <h1>{% trans "Cadastro" %}</h1>
-    
-    {% if user.is_authenticated %}
-        <p>{% trans "Voc&ecirc; j&aacute; est&aacute; logado." %}</p>
-    {% else %}
-        <p>{% trans "J&aacute; tem uma conta?" %} <a href="{% url acct_login %}">{% trans "Entre já" %}</a>!</p>
-       
-        <div id="basic-form">
-          <fieldset>            
-            <form action="{% url acct_signup %}" method="post" id="signup_form">
-                <table>
-                <tr><td colspan="2">{{ signup_form.non_field_errors }}</td></tr>
-                {% for field in signup_form %}
-                    {% ifequal field.label "Sobre" %}<tr><td colspan="2"><hr noshade size=3></td></tr>{% endifequal %}
-                    {% if field.errors %}
-                       <tr><td>{{ field.errors }}</td></tr>
-         		    {% endif %}
-                    <tr>
-		            <td width="100px" valign="top" align="right">{{ field.label_tag }}</td><td>{{ field }}</td></tr>
-                   {% if field.help_text %}
-		              <tr><td colspan="2"><span>{{ field.help_text }}</span></td></tr>
-                   {% endif %}
-                {% endfor %}
-                <tr><td width="150px"></td><td><input type="submit" value="Cadastrar" class="button"/></td></tr>
-                </table>
-            </form>
-          </fieldset>
+
+    <div id="cont_login">
+        <div class="signup_img">
+            <img src="{{ MEDIA_URL }}images/tintz_register.png">
+            
         </div>
-
-
-        {% url terms as terms_url %}
-        {% url privacy as privacy_url %}
-        <p>{% blocktrans %}Clicando em "Cadastrar", Voc&ecirc; est&aacute; ci&ecirc;nte e concorda com os <a href="{{ terms_url }}">Termos de Uso</a> e <a href="{{ privacy_url }}">Pol&iacute;tica de Privacidade</a>.{% endblocktrans %}</p>
         
-        <p>{% blocktrans %}Qualquer problema, d&uacute;vida ou sugest&atilde;o, entre em contato: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% endblocktrans %}</p>
+        <div class="hline_top"><img src="{{ MEDIA_URL }}images/hline.png"></div>
         
-        <!--p>Se voc&ecirc; possui uma conta OpenID, <a href="{% url acct_login %}">log in</a> using that to begin using this site with OpenID right away.</p-->
-    {% endif %}
+        <form class="login_form" method="POST" action="">
+            <fieldset>        
+                {{ form|as_uni_form }}
+                <div id="button_ok_signup">
+                    <input type="image" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
+                </div>
+            </fieldset>
+        </form>
+        <div class="form_block">
+        <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+        {% if user.is_authenticated %}
+            <p><span class="warning">{% trans "Note" %}</span>: {% blocktrans %}Voc&ecirc; j&aacute; est&aacute; logado como {{ user }}.{% endblocktrans %}</p>
+        {% else %}
+            {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+            {% url acct_signup as signup_url %}
+            {% endifsetting %}
+        {% endif %}    
+        </div> 
+        
+        <ul class="initial_links_signup">
+        <li><a href="{% url acct_login %}">{% trans "J&aacute; &eacute; cadastrado?" %}</a></li>
+        <li><a href="">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul>    
+
+    
+    </div>   
+        
+
 {% endblock %}
 
 {% block extra_body %}
+<script>
+    $("#id_username").focus();
+</script>
 {% endblock %}

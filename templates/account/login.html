@@ -19,7 +19,7 @@
         <form class="login_form" method="POST" action="">
             <fieldset>        
                 {{ form|as_uni_form }}
-                <div class="form_block">
+                <div id="button_ok_login">
                     <input type="image" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
                 </div>
             </fieldset>
@@ -33,15 +33,16 @@
             {% url acct_signup as signup_url %}
             {% endifsetting %}
         {% endif %}    
-        </div> 
+        </div>
         
-            <ul class="initial_links">
-            <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
-            <li><a href="">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
-            <li><a href="">{% trans "O que &eacute; Tintz?" %}</a></li>
-            </ul>
+        <ul class="initial_links_login">
+        <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
+        <li><a href="{% url acct_signup %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+        <li><a href="">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul> 
+        
+    </div>  
     
-    </div>   
 {% endblock %}
 
 {% block extra_body %}

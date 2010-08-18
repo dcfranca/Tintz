@@ -138,6 +138,14 @@ td {
     top: -15px;
     width: 132px;
     height: 62px;
+}
+
+.signup_img {
+    position: relative;
+    right: -70px;
+    top: -15px;
+    width: 132px;
+    height: 62px;
 
 }
 
@@ -150,32 +158,66 @@ td {
 
 .hline_bottom {
     position: relative;
-    top: -40px;
+    top: -30px;
     float: left;
     left: 60px;    
 }
 
-.initial_links {
+.initial_links_login {
     position: relative;
+    top: -50px;
     color: red;
-    float: left;
-    top: -60px;
-    left: 25px;
+    float: right;
+    right: 152px;
+}
 
+.initial_links_login li {
+    text-decoration: none;
+    text-align: left;
+    font-size: 12px;
+    top: 20px;
+    padding-top: 5px;
     list-style-type: none;
 }
 
-.initial_links li {
+.initial_links_login a, a:visited {
+    text-decoration: none;
+}
+
+.initial_links_signup {
+    position: relative;
+    top: -30px;
+    color: red;
+    float: right;
+    right: 197px;
+}
+
+.initial_links_signup li {
     text-decoration: none;
     text-align: left;
-    font-size: 11px;
-    padding-top: 10px;
+    font-size: 12px;
+    top: 20px;
+    padding-top: 5px;
+    list-style-type: none;
 }
 
-.initial_links a, a:visited {
+.initial_links_signup a, a:visited {
     text-decoration: none;
 }
 
+.errorField {
+    font-size: 11px;
+    color: red;
+    width: 200px;
+    position: relative;
+    left: 270px;
+    top: 65px;
+}
+
+#div_id_remember {
+    position: relative;
+    top: 20px;
+}
 /*Form Items*/
 form th {
     text-align : left;
@@ -246,7 +288,6 @@ fieldset {
 }
 label {
     position: relative;
-    #text-align:right;
     font-size: 12px;
     width:80px;
     float:left;
@@ -256,7 +297,34 @@ label {
     margin-top:0.3em;
 }
 
+#div_id_password2 label {
+    position: relative;
+    top: 15px;
+    width: 120px;
+    left: 85px;
+}
 
+#id_password2 {
+    position: relative;
+    top: 20px;
+    left: -30px;
+}
+
+#button_ok_login {
+    position: relative;    
+    float: right;
+    right: 0px;
+    top: 0px;
+    padding: 0 0 0 0; 
+}
+
+#button_ok_signup {
+    position: relative;    
+    float: left;
+    left: 260px;
+    top: 18px;
+    padding: 0 0 0 0; 
+}
 
 /*Lists*/
 ul.errorlist {
