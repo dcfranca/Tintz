@@ -4,7 +4,7 @@
 {% load uni_form %}
 {% load ifsetting_tag %}
 
-{% block head_title %}{% trans "Login" %}{% endblock %}
+{% block head_title %}{% trans "Tintz - Cadastro" %}{% endblock %}
 
 {% block body %}
 
@@ -37,7 +37,7 @@
         
         <ul class="initial_links_signup">
         <li><a href="{% url acct_login %}">{% trans "J&aacute; &eacute; cadastrado?" %}</a></li>
-        <li><a href="">{% trans "O que &eacute; Tintz?" %}</a></li>
+        <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
         </ul>    
 
     
