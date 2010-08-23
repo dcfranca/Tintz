@@ -100,8 +100,6 @@ class SignupForm(forms.Form):
     confirmation_key = forms.CharField(max_length=40, required=False, widget=forms.HiddenInput(), 
                                        error_messages = {'required': u'Este campo é obrigatório.' } )
     
-
-    
     def clean_username(self):
         if not alnum_re.search(self.cleaned_data["username"]):
             raise forms.ValidationError(_(u"Nome de Usuário deve conter apenas letras, números e underscores."))
@@ -127,6 +125,17 @@ class SignupForm(forms.Form):
         email = self.cleaned_data["email"]
         logging.debug("Signup - save: password1")
         password = self.cleaned_data["password1"]
+        
+        if self.cleaned_data["confirmation_key"]:
+            from friends.models import JoinInvitation # @@@ temporary fix for issue 93
+            try:
+                join_invitation = JoinInvitation.objects.get(confirmation_key = self.cleaned_data["confirmation_key"])
+                confirmed = True
+            except JoinInvitation.DoesNotExist:
+                confirmed = False
+        else:
+            confirmed = False
+
         
         # @@@ clean up some of the repetition below -- DRY!
 
@@ -172,7 +181,7 @@ class SignupForm(forms.Form):
                     EmailAddress.objects.add_email(new_user, email)                
             return username, password,  email # required for authenticate()
         else:
-            new_user = User.objects.create_user("daniel", "daniel.franca@gmail.com", "daniel")
+            new_user = User.objects.create_user(username, email, password)
             create_profile(new_user, name=username)
             profile, created = Profile.objects.get_or_create(user=new_user)
             #profile.first_name = first_name

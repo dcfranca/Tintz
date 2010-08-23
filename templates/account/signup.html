@@ -26,14 +26,6 @@
         </form>
         <div class="form_block">
         <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
-        {% if user.is_authenticated %}
-            <p><span class="warning">{% trans "Note" %}</span>: {% blocktrans %}Voc&ecirc; j&aacute; est&aacute; logado como {{ user }}.{% endblocktrans %}</p>
-        {% else %}
-            {% ifsetting ACCOUNT_OPEN_SIGNUP %}
-            {% url acct_signup as signup_url %}
-            {% endifsetting %}
-        {% endif %}    
-        </div> 
         
         <ul class="initial_links_signup">
         <li><a href="{% url acct_login %}">{% trans "J&aacute; &eacute; cadastrado?" %}</a></li>

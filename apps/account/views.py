@@ -17,12 +17,17 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
     ChangePasswordForm, SetPasswordForm, ResetPasswordForm, \
     ChangeTimezoneForm, ChangeLanguageForm, TwitterForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
+from django.contrib.auth.models import User
 import logging
 
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
     if success_url is None:
         success_url = get_default_redirect(request)
+        
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(success_url)
+        
     if request.method == "POST":
         form = form_class(request.POST)
         if form.login(request):
@@ -38,24 +43,30 @@ def login(request, form_class=LoginForm,
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
 
-    #import pdb; pdb.set_trace()
+    import pdb; 
     
     logging.debug("Signup - Enter")
 
     if success_url is None:
         success_url = get_default_redirect(request)
+        
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(success_url)
+        
+        
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
             username, password, email = form.save()
-            user = authenticate(username=username, password=password)
-            auth_login(request, user)
-            request.user.message_set.create(
-                message=_("Login efetuado com sucesso para %(username)s.") % {
-                'username': user.username
-            })
-            send_email_confirmation(request,  email)
-            return HttpResponseRedirect(success_url)
+            user =  User.objects.get(username=username) #  authenticate(username=username, password=password)
+            #auth_login(request, user)
+            #request.user.message_set.create(
+            #    message=_("Login efetuado com sucesso para %(username)s.") % {
+            #    'username': user.username
+            #})
+            pdb.set_trace()                       
+            send_email_confirmation(user,  email)
+            return  HttpResponseRedirect('/about/confirm_email')
     else:
         form = form_class()
     
@@ -109,11 +120,11 @@ def email(request, form_class=AddEmailForm,
         "other_user": request.user,
     }, context_instance=RequestContext(request))
 
-def send_email_confirmation(request,  email):
+def send_email_confirmation(user,  email):
     logging.debug('Email - Send email: %s' % email)
     try:
         email_address = EmailAddress.objects.get(
-            user=request.user,
+            user=user,
             email=email,
         )
         #request.user.message_set.create(

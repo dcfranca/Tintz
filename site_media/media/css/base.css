@@ -1,14 +1,3 @@
-/*Main CSS*/
-#wrapper {
-    text-align: left;
-    clear: both;
-    margin: 0 auto;
-    padding: 0px;
-    border: 0;
-    width:950px;    
-    text-align:left;
-}
-
 body {
     height: 100%;
     background: #f4e30c; !url("images/background_tintz_small.png") repeat;;
@@ -50,78 +39,6 @@ td {
 }
 #footer a:hover {
     color: #777; /* footer link hover colour */
-}
-
-/*Top Items*/
-#tabhead_container {
-    margin: 0 0 15px 0;
-    background: #000000;
-    height: 50px;
-    width:  95%;
-}
-
-#tabhead_container .logo {
-    position: relative;
-    float: left;
-    left: 5px;
-    top: 5px;
-}
-
-#tabhead_container .login {
-    position: relative;
-    float: right;
-    top: 25px;
-    right: 20px;
-    color: white; /* login bar text colour */
-}
-
-
-#tabhead_container .top_menu {
-    margin: 0;
-    position: relative;
-    padding: 0;
-    float: left;
-    top: 26px;    
-    left: 0px;
-    background-color: black;
-}
-
-#tabhead_container .top_menu ul {
-    float: right;
-    margin: 0 20px;
-    padding: 0;
-}
-
-#tabhead_container .top_menu ul li {
-    display: inline;
-    list-style-type: none;
-}
-
-#tabhead_container .top_menu ul a:link, #tabhead_container .top_menu ul a:visited {
-    float: left;
-    text-decoration: none;
-    color: #f4e30c;
-    
-    padding: 1px 8px;
-}
-
-#tabhead_container .top_menu ul a:hover {
-    background: #f4e30c;
-    color: black;
-}
-
-#tabhead_container .login a, #tabhead_container .login a:visited {
-    color: #FFFFFF; /* login bar link colour */
-}
-#tabhead_container .login a, #tabhead_container .top_menu a:hover {
-    color: #707070; /* login bar link hover colour */
-}
-
-#search {
-    position: relative;
-    float: left;
-    top: -10px;
-    left: 100px;
 }
 
 #cont_login {
@@ -229,7 +146,7 @@ td {
 }
 
 .errorField {
-    font-size: 11px;
+    font-size: 10pt;
     color: red;
     width: 200px;
     position: relative;
@@ -239,6 +156,24 @@ td {
 
 .ctrlHolder_error .textinput, .ctrlHolder_error .passwordinput {
     border: inset red 2px;
+}
+
+
+#errorMsg {
+    position: relative;
+    font-size: 5;
+    top: -20px;
+    left: 30px;
+    right: 50px;
+    color: red;
+}
+
+#errorMsg ul {
+    list-style-type: none;    
+}
+
+#errorMsg li {
+    font-size: 10pt;
 }
 
 #div_id_remember {
@@ -315,7 +250,7 @@ fieldset {
 }
 label {
     position: relative;
-    font-size: 12px;
+    font-size: 10pt;
     width:80px;
     float:left;
     left: 80px;
