@@ -5,7 +5,7 @@
 {% load pagination_tags %}
 {% load timezone_filters %}
 
-{% block head_title %}{% trans "Início" %}{% endblock %}
+{% block head_title %}{% trans "Tintz - Início" %}{% endblock %}
 
 {% block rtab_id %}id="home_tab"{% endblock %}
 
@@ -18,28 +18,6 @@
     {% endif %}     
 {% endblock %}
 
-{% block center_panel %}
-   
-    <div class="tintz-title">Bem vindo, {{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
-    
-    <div class="updates">
-    {% if notices %}
-        {% autopaginate notices %}
-        {# TODO: get timezone support working with regroup #}
-        {% regroup notices by added.date as notices_by_date %}
-            {% for date in notices_by_date %}
-                <h2 class="notice_date">{{ date.grouper|date:"d/m/Y" }}</h2>
-                {% for notice in date.list %}
-                        <div class="notice">
-                        {{ notice.message|safe }}
-                        <div class="notice_time">{{ notice.added|localtime:account.timezone|time:"P" }}</div>
-                        </div>
-                {% endfor %}
-            {% endfor %}        
-        {% paginate %}        
-    {% else %}
-       <p>{% trans "N&atilde;o h&aacute; Atualizações." %}</p>
-    {% endif %}
-    </div>
-
+{% block main_content %}
+<h1>Teste</h1>
 {% endblock %}

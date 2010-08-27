@@ -12,52 +12,33 @@
 {% endblock %}
 
 {% block body %}
-    <div id="wrapper">
+<div id="wrapper">
 
-    <div id="tabhead_container">
-        
-        {% block logo_link_image %}
-            <div class="logo">
-            <a href="{% url home %}" title="Tintz"><img src="{{ MEDIA_URL }}images/logo_80.png"></img></a>
-            </div>
-        {% endblock %}
-        
-        {% block login %}
-            <div class="login">
-            {% if user.is_authenticated %}
-                <b>{{ user }}</b> | <a href="{% url acct_email %}">{% trans "Minha conta" %}</a> | {% if user.is_staff %}<a href="/admin/">{% trans "Admin" %}</a> | {% endif %}<a href="{% url acct_logout %}">{% trans "Sair" %}</a>
-            {% else %}
-                <a href="{% url acct_login %}">{% trans "Login" %}</a> {% trans "ou" %} <a href="{% url acct_signup %}"><b>{% trans "Cadastre-se" %}</b></a>
-            {% endif %}
-            </div>
-        {% endblock %}
-        
+    <div class="tintz_top_logo">
+	<img src="{{MEDIA_URL}}/images/tintz_top_logo.png">
 
-        {% block home_menu %}
-            {% if user.is_authenticated %}
-            <div class="top_menu">
-            <ul>
-                    <li><a href="{% url home %} ">{% trans "Início" %}</a></li>
-                    <li><a href="{% url acct_email %}">{% trans "Notícias" %}</a></li>
-                </ul>
-                </div>
-            {% endif %}
-        {% endblock %}
-
-        {% block search %}
-            {% if user.is_authenticated %}
-               <div id="search">
-             	<form action="{% url search_prepare %}" method="post">
-                    <fieldset>
-                    <input type="text" name="search_text" maxlength="100">
-                    <input type="image" src="{{MEDIA_URL}}/images/simplicio-icon-set/32x32/search.png" name="image">
-                    </fieldset>
-            </form>		
-               </div>
-            {% endif %}
-        {% endblock %}
-        
-        <div id="subnav">{% block subnav %}{% endblock %}</div>
+    </div>
+    
+    <div class="top_bar">
+	{% if user.is_authenticated %}
+	    <div style="text-align:center; width:541px; margin-left:auto; margin-right:auto;">
+	    <img id="Image-Maps_7201008262104394" src="{{MEDIA_URL}}/images/top_bar.png" usemap="#Image-Maps_7201008262104394" border="0" width="541" height="45" alt="" />
+	    <map id="_Image-Maps_7201008262104394" name="Image-Maps_7201008262104394">
+	    <area shape="rect" coords="13,10,101,33" href="home" alt="" title=""    />
+	    <area shape="rect" coords="111,12,150,32" href="profile" alt="" title=""    />
+	    <area shape="rect" coords="160,13,212,31" href="publish" alt="" title=""    />
+	    <area shape="rect" coords="225,13,314,31" href="settings" alt="" title=""    />
+	    <area shape="rect" coords="492,12,525,32" href="logout" alt="" title=""    />
+	    <area shape="rect" coords="539,43,541,45" href="http://www.image-maps.com/index.php?aff=mapped_users_7201008262104394" alt="Image Map" title="Image Map" />
+	    </map>
+	    </div>
+	{% endif %}
+    </div>
+	    
+    <div class="main_content">
+	<div class="topl"><div class="topr">
+	{% block main_content %}{% endblock %}
+	</div></div>
     </div>
 
     {% if messages %}
@@ -68,11 +49,6 @@
         </ul>
     {% endif %}
 
-    {% if other_user.id %}
-        <div id="center_panel_container">{% block center_panel %}{% endblock %}</div>
-        <div id="left_panel_container">{% include "profiles/profile_left_panel.html" %}</div>        
-        <div id="right_panel_container">{% include "profiles/profile_right_panel.html" %}</div>
-    {% endif %} 
 </div>                       
 {% endblock %}
 
