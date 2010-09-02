@@ -21,6 +21,16 @@ body {
     padding-top: 60px;
 }
 
+.login-img {
+    position: relative;
+    left: 20px;
+}
+
+.hline {
+    position: relative;
+    left: 12px;
+}
+
 .tintz-form {
     border: none 0px;
     padding-top: 20px;
@@ -50,5 +60,30 @@ input[type="password"] {
 
 .login-label {
     font-size: 10pt;
+    font-weight: normal;
     font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+#login-remember {
+    position: relative;
+    left: -50px;
+}
+
+.login-links {
+    position: relative;
+    color: red;
+    float: right;
+    right: 145px;
+}
+
+.login-links li {
+    text-decoration: none;
+    font-size: 9pt;
+    padding-top: 5px;
+    list-style-type: none;
+}
+
+.login-links a, a:visited {
+    text-decoration: none;
+    color: red;
 }
