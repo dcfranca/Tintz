@@ -8,24 +8,42 @@
 
 {% block body %}
 
-    <div id="cont_login">
+    <div class="span-8  last" id="cont-login">
         <div class="login_img">
             <img src="{{ MEDIA_URL }}images/tintz_login.png">
-            
         </div>
         
-        <div class="hline_top"><img src="{{ MEDIA_URL }}images/hline.png"></div>  
+        <img src="{{ MEDIA_URL }}images/hline.png">
 
-        <form class="login_form" method="POST" action="">
-            <fieldset>        
-                {{ form|as_uni_form }}
-                <div id="button_ok_login">
-                    <input type="image" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
+        <form class="form-login" method="POST" action="">
+            <fieldset class="tintz-form">
+                <div class="login-label">
+                    <label for="{{form.username.auto_id}}">{{form.username.label_tag}}</label>
+                </div>
+                {{ form.username }}
+                <div class="span-7 last login-label">
+                    <label for="{{form.password.auto_id}}">{{form.password.label_tag}}</label>
+                </div>
+                <div class="span-4 last">
+                {{ form.password }}
+                </div>
+                <div class="span-1 last">
+                    <input type="image" id="login-bt-ok" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
+                </div>
+                
+                <div class="span-5 login-label">
+                    <label for="{{form.remember.auto_id}}">{{form.remember.label_tag}}</label>
+                </div>
+                <div class="span-8 last"{{ form.remember }}</div>
+                
+                <div class="text">
+                    {{ field.errors }}
+                    <label for="{{ field.label }}">{{ field.label_tag }}</label>{{ field }}
                 </div>
             </fieldset>
         </form>
-        <div class="form_block">
-        <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+        
+        <img src="{{ MEDIA_URL }}images/hline.png">
         
         <ul class="initial_links_login">
         <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
@@ -39,6 +57,6 @@
 
 {% block extra_body %}
 <script>
-    $("#id_username").focus();
+    document.getElementById("id_username").focus();
 </script>
 {% endblock %}

@@ -19,5 +19,10 @@
 {% endblock %}
 
 {% block main_content %}
-<h1>Teste</h1>
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-16 last" id="updates">
+    {% include "follow/updates.html" %}
+</div>
 {% endblock %}

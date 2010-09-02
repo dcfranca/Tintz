@@ -12,16 +12,16 @@
 {% endblock %}
 
 {% block body %}
-<div id="wrapper">
+<div class="container">
 
-    <div class="tintz_top_logo">
-	<img src="{{MEDIA_URL}}/images/tintz_top_logo.png">
-
+    <hr/>
+    <div class="span-10" id="tintz_logo">
+	<img class="prepend-top" src="{{MEDIA_URL}}/images/tintz_top_logo.png">
     </div>
     
-    <div class="top_bar">
+    <div class="span-12 last" id="top_menu">
 	{% if user.is_authenticated %}
-	    <div style="text-align:center; width:541px; margin-left:auto; margin-right:auto;">
+	    <div class="prepend-top" style="text-align:center; width:541px; margin-left:auto; margin-right:auto;">
 	    <img id="Image-Maps_7201008262104394" src="{{MEDIA_URL}}/images/top_bar.png" usemap="#Image-Maps_7201008262104394" border="0" width="541" height="45" alt="" />
 	    <map id="_Image-Maps_7201008262104394" name="Image-Maps_7201008262104394">
 	    <area shape="rect" coords="13,10,101,33" href="home" alt="" title=""    />
@@ -33,12 +33,10 @@
 	    </map>
 	    </div>
 	{% endif %}
-    </div>
-	    
-    <div class="main_content">
-	<div class="topl"><div class="topr">
+    </div>	    
+    
+    <div class="span-24 last prepend-1" id="main-content">
 	{% block main_content %}{% endblock %}
-	</div></div>
     </div>
 
     {% if messages %}
@@ -53,7 +51,7 @@
 {% endblock %}
 
 {% block footer %}
-<div class="legal">
+<div class="span-24 last">
     {% trans "&copy; 2009 Tint" %}
     - <a href="{% url about %}">{% trans "Sobre" %}</a>
     - <a href="{% url terms %}">{% trans "Termos de servi&ccedil;o" %}</a>

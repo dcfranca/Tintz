@@ -30,7 +30,7 @@ class LoginForm(forms.Form):
                 error_messages = {'required': u'Campo obrigatório.' } )
     password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False),
                 error_messages = {'required': u'Campo obrigatório.' } )
-    remember = forms.BooleanField(label=_(u"Lembrar"), required=False)
+    remember = forms.BooleanField(label=_(u"Lembrar de mim"), required=False)
 
     user = None
 
