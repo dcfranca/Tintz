@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 
 from account.utils import get_default_redirect
 from account.models import OtherServiceInfo
-from account.forms import SignupForm, AddEmailForm, LoginForm, \
+from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, \
     ChangePasswordForm, SetPasswordForm, ResetPasswordForm, \
     ChangeTimezoneForm, ChangeLanguageForm, TwitterForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
@@ -22,6 +22,7 @@ import logging
 
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
+    
     if success_url is None:
         success_url = get_default_redirect(request)
         
@@ -43,9 +44,28 @@ def login(request, form_class=LoginForm,
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
 
-    import pdb; 
+    if success_url is None:
+        success_url = get_default_redirect(request)
+        
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(success_url)
+        
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            username, password, email = form.save()
+            user =  User.objects.get(username=username) #  authenticate(username=username, password=password)
+            send_email_confirmation(user,  email)
+            return  HttpResponseRedirect('/about/confirm_email')
+    else:
+        form = form_class()
     
-    logging.debug("Signup - Enter")
+    return render_to_response(template_name, {
+        "form": form,
+    }, context_instance=RequestContext(request))
+
+def signup_complete(request, form_class=SignupCompleteForm,
+        template_name="account/signup_complete.html", success_url=None):
 
     if success_url is None:
         success_url = get_default_redirect(request)
@@ -53,24 +73,16 @@ def signup(request, form_class=SignupForm,
     if request.user.is_authenticated():
         return HttpResponseRedirect(success_url)
         
-        
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
             username, password, email = form.save()
-            user =  User.objects.get(username=username) #  authenticate(username=username, password=password)
-            #auth_login(request, user)
-            #request.user.message_set.create(
-            #    message=_("Login efetuado com sucesso para %(username)s.") % {
-            #    'username': user.username
-            #})
-            pdb.set_trace()                       
-            send_email_confirmation(user,  email)
-            return  HttpResponseRedirect('/about/confirm_email')
+            user =  User.objects.get(username=username)
+            authenticate(username=username, password=password)
+            return  HttpResponseRedirect(success_url)
     else:
         form = form_class()
     
-    logging.debug("Signup - Leave")
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))

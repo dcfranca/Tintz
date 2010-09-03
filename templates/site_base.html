@@ -50,15 +50,15 @@
 </div>                       
 {% endblock %}
 
+    
 {% block footer %}
 <div class="span-24 last">
-    {% trans "&copy; 2009 Tint" %}
-    - <a href="{% url about %}">{% trans "Sobre" %}</a>
-    - <a href="{% url terms %}">{% trans "Termos de servi&ccedil;o" %}</a>
-    - <a href="{% url privacy %}">{% trans "Pol&iacute;tica de privacidade" %}</a>
-    - Powered by <a href="http://www.djangoproject.com" target=_blank>Django</a>
+    {% trans "&copy; 2010 Tintz" %}
+     <a href="{% url about %}">{% trans "Sobre" %}</a>     
+     <a href="{% url terms %}">{% trans "Termos de servi&ccedil;o" %}</a>
+     <a href="{% url privacy %}">{% trans "Pol&iacute;tica de privacidade" %}</a>
 </div>
-{% endblock %}
+{% endblock %}    
 
 {% block extra_body_base %}
     {% urchin %}

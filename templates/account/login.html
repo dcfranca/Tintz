@@ -17,6 +17,16 @@
 
         <form class="form-login" method="POST" action="">
             <fieldset class="tintz-form">
+                <div class="span-7 errorlist pull-1">
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+                
                 <label for="{{form.username.auto_id}}" class="span-7 last login-label">{{form.username.label}}</label>
                 <div class="span-7 last">{{ form.username }}</div>
                 
@@ -26,19 +36,15 @@
                 <div class="span-1 last">
                     <input type="image" id="login-bt-ok" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
                 </div>
-                <label for="{{form.remember.auto_id}}" class="span-4 login-label">{{form.remember.label}}</label>
-                <div class="span-2 last" id="login-remember">{{ form.remember }}</div>
                 
-                <div class="text">
-                    {{ field.errors }}
-                    <label for="{{ field.label }}">{{ field.label_tag }}</label>{{ field }}
-                </div>
+                <label for="{{form.remember.auto_id}}" class="span-4 login-label">{{form.remember.label}}</label>
+                <div class="span-2 last" id="login-remember">{{ form.remember }}</div>  
             </fieldset>
         </form>
         
         <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
         
-        <ul class="login-links">
+        <ul class="span-4 last login-links">
         <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
         <li><a href="{% url acct_signup %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
         <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>

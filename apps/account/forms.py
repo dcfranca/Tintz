@@ -27,9 +27,9 @@ alnum_re = re.compile(r'^\w+$')
 class LoginForm(forms.Form):
 
     username = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(),
-                error_messages = {'required': u'Campo obrigatório.' } )
+                error_messages = {'required': u'Campo Usuário é obrigatório.' } )
     password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False),
-                error_messages = {'required': u'Campo obrigatório.' } )
+                error_messages = {'required': u'Campo Senha é obrigatório.' } )
     remember = forms.BooleanField(label=_(u"Lembrar de mim"), required=False)
 
     user = None
@@ -68,35 +68,13 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
 
     username  = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(), 
-                               error_messages = {'required': u'Campo é obrigatório.' } )     
-    #first_name      = forms.CharField(label=_(u'Nome'),  max_length=30, widget=forms.TextInput(), 
-    #                             error_messages = {'required': u'Este campo é obrigatório.' } ) 
-    #last_name = forms.CharField(label=_(u'Sobrenome'),  max_length=70, widget=forms.TextInput(), 
-    #                             error_messages = {'required': u'Este campo é obrigatório.' } )
-
-    #birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'),  widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True, 
-    #                             error_messages = {'required': u'Este campo é obrigatório.', 'invalid':u'Informe uma data válida.' } )
-
+                               error_messages = {'required': u'Campo Usuário é obrigatório.' } )     
     email       = forms.EmailField(label=_(u"Email"), required=True, widget=forms.TextInput(), 
-                                              error_messages = {'required': u'Campo obrigatório.' } )
-
+                                              error_messages = {'required': u'Campo Email é obrigatório.' } )
     password1  = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False), 
-                                error_messages = {'required': u'Campo obrigatório.' } ) 
+                                error_messages = {'required': u'Campo Senha é obrigatório.' } ) 
     password2  = forms.CharField(label=_(u"Redigite a Senha"), widget=forms.PasswordInput(render_value=False), 
-                                error_messages = {'required': u'Campo obrigatório.' } ) 
-
-    #about     = forms.CharField(label=u'Sobre', widget=forms.Textarea,  required=False)
-    #interests = forms.CharField(label=u'Interesses', widget=forms.Textarea,  required=False)
-    
-    #location = forms.CharField(label=u'Cidade',  required=False)    
-    
-    #state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
-    
-    #country  = forms.CharField(label=u'País', required=False)    
-    
-
-    #website  = forms.URLField(label=u'Website', required=False)
-        
+                                error_messages = {'required': u'Por favor redigite sua senha.' } ) 
     confirmation_key = forms.CharField(max_length=40, required=False, widget=forms.HiddenInput(), 
                                        error_messages = {'required': u'Este campo é obrigatório.' } )
     
@@ -117,13 +95,9 @@ class SignupForm(forms.Form):
         return self.cleaned_data
 
     def save(self):
-        logging.debug("Signup.Save - Enter")
-        
-        logging.debug("Signup - save: username")
+        import pdb;
         username = self.cleaned_data["username"]
-        logging.debug("Signup - save: email")        
         email = self.cleaned_data["email"]
-        logging.debug("Signup - save: password1")
         password = self.cleaned_data["password1"]
         
         if self.cleaned_data["confirmation_key"]:
@@ -135,7 +109,6 @@ class SignupForm(forms.Form):
                 confirmed = False
         else:
             confirmed = False
-
         
         # @@@ clean up some of the repetition below -- DRY!
 
@@ -150,29 +123,11 @@ class SignupForm(forms.Form):
                 EmailAddress(user=new_user, email=email, verified=True, primary=True).save()                
                 #create_profile(new_user,  name=fullname)
                 profile, created = Profile.objects.get_or_create(user=new_user)
-                #profile.first_name = first_name
-                #profile.last_name = last_name
-                #profile.about = about
-                #profile.interests = interests
-                #profile.birth_date = birth_date
-                #profile.location = location
-                #profile.state = state
-                #profile.country = country
-                #profile.website = website  
                 profile.save()                
             else:
                 new_user = User.objects.create_user(username, "", password)
                 #create_profile(new_user, name=fullname)
                 profile, created = Profile.objects.get_or_create(user=new_user)
-                #profile.first_name = first_name
-                #profile.last_name = last_name
-                #profile.about = about
-                #profile.interests = interests
-                #profile.birth_date = birth_date
-                #profile.location = location
-                #profile.state = state
-                #profile.country = country
-                #profile.website = website
                 profile.save()
                 
                 join_invitation.accept(new_user) # should go before creation of EmailAddress below
@@ -182,23 +137,69 @@ class SignupForm(forms.Form):
             return username, password,  email # required for authenticate()
         else:
             new_user = User.objects.create_user(username, email, password)
-            create_profile(new_user, name=username)
-            profile, created = Profile.objects.get_or_create(user=new_user)
-            #profile.first_name = first_name
-            #profile.last_name = last_name
-            #profile.about = about
-            #profile.interests = interests
-            #profile.birth_date = birth_date
-            #profile.location = location
-            #profile.state = state
-            #profile.country = country
-            #profile.website = website
-            profile.save()
+            new_user.is_active = 0
+            new_user.save()
+            
+            #create_profile(new_user, name=username)
+            #profile, created = Profile.objects.get_or_create(user=new_user)
+            #rofile.save()
             if email:
                 new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
                 EmailAddress.objects.add_email(new_user, email)
         
         return username, password,  email # required for authenticate()
+
+class SignupCompleteForm(forms.Form):
+   
+    first_name      = forms.CharField(label=_(u'Nome'),  max_length=30, widget=forms.TextInput(), 
+                                 error_messages = {'required': u'Campo Nome é obrigatório.' } ) 
+    last_name = forms.CharField(label=_(u'Sobrenome'),  max_length=70, widget=forms.TextInput(), 
+                                 error_messages = {'required': u'Campo Sobrenome é obrigatório.' } )
+    birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'),  widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True, 
+                                 error_messages = {'required': u'Campo Data Nasc. é obrigatório.', 'invalid':u'Informe uma data válida.' } )
+
+    about     = forms.CharField(label=u'Sobre', widget=forms.Textarea,  required=False)
+    interests = forms.CharField(label=u'Interesses', widget=forms.Textarea,  required=False)
+    location = forms.CharField(label=u'Cidade',  required=False)
+    state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
+    country  = forms.CharField(label=u'País', required=False) 
+    website  = forms.URLField(label=u'Website', required=False)
+    
+    def clean(self):
+        return self.cleaned_data
+
+    def save(self, request):
+        first_name = self.cleaned_data["first_name"]
+        last_name = self.cleaned_data["last_name"]
+        birth_date = self.cleaned_data["birth_date"]
+        about = self.cleaned_data["about"]
+        interests = self.cleaned_data["interests"]
+        location = self.cleaned_data["location"]
+        state = self.cleaned_data["state"]
+        country = self.cleaned_data["country"]
+        website = self.cleaned_data["website"]
+        
+        new_user = User.objects.get(username=request.user.username)
+        new_user.is_active = 1
+        new_user.save()
+        
+        create_profile(new_user, name=new_user.username)
+        profile, created = Profile.objects.get_or_create(user=new_user)
+        profile.first_name = first_name
+        profile.last_name = last_name
+        profile.birth_date = birth_date
+        profile.about = about
+        profile.interests = interests
+        profile.location = location
+        profile.state = state
+        profile.country = country
+        profile.website = website
+        profile.save()
+        if email:
+            new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
+            EmailAddress.objects.add_email(new_user, email)
+        
+        return new_user.username, new_user.password, new_user.email # required for authenticate()
 
 
 class OpenIDSignupForm(forms.Form):

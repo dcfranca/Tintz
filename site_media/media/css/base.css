@@ -87,3 +87,24 @@ input[type="password"] {
     text-decoration: none;
     color: red;
 }
+
+.errorlist li {
+    list-style-type: none;
+    color: red;
+    padding-bottom: 15px;
+    text-decoration: none;
+}
+
+#footer, #footer a, #fotter a:visited{
+    top: 60px;
+    text-align: right;
+    left: 30px;
+    text-decoration: none;
+    padding-left: 10px;
+    color: gray;
+}
+
+#whats_tintz {
+    color: red;
+    font-size: 10pt;
+}
