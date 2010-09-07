@@ -1,0 +1,81 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load uni_form %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Tintz - Cadastro" %}{% endblock %}
+
+{% block body %}
+
+    <div class="span-12 last" id="cont-login">
+        <img class="login-img" src="{{ MEDIA_URL }}images/tintz_register.png"><br>
+        
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+        
+        <form class="form-login" method="POST" action="">
+            <fieldset class="tintz-form">
+                <div class="span-12 errorlist pull-1">
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <label for="{{form.first_name.auto_id}}" class="span-7 last login-label">{{form.first_name.label}}</label>
+                <div class="span-7 last">{{ form.first_name }}</div>
+                
+                <label for="{{form.last_name.auto_id}}" class="span-7 last login-label">{{form.last_name.label}}</label>
+                <div class="span-7 last">{{ form.last_name }}</div>
+                
+                <label for="{{form.birth_date.auto_id}}" class="span-7 last login-label">{{form.birth_date.label}}</label>
+                <div class="span-7 last">{{ form.birth_date }}</div>
+                
+                <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+                
+                <label for="{{form.about.auto_id}}" class="span-7 last login-label">{{form.about.label}}</label>
+                <div class="span-7 last">{{ form.about }}</div>                
+                
+                <label for="{{form.interests.auto_id}}" class="span-7 last login-label">{{form.interests.label}}</label>
+                <div class="span-7 last">{{ form.interests }}</div>
+                
+                <label for="{{form.location.auto_id}}" class="span-7 last login-label">{{form.location.label}}</label>
+                <div class="span-6 last">{{ form.location }}</div>                
+                
+                <label for="{{form.state.auto_id}}" class="span-7 last login-label">{{form.state.label}}</label>
+                <div class="span-7 last">{{ form.state }}</div>
+                
+                <label for="{{form.country.auto_id}}" class="span-7 last login-label">{{form.country.label}}</label>
+                <div class="span-7 last">{{ form.country }}</div>                
+                
+                <label for="{{form.website.auto_id}}" class="span-7 last login-label">{{form.website.label}}</label>
+                <div class="span-7 last">{{ form.website }}</div>                  
+                
+                <div class="span-1 pull-1 last">
+                    <input type="image" id="login-bt-ok" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
+                </div>
+                
+                <label for="{{form.remember.auto_id}}" class="span-4 login-label">{{form.remember.label}}</label>
+                <div class="span-2 last" id="login-remember">{{ form.remember }}</div>  
+            </fieldset>            
+        </form>
+        <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
+        
+        <ul class="span-8 last login-links">
+        <li><a href="{% url acct_login %}">{% trans "J&aacute; &eacute; cadastrado?" %}</a></li>
+        <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul>
+        
+    </div>   
+        
+
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    document.getElementById("id_first_name").focus();
+</script>
+{% endblock %}

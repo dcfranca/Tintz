@@ -1,0 +1,35 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load uni_form %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Tintz - Confirme o email" %}{% endblock %}
+
+{% block body %}
+<div class="span-8  last" id="cont-login">
+    <div class="login-img">
+        <img src="{{ MEDIA_URL }}images/tintz_login.png">
+    </div>
+    
+    <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+    <div class="span-6" id="whats_tintz">
+        <p>{% trans "&Eacute; necess&aacute;rio confirmar o email para ativar sua conta" %}
+    </div>
+    
+    <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+    
+    <ul class="span-4 last login-links">
+    <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
+    <li><a href="{% url registration %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+    <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
+    </ul> 
+</div>  
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    $("#id_username").focus();
+</script>
+{% endblock %}
