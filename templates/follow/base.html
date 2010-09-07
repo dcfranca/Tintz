@@ -1,0 +1,13 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block rtab_id %}id="bookmarks_tab"{% endblock %}
+
+{% block subnav %}
+    <ul>
+        <li><a href="{% url updates user %}">{% trans "Atualiza&ccedil;&otilde;es" %}{% if unseen_follow_count_for %}({{ unseen_follow_count_for }}){% endif %}</a></li>
+        <li><a href="{% url following user %}">{% trans "Seguidos" %}</a></li>
+        <li><a href="{% url followers user %}">{% trans "Seguidores" %}</a></li>
+    </ul>
+{% endblock %}
