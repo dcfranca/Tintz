@@ -38,8 +38,11 @@ class LoginForm(forms.Form):
         if self._errors:
             return
         user = authenticate(username=self.cleaned_data["username"], password=self.cleaned_data["password"])
+        
+        email_address = EmailAddress.objects.get_primary(user)
+        
         if user:
-            if user.is_active:
+            if user.is_active and email_address != None and email_address.verified == True:
                 self.user = user
             else:
                 raise forms.ValidationError(_(u"Esta conta está inativa."))
@@ -48,19 +51,13 @@ class LoginForm(forms.Form):
         return self.cleaned_data
 
     def login(self, request):
-        logging.debug("login - step 1")
         if self.is_valid():
-            logging.debug("login - step 2")
             login(request, self.user)
             request.user.message_set.create(message=ugettext("Logado com sucesso: %(username)s.") % {'username': self.user.username})
-            logging.debug("login - step3")
             if self.cleaned_data['remember']:
-                logging.debug("login - step 4 - if")
                 request.session.set_expiry(60 * 60 * 24 * 7 * 3)
             else:
-                logging.debug("login - step 4 - else")
                 request.session.set_expiry(0)
-            logging.debug("login - return true")
             return True
         return False
 
@@ -95,57 +92,14 @@ class SignupForm(forms.Form):
         return self.cleaned_data
 
     def save(self):
-        import pdb;
         username = self.cleaned_data["username"]
         email = self.cleaned_data["email"]
         password = self.cleaned_data["password1"]
         
-        if self.cleaned_data["confirmation_key"]:
-            from friends.models import JoinInvitation # @@@ temporary fix for issue 93
-            try:
-                join_invitation = JoinInvitation.objects.get(confirmation_key = self.cleaned_data["confirmation_key"])
-                confirmed = True
-            except JoinInvitation.DoesNotExist:
-                confirmed = False
-        else:
-            confirmed = False
-        
-        # @@@ clean up some of the repetition below -- DRY!
-
-        if confirmed:
-            logging.debug("Signup.Save - Step 2")
-            if email == join_invitation.contact.email:
-                logging.debug("Signup.Save - Step 3")
-                new_user = User.objects.create_user(username, email, password)                
-                join_invitation.accept(new_user) # should go before creation of EmailAddress below
-                new_user.message_set.create(message=ugettext(u"Seu email já foi verificado"))
-                # already verified so can just create
-                EmailAddress(user=new_user, email=email, verified=True, primary=True).save()                
-                #create_profile(new_user,  name=fullname)
-                profile, created = Profile.objects.get_or_create(user=new_user)
-                profile.save()                
-            else:
-                new_user = User.objects.create_user(username, "", password)
-                #create_profile(new_user, name=fullname)
-                profile, created = Profile.objects.get_or_create(user=new_user)
-                profile.save()
-                
-                join_invitation.accept(new_user) # should go before creation of EmailAddress below
-                if email:
-                    new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
-                    EmailAddress.objects.add_email(new_user, email)                
-            return username, password,  email # required for authenticate()
-        else:
-            new_user = User.objects.create_user(username, email, password)
-            #new_user.is_active = 0
-            #new_user.save()
-            
-            #create_profile(new_user, name=username)
-            #profile, created = Profile.objects.get_or_create(user=new_user)
-            #rofile.save()
-            if email:
-                new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
-                EmailAddress.objects.add_email(new_user, email)
+        new_user = User.objects.create_user(username, email, password)
+        if email:
+            new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
+            EmailAddress.objects.add_email(new_user, email)
         
         return username, password,  email # required for authenticate()
 

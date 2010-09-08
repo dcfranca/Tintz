@@ -3,10 +3,12 @@
 {% load tagging_tags %}
 
 {% if other_user.id %}
-	<div id="profile_avatar" OnMouseOver="change_avatar()">   
+	<div id="profile_avatar" OnMouseEnter="change_avatarEnter()" OnMouseLeave="change_avatarLeave()">
 	    {% avatar other_user 260 %}
+	    <div id="avatar_replace">Substituir</div>
 	</div> 
 	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
+	<div class="about">{{ other_user.get_profile.about }}</div>
 {% endif %}
 
 {% if user.is_authenticated %}
