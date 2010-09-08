@@ -11,8 +11,40 @@ body {
 }
 
 .left-button {
-    padding-top: 4px;
+    margin-top: 10px;
+    background: #232323;
+    height: 30px;
+    width: 260px;
 }
+
+.left-button img {
+    margin-top: 6px;
+    margin-left: 10px;
+    padding-right: 8px;
+}
+
+.left-button a, .left-button a:visited {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.title {
+    background: #232323;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 30px;
+    width: 500px;
+}
+
+.title img {
+    margin-top: 6px;
+    margin-left: 10px;
+    padding-right: 8px;
+}
+
+
 
 #cont-login {
     position: relative;
@@ -107,4 +139,9 @@ input[type="password"] {
 #whats_tintz {
     color: red;
     font-size: 10pt;
+}
+
+.username {
+    font-size: 18pt;
+    font-weight: bold;
 }

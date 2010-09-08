@@ -137,8 +137,8 @@ class SignupForm(forms.Form):
             return username, password,  email # required for authenticate()
         else:
             new_user = User.objects.create_user(username, email, password)
-            new_user.is_active = 0
-            new_user.save()
+            #new_user.is_active = 0
+            #new_user.save()
             
             #create_profile(new_user, name=username)
             #profile, created = Profile.objects.get_or_create(user=new_user)
@@ -180,8 +180,8 @@ class SignupCompleteForm(forms.Form):
         website = self.cleaned_data["website"]
         
         new_user = User.objects.get(username=request.user.username)
-        new_user.is_active = 1
-        new_user.save()
+        #new_user.is_active = 1
+        #new_user.save()
         
         create_profile(new_user, name=new_user.username)
         profile, created = Profile.objects.get_or_create(user=new_user)
@@ -195,10 +195,7 @@ class SignupCompleteForm(forms.Form):
         profile.country = country
         profile.website = website
         profile.save()
-        if email:
-            new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
-            EmailAddress.objects.add_email(new_user, email)
-        
+
         return new_user.username, new_user.password, new_user.email # required for authenticate()
 
 

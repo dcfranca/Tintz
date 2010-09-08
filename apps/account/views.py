@@ -43,6 +43,8 @@ def login(request, form_class=LoginForm,
 
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
+    
+    #import pdb; pdb.set_trace()
 
     if success_url is None:
         success_url = get_default_redirect(request)
@@ -64,19 +66,22 @@ def signup(request, form_class=SignupForm,
         "form": form,
     }, context_instance=RequestContext(request))
 
+@login_required
 def signup_complete(request, form_class=SignupCompleteForm,
         template_name="account/signup_complete.html", success_url=None):
 
+    #import pdb; pdb.set_trace();
+    
     if success_url is None:
         success_url = get_default_redirect(request)
         
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(success_url)
+    #if request.user.is_authenticated():
+    #    return HttpResponseRedirect(success_url)
         
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
-            username, password, email = form.save()
+            username, password, email = form.save(request)
             user =  User.objects.get(username=username)
             authenticate(username=username, password=password)
             return  HttpResponseRedirect(success_url)
@@ -281,4 +286,5 @@ def other_services_remove(request):
     ).delete()
     request.user.message_set.create(message=ugettext(u"Removed twitter account information successfully."))
     return HttpResponseRedirect(reverse("acct_other_services"))
+    
 

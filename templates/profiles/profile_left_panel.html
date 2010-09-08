@@ -3,22 +3,17 @@
 {% load tagging_tags %}
 
 {% if other_user.id %}
-	<div id="profile_avatar">   
+	<div id="profile_avatar" OnMouseOver="change_avatar()">   
 	    {% avatar other_user 260 %}
 	</div> 
-	<div class="username">Daniel {{ other_user.get_profile.first_name }}</div>
+	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
 {% endif %}
 
 {% if user.is_authenticated %}
-    <img src="{{MEDIA_URL}}/images/bt_publications.png" class="left-button"/>
-    <img src="{{MEDIA_URL}}/images/bt_blog.png" class="left-button"/>
-    {% comment %}
-    <ul>
-    <li><a href="{% url publications other_user %}">{% trans "Publica&ccedil;&otilde;es" %}</a></li>
-    <li><a href="{% url blog_list_user other_user %}">{% trans "Blog" %}</a></li>
-    <li><a href="{% url following other_user %}">{% trans "Contatos" %}</a></li>
-    </ul>
-    {% endcomment %}
+    <div class="left-button"><a href="{% url publications other_user %}"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</a></div>
+    <div class="left-button"><a href="{% url blog_list_user other_user %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</a></div>
+    <div class="left-button"><a href="{% url following other_user %}"><img src="{{MEDIA_URL}}/images/bt_contacts.png">Seguindo</a></div>
+    <div class="left-button"><a href="{% url followers other_user %}"><img src="{{MEDIA_URL}}/images/bt_contacts.png">Seguidores</a></div>
 {% endif %}
 
 <div class="tag_cloud">    
