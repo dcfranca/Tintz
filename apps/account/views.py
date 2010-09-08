@@ -35,6 +35,7 @@ def login(request, form_class=LoginForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class()
+    
     return render_to_response(template_name, {
         "form": form,
         "is_me": True,
