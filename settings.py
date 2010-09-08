@@ -235,7 +235,11 @@ EMAIL_DEBUG = DEBUG
 CONTACT_EMAIL = "tintz@tintz.com.br"
 SITE_NAME = "Tintz"
 LOGIN_URL = "/account/login/"
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URLNAME = "home"
+
+# avatar controls
+AVATAR_DEFAULT_URL =  MEDIA_URL + 'images/avatar.png'
+AVATAR_GRAVATAR_BACKUP = False
 
 INTERNAL_IPS = (
     '127.0.0.1',

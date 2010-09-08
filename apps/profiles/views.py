@@ -17,6 +17,7 @@ from notification.models import *
 from datetime import *
 
 from avatar.templatetags.avatar_tags import avatar
+from account.utils import login_complete
 
 import logging
 
@@ -61,6 +62,7 @@ def getFollowings(request, other_user):
         followinUsers.append( follow.UserTo )
     return followinUsers
 
+@login_complete
 def home(request, template_name="homepage.html"):
     
     notices = []
