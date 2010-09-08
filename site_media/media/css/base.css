@@ -154,14 +154,19 @@ input[type="password"] {
     max-width: 260px;
 }
 
-#avatar_replace {
+#avatar_replace a{
     position: relative;
     top: -24px;
     padding-left: 5px;
-    background: #232323;
-    color: white;
+    color: rgba(255,255,255,0);
     font-weight: bold;
     font-size: 10pt;
     max-width: 70px;
     display: block;
+    text-decoration: none;
+}
+
+#avatar_replace a:hover{
+    background: #232323;
+    color: rgba(255,255,255,1);
 }
