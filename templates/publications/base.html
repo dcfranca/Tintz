@@ -1,0 +1,18 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block rtab_id %}id="publications_tab"{% endblock %}
+
+{% block subnav %}
+    {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url publications user %} ">{% trans "Minhas Publica&ccedil;&otilde;es" %}</a></li>
+            <li><a href="{% url publication_upload %}">{% trans "Enviar publica&ccedil;&atilde;o" %}</a></li>
+        </ul>
+    {% else %}
+        &nbsp;
+    {% endif %}
+{% endblock %}
+
+
