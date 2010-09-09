@@ -60,7 +60,7 @@
                 <div class="span-11 last">{{ form.allow_comments }}</div>		
 		
                 <div class="span-10 pull-1 last">
-                    <input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
+		    <input type="hidden" name="action" value="upload" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
                 </div>		
                 
             </fieldset>            

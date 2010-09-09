@@ -8,7 +8,7 @@ class PublicationUploadForm(forms.ModelForm):
 
     title = forms.CharField(label=u'Título', max_length=300)
     file_name = forms.FileField(label=u'Arquivo')
-    description = forms.CharField(label=u'Descrição', widget=forms.Textarea, max_length=1024)
+    description = forms.CharField(label=u'Descrição', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024)
     category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE)
     rated       = forms.ChoiceField(label=u'Classificação', widget=forms.Select,  choices=Publication.RATED_CHOICE)
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE)

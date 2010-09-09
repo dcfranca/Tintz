@@ -63,12 +63,24 @@ body {
     left: 12px;
 }
 
+.standard-form {
+
+    position: relative;
+    top: 10px;
+    background: url("/site_media/media/images/form_bg.png") repeat-y;
+}
+
+.standard-fieldset {
+    border: none 0px;
+    padding-top: 20px;
+}
+
 .tintz-form {
     border: none 0px;
     padding-top: 20px;
 }
 
-input[type="text"] {
+.tintz-form input[type="text"] {
     font-size: 14px;
     width:200px;
     height: 40px;
@@ -76,7 +88,7 @@ input[type="text"] {
     background: transparent url("/site_media/media/images/textbox_email.png") no-repeat;
 }
 
-input[type="password"] {
+.tintz-form input[type="password"] {
     font-size: 14px;
     width:150px;
     height: 40px;
@@ -90,9 +102,21 @@ input[type="password"] {
     left: 10px;
 }
 
+#form-bt-save {
+    position: relative;
+    left: 440px;
+}
+
 .login-label {
     font-size: 10pt;
     font-weight: normal;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.tintz-label {
+    font-size: 10pt;
+    font-weight: normal;
+    text-align: right;
     font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -169,4 +193,20 @@ input[type="password"] {
 #avatar_replace a:hover{
     background: #232323;
     color: rgba(255,255,255,1);
+}
+
+.choose {
+    position: relative;
+    padding-left: 20px;
+    top: 30px;
+}
+
+.choose img {
+    padding-right: 10px;
+}
+
+.choose a, a:visited {
+    text-decoration: none;
+    color: black;
+    font-size: 12pt;
 }

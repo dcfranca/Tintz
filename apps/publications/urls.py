@@ -1,5 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 from django.conf.urls.defaults import *
+from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('',    
     #upload publication
@@ -19,4 +20,6 @@ urlpatterns = patterns('',
     #view my publications
     url(r'^(?P<username>[^/]+)/$', 'publications.views.publications', name='publications'),
     
+    #choose the publication type (blog or comic)
+    url(r'^choose_publication$', 'publications.views.choose_publication', name="choose_publication"),
 )
