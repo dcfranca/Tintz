@@ -76,7 +76,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     """
     publication      = Publication()
     publication.author = request.user
-    publication_form = form_class()    
+    publication_form = form_class()
     
     if request.method == 'POST':
         if request.POST.get("action") == "upload":            
@@ -105,7 +105,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     
     calc_age(request.user.get_profile())
     return render_to_response(template_name, {
-        "publication_form": publication_form,
+        "form": publication_form,
         "is_me": True,
         "other_user":request.user,
     }, context_instance=RequestContext(request))
@@ -365,7 +365,16 @@ def searchresults(request, template_name="publications/latest.html", search_text
         "publications": publications,
         "title": "Resultados",
     }, context_instance=RequestContext(request))
-
+    
+@login_required
+def choose_publication(request, template_name="publications/choose.html"):
+    """
+    Choose the publication type
+    """
+    
+    return render_to_response(template_name, {
+    "other_user": request.user,
+    }, context_instance=RequestContext(request))
 
 """
 Teste
