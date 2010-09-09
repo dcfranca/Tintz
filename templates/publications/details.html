@@ -1,0 +1,107 @@
+{% extends "publications/base.html" %}
+
+{% load i18n %}
+{% load humanize %}
+{% load tagging_tags %}
+{% load markup %}
+{% load comments_tag %}
+{% load flagtags %}
+{% load show_stars %}
+
+{% block head_title %}{% blocktrans %}Detalhes da Publica&ccedil;&atilde;o{% endblocktrans %}{% endblock %}
+
+{% block center_panel %}
+     <div class="tintz-title">{% trans "Detalhes da Publicação" %}</div>
+    
+    <div id="publication_details">
+        {% if publication %}
+            <div class="title">
+            {{ publication.title }}
+            </div>
+
+            <div class="cover">
+            {% ifequal publication.status 0 %}            
+                <img src="{{ MEDIA_URL }}images/unknown_256.jpg">
+            {% else %}
+                <a href="{% url publication_viewer publication.author publication.id %}" onclick="return popitup('{% url publication_viewer publication.author publication.id %}',{{ publication.title }})"><img src="{{ MEDIA_URL }}{{ publication.get_thumbnail256_name }}" alt="{{ publication.title }}"/></a>
+            {% endifequal %}
+            </div>
+            <div class="description">
+                {{ publication.description }}
+            </div>
+            <div class="category">
+                Categoria: {{ publication.category }}
+            </div>
+            <div class="tags">
+                Tags: {{ publication.tags }}
+            </div>
+            <div class="views">
+                Visualiza&ccedil;oes: {{ publication.views }}
+            </div>
+
+            {% if publication.rate %}
+               Avalia&ccedil;&atilde;o: {{ publication.format_rate }}
+            {% endif %}
+            
+	        {% if is_me %}
+            {% else %}
+                <div id="stars">{% show_stars publication_score of 5 round to full on change call myCallback with 1 %}</div>
+                <form name="star_rate" action="{% url publication_details publication.author publication.id %}" method="post">
+                <input type="hidden" name="rate" value=0></form>
+            {% endif %}
+            {% ifnotequal publication.status 0 %}
+                <a href="{% url publication_viewer publication.author publication.id %}" onclick="return popitup('{% url publication_viewer publication.author publication.id %}',{{ publication.title }})">Visualizar</a>
+            {% endifnotequal %}
+            
+            
+  
+        {% else %}
+            Nenhuma Publica&ccedil;&atilde;o.
+        {% endif %}        
+    </div>       
+    
+    <div id="publications_related">
+    {% if related_publications %}
+        {% trans 'Publicações Relacionadas' %}
+        <table>
+        {% for related_publication in related_publications %}
+            {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
+            
+            {% ifnotequal related_publication publication %}
+               <td>
+               <div class="details"><a href="{% url publication_details related_publication.author related_publication.id %}" title="{{ related_publication.title }} de {{ related_publication.author.get_profile.first_name }} {{ related_publication.author.get_profile.last_name }}"> <img src="{{ MEDIA_URL }}{{ related_publication.get_thumbnail128_name }}"/> </a></div>
+               </td>
+            {% endifnotequal %}
+            
+            {% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
+        {% endfor %}
+        {% if related_publications|length|divisibleby:"3" %}{% else %}</tr>{% endif %}
+        </table>
+    {% endif %}    
+    </div>
+
+    <div class="comments">
+    Coment&aacute;rios da Publica&ccedil;&atilde;o
+    {% comments publication %}
+    </div>
+    
+    
+{% endblock %}
+
+
+
+{% block extra_elements %}
+
+
+    <script type="text/javascript" src="/site_media/js/prototype.js"></script>
+    {% show_stars_script %}
+
+    <script type="text/javascript">
+    function myCallback(id, pos) {
+      document.star_rate.rate.value = pos;
+      document.star_rate.submit();
+    }
+    </script>
+
+{% endblock %}
+
