@@ -25,7 +25,7 @@ class Publication(models.Model):
     """
     A publication (Comic, charge, magazine, etc)
     """
-    LANG_CHOICE = ( ('pt_BR',u'PortuguÃªs'),
+    LANG_CHOICE = ( ('pt_BR',u'Português'),
 	            ('en',u'English'),
 		  )
           

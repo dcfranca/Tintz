@@ -4,6 +4,8 @@
 {% load humanize i18n %}
 {% load pagination_tags %}
 {% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
 
 {% block head_title %}{% trans "Tintz - Enviar Publica&ccedil;&atilde;o" %}{% endblock %}
 
@@ -20,10 +22,10 @@
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
 </div>
-<div class="span-16 last">
+<div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Enviar Publica&ccedil;&atilde;o</div>
 
-        <form class="standard-form" method="POST" action="">
+        <form enctype="multipart/form-data" class="standard-form" method="POST" action="upload">
             <fieldset class="standard-fieldset">
                 <div class="span-12 errorlist pull-1">
                     <ul>
@@ -35,31 +37,34 @@
                     </ul>
                 </div>
                 
-                <label for="{{form.title.auto_id}}" class="span-4 tintz-label">{{form.title.label}}</label>
-                <div class="span-11 last">{{ form.title }}</div>
+                <label for="{{form.title.auto_id}}" class="span-3 tintz-label">{{form.title.label}}:</label>
+                <div class="span-10 last">{{ form.title }}</div>
 
-                <label for="{{form.file_name.auto_id}}" class="span-4 tintz-label">{{form.file_name.label}}</label>
-                <div class="span-11 last">{{ form.title }}</div>
+                <label for="{{form.file_name.auto_id}}" class="span-3 tintz-label">{{form.file_name.label}}:</label>
+                <div class="span-10 last">{{ form.file_name }}</div>
 		
-                <label for="{{form.description.auto_id}}" class="span-4 last tintz-label">{{form.description.label}}</label>
-                <div class="span-11 last">{{ form.description }}</div>
+                <label for="{{form.description.auto_id}}" class="span-3 tintz-label">{{form.description.label}}:</label>
+                <div class="span-10 last">{{ form.description }}</div>
 		
-                <label for="{{form.category.auto_id}}" class="span-4 tintz-label">{{form.category.label}}</label>
-                <div class="span-11 last">{{ form.category }}</div>
+                <label for="{{form.tags.auto_id}}" class="span-3 tintz-label">{{form.tags.label}}:</label>
+                <div class="span-10 last">{{ form.tags }}</div>
+		
+                <label for="{{form.category.auto_id}}" class="span-3 tintz-label">{{form.category.label}}:</label>
+                <div class="span-10 last">{{ form.category }}</div>
 
-                <label for="{{form.rated.auto_id}}" class="span-4 tintz-label">{{form.rated.label}}</label>
-                <div class="span-11 last">{{ form.rated }}</div>
+                <label for="{{form.rated.auto_id}}" class="span-3 tintz-label">{{form.rated.label}}:</label>
+                <div class="span-10 last">{{ form.rated }}</div>
 		
-                <label for="{{form.language.auto_id}}" class="span-4 tintz-label">{{form.language.label}}</label>
-                <div class="span-11 last">{{ form.language }}</div>
+                <label for="{{form.language.auto_id}}" class="span-3 tintz-label">{{form.language.label}}:</label>
+                <div class="span-10 last">{{ form.language }}</div>
 		
-                <label for="{{form.is_public.auto_id}}" class="span-4 tintz-label">{{form.is_public.label}}</label>
-                <div class="span-11 last">{{ form.is_public }}</div>		
+                <label for="{{form.is_public.auto_id}}" class="span-3 tintz-label">{{form.is_public.label}}:</label>
+                <div class="span-10 last">{{ form.is_public }}</div>		
 		
-                <label for="{{form.allow_comments.auto_id}}" class="span-4 tintz-label">{{form.allow_comments.label}}</label>
-                <div class="span-11 last">{{ form.allow_comments }}</div>		
+                <label for="{{form.allow_comments.auto_id}}" class="span-3 tintz-label">{{form.allow_comments.label}}:</label>
+                <div class="span-10 last">{{ form.allow_comments }}</div>		
 		
-                <div class="span-10 pull-1 last">
+                <div class="span-10 pull-5 last">
 		    <input type="hidden" name="action" value="upload" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
                 </div>		
                 
