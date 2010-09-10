@@ -6,13 +6,19 @@ from publications.models import Publication
 
 class PublicationUploadForm(forms.ModelForm):
 
-    title = forms.CharField(label=u'Título', max_length=300)
-    file_name = forms.FileField(label=u'Arquivo')
-    description = forms.CharField(label=u'Descrição', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024)
-    category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE)
-    rated       = forms.ChoiceField(label=u'Classificação', widget=forms.Select,  choices=Publication.RATED_CHOICE)
-    language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE)
-    is_public   = forms.BooleanField(label=u'Publico', required=False)    
+    title = forms.CharField(label=u'Título', max_length=300,
+            error_messages = {'required': u'Campo Título é obrigatório.' } )
+    file_name = forms.FileField(label=u'Arquivo',
+            error_messages = {'required': u'Campo Arquivo é obrigatório.' } )
+    description = forms.CharField(label=u'Descrição', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024,
+            error_messages = {'required': u'Campo Descrição é obrigatório.' } )
+    category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE,
+            error_messages = {'required': u'Campo Categoria é obrigatório.' } )
+    rated       = forms.ChoiceField(label=u'Classificação', widget=forms.Select,  choices=Publication.RATED_CHOICE,
+            error_messages = {'required': u'Campo Classificação é obrigatório.' } )
+    language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE,
+            error_messages = {'required': u'Campo Idioma é obrigatório.' } )
+    is_public   = forms.BooleanField(label=u'Publico', required=False)
     allow_comments  = forms.BooleanField(label=u'Permitir Comentários', required=False,  initial=True)
     
     rated.widget.attrs["onchange"]="enable_public()" 
