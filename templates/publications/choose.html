@@ -23,6 +23,6 @@
 <div class="span-16 last" id="updates">
     <div class="title"><img src="{{MEDIA_URL}}/images/updates.png">Escolha onde Publicar</div>
     <div class="choose"><a href="{% url publication_upload %}"><img src="{{MEDIA_URL}}/images/bt_publications.png">Nova Publica&ccedil;&atilde;o Gr&aacute;fica</a></div>
-    <div class="choose"><a href=""><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post no Blog</a></div>
+    <div class="choose"><a href="{% url blog_new %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post no Blog</a></div>
 </div>
 {% endblock %}
