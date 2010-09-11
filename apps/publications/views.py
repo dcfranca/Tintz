@@ -78,8 +78,6 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication.author = request.user
     publication_form = form_class()
     
-    import pdb; pdb.set_trace()
-    
     if request.method == 'POST':
         if request.POST.get("action") == "upload":            
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)

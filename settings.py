@@ -164,7 +164,7 @@ INSTALLED_APPS = (
     'messages',
     'announcements',
     'oembed',
-    'djangodblog',
+    #'djangodblog',
     'pagination',
 #    'gravatar',
     'threadedcomments',

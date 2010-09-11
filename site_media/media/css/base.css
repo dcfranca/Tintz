@@ -153,9 +153,9 @@ body {
     list-style-type: none;
 }
 
-.login-links a, a:visited {
-    text-decoration: none;
+.login-links a, .login-links a:active, .login-links a:visited {
     color: red;
+    text-decoration: none;
 }
 
 .errorlist li {
