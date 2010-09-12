@@ -225,3 +225,35 @@ body {
     color: black;
     font-size: 12pt;
 }
+
+.publications-cover {
+    position: relative;
+    top: 20px;
+    left: 10px;
+}
+
+.list-title {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    font-size: 13pt;
+    text-decoration: none;
+    color: black;
+}
+
+.list-subtitle {
+    color: red;
+    font-size: 10px;
+}
+
+.list-description {
+    position: relative;
+    top: 20px;
+    left: 20px;
+}
+
+.list-buttons {
+    position: relative;
+    top: 20px;
+    left: 30px;
+}
