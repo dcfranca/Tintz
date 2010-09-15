@@ -33,14 +33,35 @@ warnings.simplefilter('ignore', DeprecationWarning)
 import os, datetime, mimetypes
 
 from PIL import Image
+import UnRAR2
+import sys, zipfile, os, os.path
 
-def generate_png(publication):
+def unzip_file_into_dir(file, dir):
+    zfobj = zipfile.ZipFile(file)
+    for name in zfobj.namelist():
+        if name.endswith('/'):
+            os.mkdir(os.path.join(dir, name))
+        else:
+            outfile = open(os.path.join(dir, name), 'wb')
+            outfile.write(zfobj.read(name))
+            outfile.close()
+
+def unrar_file_into_dir(file, dir):
+    print file
+    rar_file = UnRAR2.RarFile(file)
+    rar_file.extract()
+    for info in rar_file.infoiter():
+        print info.filename
+        shutil.move(info.filename, dir)
+
+
+def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
     
     #Create directory if it doesnt exist
     dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
-        os.mkdir(dirname)
+        os.mkdir(dirname,0666)
 
     file_path = dirname+"/"+file_name
 
@@ -60,10 +81,12 @@ def generate_png(publication):
     
     elif mimetypes.guess_type( publication.file_name.path )[0] != 'application/rar':
         print "Arquivo CBR"
-        
+        unrar_file_into_dir( publication.file_name.path, dirname )
         
     elif mimetypes.guess_type( publication.file_name.path )[0] != 'application/zip':
-        print "Arquivo CBZ"        
+        print "Arquivo CBZ"
+        unzip_file_into_dir( publication.file_name.path, dirname )
+        
     else:
         print "Arquivo PNG/GIF/Image"
         """
@@ -120,4 +143,4 @@ if not publications:
 
 for publication in publications:
     print 'Generating for: %s ' % publication.title
-    generate_png(publication)
+    convert2images(publication)
