@@ -27,6 +27,7 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     is_me = False
     user = None
+    
     if username is not None:
         user = get_object_or_404(User, username=username.lower())
         blogs = blogs.filter(author=user)
@@ -48,7 +49,7 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
 
 def post(request, username, year, month, slug,
          template_name="blog/post.html"):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     
     post = Post.objects.filter(slug=slug, publish__year=int(year), publish__month=int(month)).filter(author__username=username)
     if not post:

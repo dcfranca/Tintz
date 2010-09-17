@@ -1,7 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 #!python
 
-import sys,os
+import sys,os, shutil
 from datetime import *
 sys.path.append("/Users/danielfranca/Workspace/django/view")
 sys.path.append("/Users/danielfranca/Workspace/django/view/tintz/apps")
@@ -31,12 +31,15 @@ import warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
 import os, datetime, mimetypes
+import pdb
 
 from PIL import Image
 import UnRAR2
 import sys, zipfile, os, os.path
+from operator import itemgetter, attrgetter
 
 def unzip_file_into_dir(file, dir):
+    pdb.set_trace()
     zfobj = zipfile.ZipFile(file)
     for name in zfobj.namelist():
         if name.endswith('/'):
@@ -47,12 +50,24 @@ def unzip_file_into_dir(file, dir):
             outfile.close()
 
 def unrar_file_into_dir(file, dir):
+    pdb.set_trace()
     print file
     rar_file = UnRAR2.RarFile(file)
     rar_file.extract()
+    files_coll = []
+    sorted(rar_file.infoiter(),key=attrgetter('filename'))
     for info in rar_file.infoiter():
-        print info.filename
-        shutil.move(info.filename, dir)
+        print 'Arquivo: '+info.filename
+        files_coll.append(info.filename)
+        
+    files_coll.sort()
+        
+    for filename in files_coll:
+        try:
+            shutil.move(filename, dir)
+        except:
+            os.remove( filename )
+            pass
 
 
 def convert2images(publication):
@@ -73,17 +88,17 @@ def convert2images(publication):
     print 'MimeType: %s' % mimetypes.guess_type( publication.file_name.path )[0]
     if mimetypes.guess_type( publication.file_name.path )[0] == 'application/pdf':
         print "Arquivo PDF"
-        command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-        command = command+"\""+dirname+"/"+file_name+"_"+"%00d.jpg \" \""+publication.file_name.path+"\""
-        print command
+    #    command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
+    #    command = command+"\""+dirname+"/"+file_name+"_"+"%00d.jpg \" \""+publication.file_name.path+"\""
+    #    print command
         
-        os.system(command)
+    #    os.system(command)
     
-    elif mimetypes.guess_type( publication.file_name.path )[0] != 'application/rar':
-        print "Arquivo CBR"
-        unrar_file_into_dir( publication.file_name.path, dirname )
+    #elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
+    #    print "Arquivo CBR"
+    #    unrar_file_into_dir( publication.file_name.path, dirname )
         
-    elif mimetypes.guess_type( publication.file_name.path )[0] != 'application/zip':
+    elif mimetypes.guess_type( publication.file_name.path )[0] == 'application/zip':
         print "Arquivo CBZ"
         unzip_file_into_dir( publication.file_name.path, dirname )
         
