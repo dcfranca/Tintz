@@ -78,13 +78,15 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication.author = request.user
     publication_form = form_class()
     
+    import pdb; pdb.set_trace()
+    
     if request.method == 'POST':
         if request.POST.get("action") == "upload":            
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
             if publication_form.is_valid():               
                 if request.FILES['file_name'].content_type != 'application/pdf' and request.FILES['file_name'].content_type != 'image/jpeg' and \
                 request.FILES['file_name'].content_type != 'image/png' and request.FILES['file_name'].content_type != 'image/gif' and \
-                request.FILES['file_name'].content_type != 'application/zip' and request.FILES['file_name'].content_type != 'application/rar' :
+                request.FILES['file_name'].content_type != 'application/zip' and not request.FILES['file_name'].name.endswith('.rar') and not request.FILES['file_name'].name.endswith('.cbr') :
                     request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
                 else:
                     publication = publication_form.save(commit=False)
@@ -159,7 +161,7 @@ def destroypublication(request, id):
     publication = Publication.objects.get(pk=id)
 
     if not publication:
-      return HttpResponseRedirect(reverse('publications'))
+        return HttpResponseRedirect(reverse('publications'))
 
     title = publication.title
     if publication.author != request.user:
@@ -174,7 +176,7 @@ def destroypublication(request, id):
 def editpublication(request, id, form_class=PublicationEditForm,
         template_name="publications/editpublication.html"):
     publication = get_object_or_404(Publication, id=id)
-    
+
     calc_age(request.user.get_profile())
 
     if request.method == "POST":
