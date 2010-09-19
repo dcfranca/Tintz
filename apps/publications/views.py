@@ -78,7 +78,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication.author = request.user
     publication_form = form_class()
     
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     
     if request.method == 'POST':
         if request.POST.get("action") == "upload":            
@@ -86,7 +86,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
             if publication_form.is_valid():               
                 if request.FILES['file_name'].content_type != 'application/pdf' and request.FILES['file_name'].content_type != 'image/jpeg' and \
                 request.FILES['file_name'].content_type != 'image/png' and request.FILES['file_name'].content_type != 'image/gif' and \
-                request.FILES['file_name'].content_type != 'application/zip' and not request.FILES['file_name'].name.endswith('.rar') and not request.FILES['file_name'].name.endswith('.cbr') :
+                not request.FILES['file_name'].name.endswith('.zip') and not request.FILES['file_name'].name.endswith('.cbz') and not request.FILES['file_name'].name.endswith('.rar') and not request.FILES['file_name'].name.endswith('.cbr'):
                     request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
                 else:
                     publication = publication_form.save(commit=False)

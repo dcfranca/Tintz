@@ -38,36 +38,57 @@ import UnRAR2
 import sys, zipfile, os, os.path
 from operator import itemgetter, attrgetter
 
-def unzip_file_into_dir(file, dir):
+def from_pdf_file(publication, dirname, file_name):
+    command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
+    command = command+"\""+dirname+"/"+file_name+"_"+"%000d.jpg \" \""+publication.file_name.path+"\""
+    print command
+        
+    os.system(command)
+
+def unzip_file_into_dir(file, dir, filename):
     pdb.set_trace()
     zfobj = zipfile.ZipFile(file)
+    pag = 1
+    file_ext = ""
+    
     for name in zfobj.namelist():
         if name.endswith('/'):
-            os.mkdir(os.path.join(dir, name))
-        else:
-            outfile = open(os.path.join(dir, name), 'wb')
-            outfile.write(zfobj.read(name))
-            outfile.close()
+            continue
+        if (len(file_ext) == 0):
+            file_ext = os.path.splitext(name)[1]
+        new_file_name = filename+"_"+"{0:03d}".format(pag) + file_ext
+        outfile = open(os.path.join(dir, new_file_name ), 'wb')
+        outfile.write(zfobj.read(name))
+        outfile.close()
+        pag += 1
 
-def unrar_file_into_dir(file, dir):
+def unrar_file_into_dir(file, dir, filename_noext):
     pdb.set_trace()
     print file
     rar_file = UnRAR2.RarFile(file)
     rar_file.extract()
     files_coll = []
+    file_ext = ""
     sorted(rar_file.infoiter(),key=attrgetter('filename'))
     for info in rar_file.infoiter():
-        print 'Arquivo: '+info.filename
+        if info.filename.endswith('/'):
+            continue        
         files_coll.append(info.filename)
         
     files_coll.sort()
         
+    pag = 1
     for filename in files_coll:
+        if len(file_ext) == 0:
+            file_ext = os.path.splitext(filename)[1]
+        new_file_name = filename_noext+"_"+"{0:03d}".format(pag) + file_ext
+        
         try:
-            shutil.move(filename, dir)
+            shutil.move(filename, dir+"/"+new_file_name)
         except:
             os.remove( filename )
             pass
+        pag += 1
 
 
 def convert2images(publication):
@@ -88,19 +109,13 @@ def convert2images(publication):
     print 'MimeType: %s' % mimetypes.guess_type( publication.file_name.path )[0]
     if mimetypes.guess_type( publication.file_name.path )[0] == 'application/pdf':
         print "Arquivo PDF"
-    #    command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-    #    command = command+"\""+dirname+"/"+file_name+"_"+"%00d.jpg \" \""+publication.file_name.path+"\""
-    #    print command
-        
-    #    os.system(command)
-    
-    #elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
-    #    print "Arquivo CBR"
-    #    unrar_file_into_dir( publication.file_name.path, dirname )
-        
-    elif mimetypes.guess_type( publication.file_name.path )[0] == 'application/zip':
+        from_pdf()
+    elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
+        print "Arquivo CBR"
+        unrar_file_into_dir( publication.file_name.path, dirname, file_name )
+    elif publication.file_name.path.endswith('.zip') or publication.file_name.path.endswith('.cbz'):
         print "Arquivo CBZ"
-        unzip_file_into_dir( publication.file_name.path, dirname )
+        #unzip_file_into_dir( publication.file_name.path, dirname, file_name )
         
     else:
         print "Arquivo PNG/GIF/Image"
