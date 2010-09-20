@@ -54,7 +54,7 @@ class Publication(models.Model):
     rate = models.DecimalField(_('rate'),max_digits=5, decimal_places=2, null=True)
     is_public = models.BooleanField(_('is_public'), default=False)
     allow_comments  = models.BooleanField(_('allow comments'), default=True)
-    
+    images_ext      = models.CharField(_('images_ext'), max_length=10, null=True)
 
     class Meta:
         verbose_name = _('publication')
@@ -68,7 +68,11 @@ class Publication(models.Model):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
       return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb128x128.png"])
 
-    def get_thumbnail256_name(self):
+    def get_thumbnail150x200_name(self):
+      fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      return "".join([ "publications/",self.author.__unicode__(),"/", fname,"_001_thumb150x200", self.images_ext])
+
+    def get_thumbnail260_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
       return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb256x256.png"])
 

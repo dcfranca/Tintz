@@ -32,38 +32,61 @@ warnings.simplefilter('ignore', DeprecationWarning)
 
 import os, datetime, mimetypes
 import pdb
+import glob
 
 from PIL import Image
 import UnRAR2
 import sys, zipfile, os, os.path
 from operator import itemgetter, attrgetter
 
+def create_thumbnail(file_path, file_ext):
+    file_name = os.path.splitext(file_path)[0]
+    thumb = Image.open(file_path)
+    thumb.thumbnail((150,200),Image.ANTIALIAS)
+    thumb.save(''.join([file_name, '_thumb150x200', file_ext]))
+
 def from_pdf_file(publication, dirname, file_name):
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-    command = command+"\""+dirname+"/"+file_name+"_"+"%000d.jpg \" \""+publication.file_name.path+"\""
-    print command
+    command = command+"\""+dirname+"/"+file_name+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
+    print "RUN: "+command
         
     os.system(command)
+    
+    create_thumbnail(dirname+"/"+file_name+"_"+"001.jpg",".jpg")
+    
+    listfiles = glob.glob( dirname+"/"+file_name+"_*.jpg" )
+    
+    pag = 0
+    for filename in listfiles:
+        pag += 1
+        
+    return pag-1, ".jpg"
+
 
 def unzip_file_into_dir(file, dir, filename):
-    pdb.set_trace()
+
     zfobj = zipfile.ZipFile(file)
-    pag = 1
+    pag = 0
     file_ext = ""
     
     for name in zfobj.namelist():
         if name.endswith('/'):
             continue
+        pag += 1
         if (len(file_ext) == 0):
             file_ext = os.path.splitext(name)[1]
         new_file_name = filename+"_"+"{0:03d}".format(pag) + file_ext
         outfile = open(os.path.join(dir, new_file_name ), 'wb')
         outfile.write(zfobj.read(name))
         outfile.close()
-        pag += 1
+        
+        if pag == 1:
+            create_thumbnail(dir+"/"+new_file_name, file_ext)
+        
+    return pag, file_ext
 
 def unrar_file_into_dir(file, dir, filename_noext):
-    pdb.set_trace()
+
     print file
     rar_file = UnRAR2.RarFile(file)
     rar_file.extract()
@@ -77,8 +100,9 @@ def unrar_file_into_dir(file, dir, filename_noext):
         
     files_coll.sort()
         
-    pag = 1
+    pag = 0
     for filename in files_coll:
+        pag += 1
         if len(file_ext) == 0:
             file_ext = os.path.splitext(filename)[1]
         new_file_name = filename_noext+"_"+"{0:03d}".format(pag) + file_ext
@@ -88,14 +112,18 @@ def unrar_file_into_dir(file, dir, filename_noext):
         except:
             os.remove( filename )
             pass
-        pag += 1
+        
+        if pag == 1:
+            create_thumbnail(dir+"/"+new_file_name, file_ext)
+        
+    return pag, file_ext
 
 
 def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
     
     #Create directory if it doesnt exist
-    dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/publications/"+publication.author.__unicode__()
+    dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
@@ -105,62 +133,34 @@ def convert2images(publication):
     ### Generating images from PDF
     ##########################################################    
 
-    #If it's an image doesn't need to convert
-    print 'MimeType: %s' % mimetypes.guess_type( publication.file_name.path )[0]
+    pages = 0
+
     if mimetypes.guess_type( publication.file_name.path )[0] == 'application/pdf':
         print "Arquivo PDF"
-        from_pdf()
+        pages, file_ext = from_pdf_file(publication, dirname, file_name)
     elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
         print "Arquivo CBR"
-        unrar_file_into_dir( publication.file_name.path, dirname, file_name )
+        pages, file_ext = unrar_file_into_dir( publication.file_name.path, dirname, file_name )
     elif publication.file_name.path.endswith('.zip') or publication.file_name.path.endswith('.cbz'):
         print "Arquivo CBZ"
-        #unzip_file_into_dir( publication.file_name.path, dirname, file_name )
-        
+        pages, file_ext = unzip_file_into_dir( publication.file_name.path, dirname, file_name )
     else:
         print "Arquivo PNG/GIF/Image"
-        """
-        doc = gfx.open("pdf",file_path+file_ext)
+        img = Image.open( publication.file_name.path )
+        img_strip = ''.join([file_path, '_001',file_ext])        
+        img.save(img_strip)
+        create_thumbnail(img_strip, file_ext)
+        pages = 1
     
-        #Get aspect Ratio
-        page1 = doc.getPage(1)
-        ratio = 1    
-
-        if page1.height > 1000:
-            ratio = float(float(1000)/float(page1.height))		
+    print "Numero de paginas: "+str(pages)
     
-        width  = int(page1.width*ratio)
-        height = int(page1.height*ratio)
+    print "Extensao: "+file_ext
     
-        print 'Total Pag: '+str(doc.pages)
-    
-        for pagenr in range(1,doc.pages+1):
-            print "uploadpublication - page: "+str(pagenr)
-            page = doc.getPage(pagenr)            
-            txt = page.asImage(width, height)
-            img = Image.new(mode='RGB', size=(width, height))
-            img.fromstring(data=txt)
-            img.save(''.join([file_path, '.', str(pagenr), '.png']))        
-            publication.save()
-    
-            png_cover = file_path+".1.png"	      
-    
-            thumb = Image.open(png_cover)
-            thumb.thumbnail((256,256),Image.ANTIALIAS)
-            thumb.save(''.join([file_path, '.thumb256x256.png']))
-    
-            png_thumb = file_path+".thumb128x128.png"
-            thumb.thumbnail((128,128),Image.ANTIALIAS)
-            thumb.save(''.join([file_path, '.thumb128x128.png'])) 
-    
-            png_thumb = file_path+".thumb64x64.png"
-            thumb.thumbnail((64,64),Image.ANTIALIAS)
-            thumb.save(''.join([file_path, '.thumb64x64.png'])) 
-        
-        publication.nr_pages = doc.pages        
     publication.status = 1
+    publication.nr_pages = pages
+    publication.images_ext = file_ext
     publication.save()
-    """
+
 
 print 'Starting Process Publications'
 
