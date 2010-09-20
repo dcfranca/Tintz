@@ -26,12 +26,14 @@
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</div>
 	{% for publication in publications %}
 
+
+
 	<div class="span-4 publications-cover">
 	{% ifequal publication.status 0 %}
 	    <img src="{{ MEDIA_URL }}images/cover_default160.png">
 	{% else %}
 	     <a href="{% url publication_details publication.author publication.id %}">
-		 <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail128_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
+		 <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150x200_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
 	{% endifequal %}
 	</div>
 
@@ -39,18 +41,18 @@
 	{% ifequal publication.status 0 %}
 	    {{ publication.title }}
 	{% else %}
-	    <a href="{% url publication_details publication.author publication.id %}">{{ publication.title }}</a><div class="list-subtitle" {{publication.nr_pages}} p&aacute;ginas</div>
+	    <a href="{% url publication_details publication.author publication.id %}">{{ publication.title }}</a>
 	{% endifequal %}
 	</div>
 
-	<div class="span-2 last list-buttons">
-	{% if is_me %}
-	    <a href="{% url edit_publication publication.id %}" ><img src="{{ MEDIA_URL }}images/simplicio-icon-set/32x32/document_edit.png" title="Editar"></img></a>
-	    <a href="{% url destroy_publication publication.id %}" onclick=" ConfirmChoice('{% url destroy_publication publication.id %}'); return false;"><img src="{{ MEDIA_URL }}images/simplicio-icon-set/32x32/document_delete.png" title="Excluir"></img></a>
-	{% endif %}
-	</div>
-	
 	<div class="span-8 last list-description">{{ publication.description }}</div>
+	
+	<div class="list-subtitle"> {{publication.nr_pages}} p&aacute;ginas</div>
+	
+	{% if is_me %}
+	    <div class="span-1 list-button"><a href="{% url edit_publication publication.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Publicação"></img></a></div>
+	    <div class="span-1 list-button last"><a href="{% url destroy_publication publication.id %}" onclick=" ConfirmChoice('{% url destroy_publication publication.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Publicação"></img></a></div>
+	{% endif %}	
 
 	
     {% endfor %}	    
@@ -165,7 +167,7 @@
                         <img src="{{ MEDIA_URL }}images/unknown_128.jpg">
                     {% else %}
                          <a href="{% url publication_details publication.author publication.id %}">
-                  	     <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail128_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
+                  	     <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150x200_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
                     {% endifequal %}             
                     </td>
                     <td>

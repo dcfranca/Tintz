@@ -25,7 +25,7 @@ class PublicationUploadForm(forms.ModelForm):
 
     class Meta:
         model = Publication
-        exclude = ('author','date_added', 'nr_pages', 'rate', 'status', 'views')
+        exclude = ('author','date_added', 'nr_pages', 'rate', 'status', 'views', 'images_ext')
 
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
