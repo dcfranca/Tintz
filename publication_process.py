@@ -39,11 +39,18 @@ import UnRAR2
 import sys, zipfile, os, os.path
 from operator import itemgetter, attrgetter
 
-def create_thumbnail(file_path, file_ext):
+def create_thumbnail(file_path, file_ext, width=150, height=200):
     file_name = os.path.splitext(file_path)[0]
     thumb = Image.open(file_path)
-    thumb.thumbnail((150,200),Image.ANTIALIAS)
-    thumb.save(''.join([file_name, '_thumb150x200', file_ext]))
+    
+    xsize, ysize = thumb.size
+    widht_display = width
+    
+    if xsize <= width:
+       width = xsize
+    
+    thumb.thumbnail((width,height),Image.ANTIALIAS)
+    thumb.save(''.join([file_name, '_thumb','%03d' % (widht_display), file_ext]))
 
 def from_pdf_file(publication, dirname, file_name):
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
@@ -57,7 +64,9 @@ def from_pdf_file(publication, dirname, file_name):
     listfiles = glob.glob( dirname+"/"+file_name+"_*.jpg" )
     
     pag = 0
+
     for filename in listfiles:
+        create_thumbnail(filename,".jpg", 700, 1400)
         pag += 1
         
     return pag-1, ".jpg"
@@ -82,6 +91,8 @@ def unzip_file_into_dir(file, dir, filename):
         
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
+            
+        create_thumbnail(dir+"/"+new_file_name, file_ext, 700, 1400)
         
     return pag, file_ext
 
@@ -115,6 +126,8 @@ def unrar_file_into_dir(file, dir, filename_noext):
         
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
+            
+        create_thumbnail(dir+"/"+new_file_name, file_ext, 700, 1400)
         
     return pag, file_ext
 
@@ -149,7 +162,9 @@ def convert2images(publication):
         img = Image.open( publication.file_name.path )
         img_strip = ''.join([file_path, '_001',file_ext])        
         img.save(img_strip)
-        create_thumbnail(img_strip, file_ext)
+        create_thumbnail(img_strip, file_ext, 150, 200)
+        import pdb; pdb.set_trace()
+        create_thumbnail(img_strip, file_ext, 700, 1400)
         pages = 1
     
     print "Numero de paginas: "+str(pages)

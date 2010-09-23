@@ -5,6 +5,7 @@ body {
 #main-content {
     background: white;
     min-height: 1300px;
+    width: 1000px;
     margin-top: 20px;
     padding-top: 20px;
     padding-left: 20px;
@@ -30,12 +31,14 @@ body {
 }
 
 .title {
+    position: relative;
+    left: -40px;
     background: #232323;
     color: white;
     font-weight: bold;
     font-size: 14px;
     height: 30px;
-    width: 500px;
+    width: 700px;
 }
 
 .title img {
@@ -268,4 +271,10 @@ body {
 .publication_page {
     position: relative;
     top: 20px;
+    left: -40px;
+}
+
+.comments {
+    position: relative;
+    top: 30px;
 }
