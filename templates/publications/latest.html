@@ -33,7 +33,7 @@
 	    <img src="{{ MEDIA_URL }}images/cover_default160.png">
 	{% else %}
 	     <a href="{% url publication_details publication.author publication.id %}">
-		 <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150x200_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
+		 <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
 	{% endifequal %}
 	</div>
 

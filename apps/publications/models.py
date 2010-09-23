@@ -68,9 +68,9 @@ class Publication(models.Model):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
       return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb128x128.png"])
 
-    def get_thumbnail150x200_name(self):
+    def get_thumbnail150_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname,"_001_thumb150x200", self.images_ext])
+      return "".join([ "publications/",self.author.__unicode__(),"/", fname,"_001_thumb150", self.images_ext])
 
     def get_thumbnail260_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))

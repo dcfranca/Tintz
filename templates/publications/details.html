@@ -34,7 +34,7 @@
 	    {% autopaginate pages 1 %}
 	       {% if pages %}        
 		  {% for pagenr in pages %}
-		     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}{{file_ext}}" alt="{{ publication.title }}"/>
+		     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 		  {% endfor %}
 	       {% endif %}
 	    {% paginate %}
