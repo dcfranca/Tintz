@@ -29,13 +29,6 @@
 
         {% for post in blogs %}
             <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date }}</div></a>
-                <div class="span-2 last list-buttons">
-                {% if is_me %}
-                    <a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/simplicio-icon-set/32x32/document_edit.png" title="Editar"></img></a>
-                    <a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/simplicio-icon-set/32x32/document_delete.png" title="Excluir"></img></a>
-                {% endif %}
-                </div>
-
                 <div class="span-10 last list-description">
                 {% with post.tease|truncatewords:"50" as body %}
                     {% if post.markup %}
@@ -49,6 +42,13 @@
                     {% endif %}
                 {% endwith %}
                 </div>
+
+              {% if is_me %}
+                  <div class="span-1 list-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
+                  <div class="span-1 list-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
+              {% endif %}	
+
+                
         {% endfor %}
 </div>
 {% endblock %}

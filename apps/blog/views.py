@@ -84,11 +84,11 @@ def destroy(request, id):
     title = post.title
     if post.author != request.user:
             request.user.message_set.create(message=_(u'Você não pode apagar posts de outros usuários'))
-            return HttpResponseRedirect(reverse("blog_list_yours"))
+            return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
     post.delete()
     request.user.message_set.create(message=_(u"Post apagado com sucesso'%s'") % title)
-    return HttpResponseRedirect(reverse("blog_list_yours"))
+    return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
 @login_required
 def new(request, form_class=BlogForm, template_name="blog/new.html"):
@@ -137,7 +137,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                         if followers: # @@@ might be worth having a shortcut for sending to all friends
                            notification.send((x.UserFrom for x in followers), "blog_follow_post", {"post": blog})
                 
-                return HttpResponseRedirect(reverse("blog_list_yours"))
+                return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
         else:
             blog_form = form_class()
     else:

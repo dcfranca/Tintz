@@ -264,3 +264,8 @@ body {
     top: 170px;
     left: 0px;    
 }
+
+.publication_page {
+    position: relative;
+    top: 20px;
+}
