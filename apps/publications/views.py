@@ -279,6 +279,8 @@ def detailspublication(request, id, username, template_name="publications/detail
         related_publications = TaggedItem.objects.get_by_model( Publication, mypublication.tags ).exclude(author = mypublication.author)
     except Publication.DoesNotExist:
         related_publications = None
+	
+    pages = range(1, mypublication.nr_pages+1)
         
     return render_to_response(template_name, {
         "host": host,        
@@ -290,6 +292,8 @@ def detailspublication(request, id, username, template_name="publications/detail
         "publication_score": publication_score.rate, 
         "publications": publications,
         "followers":followerUsers,
+	"pages": pages,
+	"file_ext": mypublication.images_ext,
         "followings":followingUsers,        
     }, context_instance=RequestContext(request))
 
