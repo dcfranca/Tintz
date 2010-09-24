@@ -278,3 +278,110 @@ body {
     position: relative;
     top: 30px;
 }
+
+.navigator {
+    background: #232323;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    position: relative;
+    top: 20px;
+    left: -40px;
+}
+
+.navigator a, .navigator a:active {
+    text-decoration: none;
+    position: relative;
+    color: white;
+}
+
+.page_number {
+    position: relative;
+    max-width: 50px;
+    left: 75px;
+    top: -11px;
+}
+
+.prev_arrow {
+    top: 5px;
+    position: relative;
+    float: left;
+    left: 10px;
+}
+
+.next_arrow {
+    position: relative;
+    top: -30px;
+    float: right;
+    right: 10px;
+}
+
+
+.prev_arrow_inactive {
+    top: 5px;
+    position: relative;
+    float: left;
+    left: 10px;
+    color: gray;
+}
+
+
+.next_arrow_inactive {
+    position: relative;
+    top: -30px;
+    float: right;
+    right: 10px;
+    color: gray;
+}
+
+.fullscreen {
+    background: #232323;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 100px;
+    position: relative;
+    top: -10px;
+    left: 170px;
+}
+
+.fullscreen-text {
+    position: relative;
+    top: 6px;
+    left: -10px;
+}
+
+.fullscreen img {
+    position: relative;
+    top: -10px;
+    float: right;
+    right: 7px;
+}
+
+.share {
+    background: #232323;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 110px;
+    position: relative;
+    top: -40px;
+    left: 280px;
+}
+
+.share-text {
+    position: relative;
+    top: 6px;
+    left: -3px;
+}
+
+.share img {
+    position: relative;
+    top: -10px;
+    float: right;
+    right: 7px;
+}
