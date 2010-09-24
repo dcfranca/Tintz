@@ -17,6 +17,8 @@ from tagging.models import *
 from django.http import Http404
 from django.conf import settings
 from django.test.client import Client
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 import logging
 
 import unittest
@@ -281,7 +283,20 @@ def detailspublication(request, id, username, template_name="publications/detail
         related_publications = None
 	
     pages = range(1, mypublication.nr_pages+1)
-        
+    paginator = Paginator(pages, 1)
+    
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        publication_pages = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        publication_pages = paginator.page(paginator.num_pages)
+
     return render_to_response(template_name, {
         "host": host,        
         "publication": mypublication,
@@ -292,7 +307,7 @@ def detailspublication(request, id, username, template_name="publications/detail
         "publication_score": publication_score.rate, 
         "publications": publications,
         "followers":followerUsers,
-	"pages": pages,
+	"pages": publication_pages,
 	"file_ext": mypublication.images_ext,
         "followings":followingUsers,        
     }, context_instance=RequestContext(request))

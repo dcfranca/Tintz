@@ -30,15 +30,32 @@
 	{% if not publication.is_public and not user.is_authenticated %}
 	    Publica&ccedil;&atilde;o não compartilhada, favor logar para visualiza-la
 	{% else %}
+	    
 	    <div class="publication_page">
-	    {% autopaginate pages 1 %}
 	       {% if pages %}        
-		  {% for pagenr in pages %}
+		  {% for pagenr in pages.object_list %}
 		     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 		  {% endfor %}
 	       {% endif %}
-	    {% paginate %}
 	    </div>
+	    
+	    <div class="navigator">
+		{% if pages.has_previous %}
+		    <div class="prev_arrow"><a href="?page={{ pages.previous_page_number }}"><<</a></div>
+		{% else %}
+		    <div class="prev_arrow_inactive"><<</div>
+		{% endif %}		
+		<div class="page_number">{% trans "P&aacute;gina" %} {{ pages.number }}</div>
+		{% if pages.has_next %}
+		    <a class="next_arrow" href="?page={{ pages.next_page_number }}">>></a>
+		{% else %}
+		    <div class="next_arrow_inactive">>></div>
+		{% endif %}		
+	    </div>
+	    
+	    <div class="fullscreen"><div class="fullscreen-text">{% trans "Tela cheia" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+	    <div class="share"><div class="share-text">{% trans "Compartilhe" %}</div><a href=""><img src="{{MEDIA_URL}}/images/share.png"></a></div>	    
+	    
 	    <div class="comments">
 		{% comments publication %}
 	    </div>
