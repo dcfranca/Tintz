@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load dajaxice_templatetags %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
     <head>
@@ -14,6 +16,12 @@
         <link rel="stylesheet" href="{{MEDIA_URL}}css/base.css" type="text/css" >
         <!--[if lt IE 8]><link rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
+        <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ MEDIA_URL }}js/jquery.dajax.core.js" type="text/javascript" charset="utf-8"></script>
+
+
+        {% dajaxice_js_import %}
+
         {% if LANGUAGE_BIDI %}
         <style type="text/css" media="screen">
             div.right_panel {
@@ -25,7 +33,7 @@
             {% block extra_head %}{% endblock %}
         {% endblock %}
     </head>
-    
+
     {% if site_wide_announcements %}
         <div id="site_wide_announcements">
             <ul>
@@ -41,20 +49,17 @@
 
     <body>
     {% block body %}
-    {% endblock %}    
+    {% endblock %}
 
-       
-    <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript"></script>
-    <script src="{{ MEDIA_URL }}js/base.js" type="text/javascript"></script>
-    
+
     {% block extra_body_base %}
         {% block extra_body %}{% endblock %}
     {% endblock %}
-    
+
     {% block extra_elements %}{% endblock %}
-    
+
     </body>
 
     <div id="footer" class="container">{% block footer %}{% endblock %}</div>
-    
+
 </html>

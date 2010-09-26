@@ -4,6 +4,9 @@ from django.conf import settings
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 
+from dajaxice.core import dajaxice_autodiscover
+dajaxice_autodiscover()
+
 #from bookmarks.feeds import BookmarkFeed
 #bookmarks_feed_dict = {"feed_dict": { '': BookmarkFeed }}
 
@@ -15,7 +18,7 @@ urlpatterns = patterns('',
 
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),
-    
+
     #(r'^registration/', include('registration.urls')),
     (r'^bbauth/', include('bbauth.urls')),
     (r'^authsub/', include('authsub.urls')),
@@ -32,12 +35,15 @@ urlpatterns = patterns('',
     (r'^publications/', include('publications.urls')),
     (r'^avatar/', include('avatar.urls')),
     (r'^flag/', include('flag.urls')),
-    
+
+    #Dajax
+    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+
     #(r'^feeds/bookmarks/(.*)/?$', 'django.contrib.syndication.views.feed', bookmarks_feed_dict),
 )
 
 
 if settings.SERVE_MEDIA:
-    urlpatterns += patterns('', 
+    urlpatterns += patterns('',
         (r'^site_media/(?P<path>.*)$', 'misc.views.serve')
     )

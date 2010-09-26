@@ -83,6 +83,11 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'site_media', 'static')
 # Example: "http://media.lawrence.com"
 STATIC_URL = '/site_media/static/'
 
+# Dajax
+DAJAXICE_MEDIA_PREFIX="dajaxice"
+DAJAX_JS_FRAMEWORK = "jQuery"
+DAJAXICE_DEBUG = True
+
 # Additional directories which hold static files
 STATICFILES_DIRS = (
     ('tintz', os.path.join(PROJECT_ROOT, 'media')),
@@ -101,6 +106,7 @@ SECRET_KEY = '-uj77g9(u7ov598ek!&%!n-lfh_&&$974=mv-jqc9$v209r1dp'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -130,9 +136,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
-    
+
     "pinax.core.context_processors.pinax_settings",
-    
+
     "notification.context_processors.notification",
     "announcements.context_processors.site_wide_announcements",
     "account.context_processors.account",
@@ -154,7 +160,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.markup',
     'pinax.templatetags',
-    
+
     # external
     'notification', # must be first
     'emailconfirmation',
@@ -188,7 +194,7 @@ INSTALLED_APPS = (
     'django_markup',
     'staticfiles',
     'djangosphinx',
-    
+
     # internal (for now)
     'analytics',
     'profiles',
@@ -199,12 +205,16 @@ INSTALLED_APPS = (
     'tag_app',
     #'topics',
     #'groups',
-    
+
     #mine
     'publications',
     'follow',
     'misc',
-    
+
+    #Ajax
+    'dajaxice',
+    'dajax',
+
     'django.contrib.admin',
 
 )

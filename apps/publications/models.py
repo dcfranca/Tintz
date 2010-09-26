@@ -28,15 +28,15 @@ class Publication(models.Model):
     LANG_CHOICE = ( ('pt_BR',u'Português'),
 	            ('en',u'English'),
 		  )
-          
+
     CATEGORY_CHOICE = ( ('Quadrinhos', 'Quadrinhos'),
                        ('Revista', 'Revista'),
                        ('Tira', 'Tira'),
                     )
-                    
+
     RATED_CHOICE = ((0, 'Livre'),
-                    (12,  '12 anos'), 
-                    (16, '16 anos'), 
+                    (12,  '12 anos'),
+                    (16, '16 anos'),
                     (18, '18 anos'))
 
     title = models.CharField(_('name'), max_length=200, null=False)
@@ -45,7 +45,7 @@ class Publication(models.Model):
     description = models.TextField(_('description'), null=False)
     language    = models.CharField(_('language'), choices=LANG_CHOICE, max_length=20, null=False)
     nr_pages    = models.IntegerField(_('nr_pages'), null=False)
-    date_added  = models.DateTimeField(_('date_added')) 
+    date_added  = models.DateTimeField(_('date_added'))
     category      = models.CharField(_('category'),  choices=CATEGORY_CHOICE,  max_length=30,  null=False)
     rated           = models.IntegerField(_('rated'),  choices=RATED_CHOICE, null= False)
     tags = TagField(_('tags'), null=True)
@@ -83,6 +83,7 @@ class Publication(models.Model):
     def not_rated(self, author):
       return PublicationRate.getobjects( who_vote = author )
 
+
     def format_rate(self):
       return "%5.2f%%" % float(self.rate)
 
@@ -91,10 +92,10 @@ class Publication(models.Model):
       self.save()
 
     def get_total_pages(self):
-      return str(self.nr_pages)      
+      return str(self.nr_pages)
 
     search = SphinxSearch(
-           index ='search_publications', 
+           index ='search_publications',
            weights = { # individual field weighting
                'title': 100,
                'author': 20,
@@ -133,4 +134,3 @@ def new_comment(sender, instance, **kwargs):
             notification.send([post.author], "publication_post_comment",
                 {"user": instance.user, "post": post, "comment": instance, "publication":instance.content_object})
 models.signals.post_save.connect(new_comment, sender=ThreadedComment)
-
