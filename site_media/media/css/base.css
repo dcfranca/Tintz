@@ -539,7 +539,7 @@
     font-size: 12px;
     text-align: center;
     height: 30px;
-    width: 130px;
+    width: 150px;
     position: relative;
     top: 50px;
     left: 100px;
@@ -554,13 +554,13 @@
 .page_number-full {
     position: relative;
     color: black;
-    max-width: 80px;
-    left: 20px;
+    max-width: 85px;
+    left: 25px;
     top: 8px;
 }
 
 .prev_arrow-full {
-    top: 5px;
+    top: 4px;
     position: relative;
     color: black;
     float: left;
@@ -577,7 +577,7 @@
 
 
 .prev_arrow_inactive-full {
-    top: 5px;
+    top: 4px;
     position: relative;
     float: left;
     left: 10px;
@@ -587,10 +587,11 @@
 
 .next_arrow_inactive-full {
     position: relative;
-    top: -30px;
+    color: gray;
+    top: -12px;
     float: right;
     right: 10px;
-    color: gray;
+
 }
 
 .fullscreen-close {
