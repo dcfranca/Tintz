@@ -1,35 +1,59 @@
-{% extends "publications/base.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 {% load humanize %}
-{% load tagging_tags %}
-{% load markup %}
-{% load comments_tag %}
-{% load flagtags %}
-{% load pagination_tags %}
 
 {% block body %}
-  
-    <div>    
-    {% if publication %}
-        {% if not publication.is_public and not user.is_authenticated %}
-            Publicação não compartilhada, favor logar para visualiza-la
-        {% else %}
-    	    <div class="photo-title">
-            <h2>{{ publication.title }}</h2>
+<div id="viewer-body">
+    <div class="container">
+        <div class="viewer">
+            <div id="container span-24">
+                <div class="span-5 left-view">
+                    <div class="span-5 logo-tintz-black last"><img src="{{MEDIA_URL}}images/logo_tintz_black.png"/></div>
+                    <div class="publication-title span-5 last">
+                        {{ publication.title }}
+                    </div>
+                    <div class="publication-description span-5 last">
+                        {{ publication.description }}
+                    </div>
+                </div>
+
+                <div class="page-full span-10">
+                    {% if pages %}
+                       {% for pagenr in pages.object_list %}
+                          <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+                       {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="right-view span-7 last">
+                    <div class="navigator-full span-2">
+                        {% if pages.has_previous %}
+                            <div class="prev_arrow-full"><a href="?page={{ pages.previous_page_number }}"><<</a></div>
+                        {% else %}
+                            <div class="prev_arrow_inactive-full"><<</div>
+                        {% endif %}
+                        <div class="page_number-full">{% trans "P&aacute;gina" %} {{ pages.number }}</div>
+                        {% if pages.has_next %}
+                            <a class="next_arrow-full" href="?page={{ pages.next_page_number }}">>></a>
+                        {% else %}
+                            <div class="next_arrow_inactive-full">>></div>
+                        {% endif %}
+                    </div>
+                    <div class="fullscreen-close span-1"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+
+                    <div class="page-viewer span-5 last">
+                        {% if pages %}
+                           {% for pagenr in pages_viewer.object_list %}
+                              <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" alt="{{ publication.title }}"/>
+                           {% endfor %}
+                        {% endif %}
+                    </div>
+
+                </div>
+
             </div>
-            {% autopaginate pages 1 %}
-               {% if pages %}        
-                  {% for pagenr in pages %}
-                  {{pagenr|stringformat:"03d"}}
-                     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}{{file_ext}}" alt="{{ publication.title }}"/>
-                  {% endfor %}
-               {% endif %}
-            {% paginate %}
-        {% endif %}
-    {% else %}
-        <p>Nenhuma Publica&ccedil;&atilde;o.</p>
-    {% endif %}
+        </div>
     </div>
-    
+</div>
 {% endblock %}

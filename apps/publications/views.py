@@ -346,15 +346,36 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
     pages = range(1, publication.nr_pages+1)
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
 
-    if file_ext == ".pdf":
-        file_ext = ".png"
+    paginator = Paginator(pages, 1)
+
+    paginator_view = Paginator(pages, 21)
+
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        publication_pages = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        publication_pages = paginator.page(paginator.num_pages)
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        pages_viewer = paginator_view.page(1)
+    except (EmptyPage, InvalidPage):
+        pages_viewer = paginator_view.page(paginator_view.num_pages)
 
     return render_to_response(template_name, {
         "host": host,
         "publication": publication,
         "pages": pages,
-        "file_ext":file_ext,
+        "file_ext":publication.images_ext,
         "is_me": is_me,
+	"pages": publication_pages,
+	"pages_viewer":pages_viewer,
         "other_user": publication.author,
     }, context_instance=RequestContext(request))
 

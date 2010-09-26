@@ -1,5 +1,9 @@
-body {
+#main-body {
     background: #f4e30c;
+}
+
+#viewer-body {
+    background: black;
 }
 
 #main-content {
@@ -482,4 +486,125 @@ body {
     float: right;
     top: -40px;
     left: 500px;
+}
+
+.viewer {
+    background-color: black;
+    min-height: 1500px;
+    min-width: 100%;
+}
+
+.logo-tintz-black {
+    position: relative;
+    top: 40px
+}
+
+.publication-title {
+    position: relative;
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+    top: 50px;
+    float: right;
+
+}
+.publication-description {
+   color: white;
+   position: relative;
+   font-size: 9pt;
+   float: right;
+   top: 60px;
+}
+
+.page-full {
+    position: relative;
+    top: 40px;
+    min-width: 700px;
+}
+
+
+
+.navigator-full {
+    background: white;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    position: relative;
+    top: 50px;
+    left: 100px;
+}
+
+.navigator-full a, .navigator-full a:active {
+    text-decoration: none;
+    position: relative;
+    color: black;
+}
+
+.page_number-full {
+    position: relative;
+    color: black;
+    max-width: 50px;
+    left: 75px;
+    top: -11px;
+}
+
+.prev_arrow-full {
+    top: 5px;
+    position: relative;
+    color: black;
+    float: left;
+    left: 10px;
+}
+
+.next_arrow-full {
+    position: relative;
+    color: black;
+    top: -30px;
+    float: right;
+    right: 10px;
+}
+
+
+.prev_arrow_inactive-full {
+    top: 5px;
+    position: relative;
+    float: left;
+    left: 10px;
+    color: gray;
+}
+
+
+.next_arrow_inactive-full {
+    position: relative;
+    top: -30px;
+    float: right;
+    right: 10px;
+    color: gray;
+}
+
+.fullscreen-close {
+    background: white;
+    color: black;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 100px;
+    position: relative;
+    top: 20px;
+    left: 330px;
+}
+
+.fullscreen-close-text {
+    position: relative;
+    top: 6px;
+    left: -10px;
+}
+
+.fullscreen-close img {
+    position: relative;
+    top: -10px;
+    float: right;
+    right: 7px;
 }
