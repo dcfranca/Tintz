@@ -8,7 +8,7 @@
     <div class="container">
         <div class="viewer">
             <div id="container span-24">
-                <div class="span-5 left-view">
+                <div class="span-3 left-view pull-3">
                     <div class="span-5 logo-tintz-black last"><img src="{{MEDIA_URL}}images/logo_tintz_black.png"/></div>
                     <div class="publication-title span-5 last">
                         {{ publication.title }}
@@ -26,29 +26,52 @@
                     {% endif %}
                 </div>
 
-                <div class="right-view span-7 last">
+                <div class="right-view span-10 pull-2 last">
                     <div class="navigator-full span-2">
                         {% if pages.has_previous %}
-                            <div class="prev_arrow-full"><a href="?page={{ pages.previous_page_number }}"><<</a></div>
+                            <a class="prev_arrow-full" href="?page={{ pages.previous_page_number }}"><<</a>
                         {% else %}
                             <div class="prev_arrow_inactive-full"><<</div>
                         {% endif %}
-                        <div class="page_number-full">{% trans "P&aacute;gina" %} {{ pages.number }}</div>
+                        <div class="page_number-full">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
                         {% if pages.has_next %}
                             <a class="next_arrow-full" href="?page={{ pages.next_page_number }}">>></a>
                         {% else %}
                             <div class="next_arrow_inactive-full">>></div>
                         {% endif %}
                     </div>
-                    <div class="fullscreen-close span-1"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+                    <div class="fullscreen-close span-2 last"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen_close.png"></a></div>
 
-                    <div class="page-viewer span-5 last">
+                    <div class="page-viewer span-5 push-2 last">
                         {% if pages %}
+                           <table>
                            {% for pagenr in pages_viewer.object_list %}
-                              <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" alt="{{ publication.title }}"/>
+                           {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
+                              <td class="thumb-page">
+                                <a href="?page={{ pagenr }}">
+                                <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" alt="{{ publication.title }}"/>
+                                </a>
+                              </td>
+                              {% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
                            {% endfor %}
+                           {% if pages_viewer.object_list|length|divisibleby:"3" %}{% else %}</tr>{% endif %}
+                           </table>
                         {% endif %}
                     </div>
+
+                    <div class="navigator-viewer span-2">
+                        {% if pages_viewer.has_previous %}
+                            <div class="prev_arrow-viewer"><a href="?page_view={{ pages_viewer.previous_page_number }}"><<</a></div>
+                        {% else %}
+                            <div class="prev_arrow_inactive-viewer"><<</div>
+                        {% endif %}
+                        {% if pages_viewer.has_next %}
+                            <a class="next_arrow-viewer" href="?page_view={{ pages_viewer.next_page_number }}">>></a>
+                        {% else %}
+                            <div class="next_arrow_inactive-viewer">>></div>
+                        {% endif %}
+                    </div>
+
 
                 </div>
 

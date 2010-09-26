@@ -45,7 +45,7 @@
 		{% else %}
 		    <div class="prev_arrow_inactive"><<</div>
 		{% endif %}
-		<div class="page_number">{% trans "P&aacute;gina" %} {{ pages.number }}</div>
+		<div class="page_number">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
 		{% if pages.has_next %}
 		    <a class="next_arrow" href="?page={{ pages.next_page_number }}">>></a>
 		{% else %}
@@ -53,7 +53,7 @@
 		{% endif %}
 	    </div>
 
-	    <div class="fullscreen span-1"><div class="fullscreen-text">{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
 	    <div id="share" class="share span-1"><div class="share-text">{% trans "Compartilhe" %}</div><a href=""><img src="{{MEDIA_URL}}/images/share.png"></a></div>
 	    <div class="rate span-1"><div class="rate-text">{% trans "Avalia&ccedil;&atilde;o" %}</div><a href=""></a></div>
 
@@ -77,6 +77,12 @@
 
     <script type="text/javascript">
     window.onload=Dajaxice.publications.set_stars('Dajax.process',{'score':{{publication_score}} });
+    </script>
+
+    <script type="text/JavaScript">
+    function fullScreen(theURL) {
+    window.open(theURL, '', 'fullscreen=yes, scrollbars=auto');
+    }
     </script>
 
 {% endblock %}
