@@ -39,16 +39,19 @@ import UnRAR2
 import sys, zipfile, os, os.path
 from operator import itemgetter, attrgetter
 
+FULL_VIEW   = 700
+SIDE_THUMB  = 64
+
 def create_thumbnail(file_path, file_ext, width=150, height=200):
     file_name = os.path.splitext(file_path)[0]
     thumb = Image.open(file_path)
-    
+
     xsize, ysize = thumb.size
     widht_display = width
-    
+
     if xsize <= width:
        width = xsize
-    
+
     thumb.thumbnail((width,height),Image.ANTIALIAS)
     thumb.save(''.join([file_name, '_thumb','%03d' % (widht_display), file_ext]))
 
@@ -56,19 +59,20 @@ def from_pdf_file(publication, dirname, file_name):
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
     command = command+"\""+dirname+"/"+file_name+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
     print "RUN: "+command
-        
+
     os.system(command)
-    
+
     create_thumbnail(dirname+"/"+file_name+"_"+"001.jpg",".jpg")
-    
+
     listfiles = glob.glob( dirname+"/"+file_name+"_*.jpg" )
-    
+
     pag = 0
 
     for filename in listfiles:
-        create_thumbnail(filename,".jpg", 700, 1400)
+        create_thumbnail(filename,".jpg", FULL_VIEW, 1400)
+        create_thumbnail(filename,".jpg", SIDE_THUMB, 128)
         pag += 1
-        
+
     return pag-1, ".jpg"
 
 
@@ -77,7 +81,7 @@ def unzip_file_into_dir(file, dir, filename):
     zfobj = zipfile.ZipFile(file)
     pag = 0
     file_ext = ""
-    
+
     for name in zfobj.namelist():
         if name.endswith('/'):
             continue
@@ -88,12 +92,13 @@ def unzip_file_into_dir(file, dir, filename):
         outfile = open(os.path.join(dir, new_file_name ), 'wb')
         outfile.write(zfobj.read(name))
         outfile.close()
-        
+
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
-            
-        create_thumbnail(dir+"/"+new_file_name, file_ext, 700, 1400)
-        
+
+        create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
+        create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+
     return pag, file_ext
 
 def unrar_file_into_dir(file, dir, filename_noext):
@@ -106,35 +111,36 @@ def unrar_file_into_dir(file, dir, filename_noext):
     sorted(rar_file.infoiter(),key=attrgetter('filename'))
     for info in rar_file.infoiter():
         if info.filename.endswith('/'):
-            continue        
+            continue
         files_coll.append(info.filename)
-        
+
     files_coll.sort()
-        
+
     pag = 0
     for filename in files_coll:
         pag += 1
         if len(file_ext) == 0:
             file_ext = os.path.splitext(filename)[1]
         new_file_name = filename_noext+"_"+"{0:03d}".format(pag) + file_ext
-        
+
         try:
             shutil.move(filename, dir+"/"+new_file_name)
         except:
             os.remove( filename )
             pass
-        
+
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
-            
-        create_thumbnail(dir+"/"+new_file_name, file_ext, 700, 1400)
-        
+
+        create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
+        create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+
     return pag, file_ext
 
 
 def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
-    
+
     #Create directory if it doesnt exist
     dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
@@ -144,7 +150,7 @@ def convert2images(publication):
 
     ##########################################################
     ### Generating images from PDF
-    ##########################################################    
+    ##########################################################
 
     pages = 0
 
@@ -160,17 +166,17 @@ def convert2images(publication):
     else:
         print "Arquivo PNG/GIF/Image"
         img = Image.open( publication.file_name.path )
-        img_strip = ''.join([file_path, '_001',file_ext])        
+        img_strip = ''.join([file_path, '_001',file_ext])
         img.save(img_strip)
         create_thumbnail(img_strip, file_ext, 150, 200)
-        import pdb; pdb.set_trace()
-        create_thumbnail(img_strip, file_ext, 700, 1400)
+        create_thumbnail(img_strip, file_ext, FULL_VIEW, 1400)
+        create_thumbnail(img_strip, file_ext, SIDE_THUMB, 128)
         pages = 1
-    
+
     print "Numero de paginas: "+str(pages)
-    
+
     print "Extensao: "+file_ext
-    
+
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext

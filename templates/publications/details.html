@@ -53,7 +53,7 @@
 		{% endif %}
 	    </div>
 
-	    <div class="fullscreen span-1"><div class="fullscreen-text">{% trans "Tela cheia" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+	    <div class="fullscreen span-1"><div class="fullscreen-text">{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
 	    <div id="share" class="share span-1"><div class="share-text">{% trans "Compartilhe" %}</div><a href=""><img src="{{MEDIA_URL}}/images/share.png"></a></div>
 	    <div class="rate span-1"><div class="rate-text">{% trans "Avalia&ccedil;&atilde;o" %}</div><a href=""></a></div>
 
