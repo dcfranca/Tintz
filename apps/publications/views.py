@@ -356,6 +356,17 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
     except ValueError:
         page = 1
 
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page_view = int(request.GET.get('page_view'))
+    except:
+        page_view = int(page/21)
+	if page % 21 != 0:
+	    page_view += 1
+
+    if page == 1 and page_view > 1:
+	page = (21*(page_view-1))+1
+
     # If page request (9999) is out of range, deliver last page of results.
     try:
         publication_pages = paginator.page(page)
@@ -364,7 +375,7 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
 
     # If page request (9999) is out of range, deliver last page of results.
     try:
-        pages_viewer = paginator_view.page(1)
+        pages_viewer = paginator_view.page(page_view)
     except (EmptyPage, InvalidPage):
         pages_viewer = paginator_view.page(paginator_view.num_pages)
 

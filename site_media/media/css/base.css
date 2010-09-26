@@ -1,5 +1,6 @@
 #main-body {
     background: #f4e30c;
+    min-height: 600px;
 }
 
 #viewer-body {
@@ -201,6 +202,9 @@
     left: 30px;
     text-decoration: none;
     padding-left: 10px;
+    background: #f4e30c;
+    text-align: right;
+    width: 100%;
     color: gray;
 }
 
@@ -326,9 +330,9 @@
 
 .page_number {
     position: relative;
-    max-width: 50px;
-    left: 75px;
-    top: -11px;
+    max-width: 90px;
+    left: 50px;
+    top: 7px;
 }
 
 .prev_arrow {
@@ -340,7 +344,7 @@
 
 .next_arrow {
     position: relative;
-    top: -30px;
+    top: -12px;
     float: right;
     right: 10px;
 }
@@ -357,7 +361,7 @@
 
 .next_arrow_inactive {
     position: relative;
-    top: -30px;
+    top: -12px;
     float: right;
     right: 10px;
     color: gray;
@@ -496,30 +500,35 @@
 
 .logo-tintz-black {
     position: relative;
-    top: 40px
+    top: 40px;
+    left: 0px;
 }
 
 .publication-title {
     position: relative;
     color: white;
+    text-align: right;
+    right: 10px;
     font-weight: bold;
     font-size: 12pt;
-    top: 50px;
+    top: 70px;
     float: right;
 
 }
 .publication-description {
    color: white;
    position: relative;
+   text-align: right;
    font-size: 9pt;
    float: right;
-   top: 60px;
+   right: 10px;
+   top: 80px;
 }
 
 .page-full {
     position: relative;
     top: 40px;
-    min-width: 700px;
+    min-width: 670px;
 }
 
 
@@ -530,7 +539,7 @@
     font-size: 12px;
     text-align: center;
     height: 30px;
-    width: 200px;
+    width: 130px;
     position: relative;
     top: 50px;
     left: 100px;
@@ -545,9 +554,9 @@
 .page_number-full {
     position: relative;
     color: black;
-    max-width: 50px;
-    left: 75px;
-    top: -11px;
+    max-width: 80px;
+    left: 20px;
+    top: 8px;
 }
 
 .prev_arrow-full {
@@ -561,7 +570,7 @@
 .next_arrow-full {
     position: relative;
     color: black;
-    top: -30px;
+    top: -12px;
     float: right;
     right: 10px;
 }
@@ -591,9 +600,9 @@
     text-align: center;
     height: 30px;
     width: 100px;
-    position: relative;
     top: 20px;
-    left: 330px;
+    position: relative;
+    left: 260px;
 }
 
 .fullscreen-close-text {
@@ -607,4 +616,73 @@
     top: -10px;
     float: right;
     right: 7px;
+}
+
+.right-view {
+    position: relative;
+    max-width: 200px;
+    top: -5px;
+    left: 30px;
+}
+
+.page-viewer {
+    position: relative;
+    top: 50px;
+}
+
+.thumb-page {
+    padding: 15px 15px 15px 15px;
+}
+
+
+.navigator-viewer {
+    background: black;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 70px;
+    position: relative;
+    top: 50px;
+    left: 100px;
+}
+
+.navigator-viewer a, .navigator-viewer a:active {
+    text-decoration: none;
+    position: relative;
+    color: white;
+}
+
+.prev_arrow-viewer {
+    top: 5px;
+    position: relative;
+    color: white;
+    float: left;
+    left: 10px;
+}
+
+.next_arrow-viewer {
+    position: relative;
+    color: white;
+    top: 6px;
+    float: right;
+    right: 10px;
+}
+
+
+.prev_arrow_inactive-viewer {
+    top: 5px;
+    position: relative;
+    float: left;
+    left: 10px;
+    color: gray;
+}
+
+
+.next_arrow_inactive-viewer {
+    position: relative;
+    top: 6px;
+    float: right;
+    right: 10px;
+    color: gray;
 }

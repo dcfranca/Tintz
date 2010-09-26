@@ -56,15 +56,20 @@ def create_thumbnail(file_path, file_ext, width=150, height=200):
     thumb.save(''.join([file_name, '_thumb','%03d' % (widht_display), file_ext]))
 
 def from_pdf_file(publication, dirname, file_name):
+
+    import datetime
+
+    cur_datetime = datetime.datetime.now()
+
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-    command = command+"\""+dirname+"/"+file_name+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
+    command = command+"\""+dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
     print "RUN: "+command
 
     os.system(command)
 
     create_thumbnail(dirname+"/"+file_name+"_"+"001.jpg",".jpg")
 
-    listfiles = glob.glob( dirname+"/"+file_name+"_*.jpg" )
+    listfiles = glob.glob( dirname+"/"+file_name+"_"+str(cur_datetime)+"_*.jpg" )
 
     pag = 0
 
@@ -73,7 +78,7 @@ def from_pdf_file(publication, dirname, file_name):
         create_thumbnail(filename,".jpg", SIDE_THUMB, 128)
         pag += 1
 
-    return pag-1, ".jpg"
+    return pag, ".jpg"
 
 
 def unzip_file_into_dir(file, dir, filename):
