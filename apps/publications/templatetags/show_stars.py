@@ -10,11 +10,11 @@ END_DIV_TEMPLATE= "</div>"
 IMG_TEMPLATE	= "<img border=\"0\" src=\"%s\" alt=\"%s\"/>"
 EX_IMG_TEMPLATE	= "<img onmouseover=\"javascript: hoverStar(%s, %s);\" onmouseout=\"javascript: restoreStar(%s);\" onclick=\"javascript: clickStar('%s', %s, %s);\" border=\"0\" src=\"%s\" alt=\"%s\"/>"
 STARS = {
-	0.0:	("No Star", "images/simplicio-icon-set/32x32/star_empty.png"),
+	0.0:	("No Star", "images/star_empty.png"),
 	0.25:	("Quarter Star", "images/star_0.25.gif"),
 	0.5:	("Half Star", "images/star_0.5.gif"),
 	0.75:	("Three Quarter Star", "images/star_0.75.gif"),
-	1.0:	("Full Star", "images/simplicio-icon-set/32x32/star_full.png")
+	1.0:	("Full Star", "images/star_full.png")
 }
 ROUNDERS = {
 	"full": 1,

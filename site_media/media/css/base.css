@@ -78,6 +78,29 @@ body {
     padding-top: 20px;
 }
 
+.comments-form {
+    position: relative;
+    top: 10px;
+}
+
+.comments-fieldset {
+    border: none 0px;
+    padding-top: 20px;
+}
+
+.comments-form textarea {
+    font-size: 9pt;
+    width:500px;
+    height: 40px;
+}
+
+.button-comment {
+    position: relative;
+    top: -60px;
+    left: 110px;
+    float: right;
+}
+
 .tintz-form {
     border: none 0px;
     padding-top: 20px;
@@ -265,7 +288,7 @@ body {
 .list-button {
     position: relative;
     top: 170px;
-    left: 0px;    
+    left: 0px;
 }
 
 .publication_page {
@@ -276,7 +299,7 @@ body {
 
 .comments {
     position: relative;
-    top: 30px;
+    top: 20px;
 }
 
 .navigator {
@@ -344,8 +367,8 @@ body {
     height: 30px;
     width: 100px;
     position: relative;
-    top: -10px;
-    left: 170px;
+    top: 20px;
+    left: -30px;
 }
 
 .fullscreen-text {
@@ -369,14 +392,14 @@ body {
     height: 30px;
     width: 110px;
     position: relative;
-    top: -40px;
-    left: 280px;
+    top: 20px;
+    left: -20px;
 }
 
 .share-text {
     position: relative;
     top: 6px;
-    left: -3px;
+    left: -7px;
 }
 
 .share img {
@@ -384,4 +407,79 @@ body {
     top: -10px;
     float: right;
     right: 7px;
+}
+
+.rate {
+    background: #232323;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    width: 70px;
+    position: relative;
+    top: 20px;
+    left: -20px;
+}
+
+.rate-text {
+    position: relative;
+    top: 6px;
+    left: -3px;
+}
+
+.stars {
+    background: #232323;
+    color: white;
+    font-size: 12px;
+    height: 30px;
+    width: 110px;
+    position: relative;
+    float: right;
+    top: -10px;
+    left: 50px;
+}
+
+.star {
+    position: relative;
+    top: 6px;
+    left: 0px;
+}
+
+.responses {
+    position: relative;
+    top: 20px;
+    left: -80px;
+}
+
+.comment, .comment a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    list-style: none;
+    text-decoration: none;
+}
+
+.comment-user {
+    font-weight: bold;
+    position: relative;
+    left: 6px;
+}
+
+.comment-body {
+    position: relative;
+    left: 25px;
+}
+
+.separator {
+    position: relative;
+    top: 15px;
+    background-color: #E0E0E0;
+    height: 1px;
+    width: 600px;
+}
+
+.delete-comment {
+    position: relative;
+    float: right;
+    top: -40px;
+    left: 500px;
 }
