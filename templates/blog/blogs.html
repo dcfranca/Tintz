@@ -16,8 +16,8 @@
     {% else %}
         {% url acct_signup as signup_url %}
         {% url acct_login as login_url %}
-        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
-    {% endif %}     
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
+    {% endif %}
 {% endblock %}
 
 {% block main_content %}
@@ -28,7 +28,7 @@
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
 
         {% for post in blogs %}
-            <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date }}</div></a>
+            <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date:"d/m/Y" }}</div></a>
                 <div class="span-10 last list-description">
                 {% with post.tease|truncatewords:"50" as body %}
                     {% if post.markup %}
@@ -41,14 +41,16 @@
                         {{ post.body|force_escape|linebreaks|safe }}
                     {% endif %}
                 {% endwith %}
+                <div class="separator"></div>
                 </div>
 
               {% if is_me %}
                   <div class="span-1 list-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
                   <div class="span-1 list-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
-              {% endif %}	
+              {% endif %}
 
-                
+
+
         {% endfor %}
 </div>
 {% endblock %}
@@ -63,79 +65,6 @@
 		    location = del_url
 	    }
     }
-    </script>    
+    </script>
 {% endblock %}
-
-{% comment %}
-
-{% extends "blog/base.html" %}
-
-{% load i18n %}
-{% load blog %}
-{% load markup %}
-{% load switchcase %}
-{% load tagging_tags %}
-{% load restructuredtext %}
-
-{% block head_title %}{% blocktrans %}Gerenciar Blog{% endblocktrans %}{% endblock %}
-
-{% block extra_head %}
-    <link rel="alternate" type="application/atom+xml" title="Blog Post Feed for All Users" href="/feeds/posts/all/" />
-    <link rel="alternate" type="application/atom+xml" title="Blog Post Feed for User {{ user.username }}" href="/feeds/posts/only/{{ user.username }}/" />
-{% endblock %}
-
-{% block center_panel %}
-  
-    <div class="tintz-title">{% trans "Gerenciar Blog" %}</div>
-    
-    {% if blogs %}
-        <table cellpadding="5" cellspacing="0" border="0" class="blog-list" width="100%">
-            <th>Title</th>
-            <th>Published On</th>
-            <th>Status</th>
-            <th></th>
-            {% for post in blogs %}
-                <tr class="{% cycle odd,even %}">
-                    <td><b><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></b><br />
-                        {% with post.tease|truncatewords:"50" as body %}
-                            {% if post.markup %}
-                                {% switch post.markup %}
-                                    {% case 'rst' %}{{ body|restructuredtext|safe }}{% endcase %}
-                                    {% case 'mrk' %}{{ body|force_escape|markdown }}{% endcase %}
-                                    {% case 'txl' %}{{ body|force_escape|textile }}{% endcase %}
-                                {% endswitch %}
-                            {% else %}
-                                {{ body|force_escape|linebreaks|safe }}
-                            {% endif %}
-                        {% endwith %}
-                    </td>
-                    <td nowrap>{{ post.publish|date }}</td>
-                    <td>
-                        {% with post.status as status %}
-                            {% switch status %}
-                                {% case 2 %}Published{% endcase %}
-                                {% case 1 %}Draft{% endcase %}
-                            {% endswitch %}
-                        {% endwith %}
-                    </td>
-                    <td width="50px" align="center">
-                        <a href="{% url blog_edit post.id %}">
-                            {% trans "Editar Post" %}
-                        </a>
-                    </td>
-                    <td align="right">
-                        <a href="{% url blog_destroy  post.id %}">
-                            {% trans "Apagar Post" %}
-                       </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        {% trans "Sem posts at&eacute; o momento." %}
-    {% endif %}
-    
-{% endblock %}
-
-{% endcomment %}
 
