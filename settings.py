@@ -175,7 +175,7 @@ INSTALLED_APPS = (
 #    'gravatar',
     'threadedcomments',
     'threadedcomments_extras',
-    #'wiki',
+    'wiki',
     'swaps',
     'timezones',
     #'voting',

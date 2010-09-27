@@ -9,7 +9,7 @@
 {% load pagination_tags %}
 {% load comments_tag %}
 
-{% block head_title %}{% trans "Tintz - Publica&ccedil;&otilde;es" %}{% endblock %}
+{% block head_title %}{% trans "Tintz - Publica&ccedil;&atilde;o" %}{% endblock %}
 
 {% block extra_body %}
     {% if user.is_authenticated %}
@@ -65,7 +65,6 @@
                 <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':5 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':5 })" />
             </div>
 	    <div class="comments">
-
 		{% comments publication %}
 	    </div>
 	{% endif %}
