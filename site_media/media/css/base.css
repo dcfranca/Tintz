@@ -46,6 +46,18 @@
     width: 700px;
 }
 
+.title-profile {
+    position: relative;
+    left: -40px;
+    background: #232323;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 30px;
+    width: 300px;
+}
+
+
 .title img {
     margin-top: 6px;
     margin-left: 10px;
@@ -513,8 +525,14 @@
     font-size: 12pt;
     top: 70px;
     float: right;
-
 }
+
+.publication-profile {
+    position: relative;
+    max-width: 130px;
+    left: -40px;
+}
+
 .publication-description {
    color: white;
    position: relative;

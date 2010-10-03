@@ -19,6 +19,8 @@ from datetime import *
 from avatar.templatetags.avatar_tags import avatar
 from account.utils import login_complete
 
+from blog.models import Post
+
 import logging
 
 if "notification" in settings.INSTALLED_APPS:
@@ -122,7 +124,7 @@ def profile(request, username, template_name="profiles/profile.html"):
             follow = FollowAuthor()
             follow.UserFrom = request.user
             follow.UserTo = other_user                
-            request.user.message_set.create(message=_(u"VocÃª agora estÃ¡ seguindo %(from_user)s") % {'from_user': other_user.username})
+            request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
             follow.save()
         elif request.POST["action"] == "unfollow":
             #invite_form = InviteFriendForm(request.user, {
@@ -131,7 +133,7 @@ def profile(request, username, template_name="profiles/profile.html"):
             #})
             try:
                 follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-                request.user.message_set.create(message=_(u"VocÃª nÃ£o estÃ¡ mais seguindo %(from_user)s") % {'from_user': other_user.username})
+                request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
                 follow.delete()                
             except FollowAuthor.DoesNotExist:
                 pass                
@@ -181,9 +183,12 @@ def profile(request, username, template_name="profiles/profile.html"):
             pass
 
 #    other_friends = other_friends[:10]
-    publications  = publications[:3]
+    publications  = publications[:6]
     followinUsers = followinUsers[:10]
     followerUsers = followerUsers[:10]
+
+    #posts no blog
+    posts = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish").filter(author=other_user)
     
     return render_to_response(template_name, {
         "profile_form": profile_form,
@@ -198,7 +203,8 @@ def profile(request, username, template_name="profiles/profile.html"):
         "publications": publications, 
         "followings": followinUsers,
         "followers": followerUsers,
-        "is_edit": is_edit,        
+        "is_edit": is_edit,
+        "posts": posts,
     }, context_instance=RequestContext(request))
 
 

@@ -51,7 +51,7 @@
                            {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
                               <td class="thumb-page">
                                 <a href="?page={{ pagenr }}">
-                                <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" title="P&aacute;gina {{ pagenr }}"/>
+                                <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" title="P&aacute;gina    {{ pagenr }}"/>
                                 </a>
                               </td>
                               {% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
