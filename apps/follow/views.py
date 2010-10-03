@@ -52,7 +52,7 @@ def following(request,  username):
 
     return render_to_response("profiles/profiles.html", {
         "other_profiles": users,
-        "title": "Seguidos",
+        "title": "Seguindo",
         "is_me": is_me,
         "other_user": user,         
     }, context_instance=RequestContext(request))   
