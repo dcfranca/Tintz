@@ -58,6 +58,7 @@ def getPublications(request, other_user, is_me):
 def getFollowers(request, other_user):
     followers = FollowAuthor.objects.filter( UserTo = other_user )
     followerUsers = []
+
     for follow in followers:
         followerUsers.append( follow.UserFrom )
     return followerUsers
@@ -319,6 +320,7 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
     """
     publication = get_object_or_404(Publication, id=id)
 
+
     logging.debug("viewerpublication Username = [%s] - publication.is_public [%s]" % (request.user,publication.is_public) )
     host = "http://%s" % get_host(request)
 
@@ -372,6 +374,7 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
         publication_pages = paginator.page(page)
     except (EmptyPage, InvalidPage):
         publication_pages = paginator.page(paginator.num_pages)
+
 
     # If page request (9999) is out of range, deliver last page of results.
     try:
