@@ -7,7 +7,7 @@ sys.path.append("/Users/danielfranca/Workspace/django/view")
 sys.path.append("/Users/danielfranca/Workspace/django/view/tintz/apps")
 sys.path.append("/Users/danielfranca/Workspace/django/view//pinax//lib/python2.7/site-packages/pinax/apps/")
 
-os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.tintzsettings'
 
 from django.core.management import setup_environ
 from django.shortcuts import render_to_response, get_object_or_404
