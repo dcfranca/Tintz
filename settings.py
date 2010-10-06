@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for social pinax project.
+# Django tintzsettings for social pinax project.
 
 import os.path
 import posixpath
@@ -208,6 +208,7 @@ INSTALLED_APPS = (
 
     #mine
     'publications',
+    'tintzsettings',
     'follow',
     'misc',
 
@@ -300,7 +301,7 @@ logging.basicConfig(
 # following URL: https://developer.yahoo.com/wsregapp/
 # YAHOO_MAPS_API_KEY = ''
 
-# local_settings.py can be used to override environment-specific settings
+# local_settings.py can be used to override environment-specific tintzsettings
 # like database and email that differ between development and production.
 try:
     from local_settings import *
