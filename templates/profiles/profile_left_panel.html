@@ -3,9 +3,9 @@
 {% load tagging_tags %}
 
 {% if other_user.id %}
-	<div id="profile_avatar" OnMouseEnter="change_avatarEnter()" OnMouseLeave="change_avatarLeave()">
+	<div id="profile_avatar" onmouseover="document.getElementById('avatar_replace').style.visibility='visible'" onmouseout="document.getElementById('avatar_replace').style.visibility='hidden'">
 	    {% avatar other_user 260 %}
-	    <div id="avatar_replace"><a href="">Substituir</a></div>
+	    <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
 	</div> 
 	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
 	<div class="about">{{ other_user.get_profile.about }}</div>
@@ -33,4 +33,3 @@
   <a href="{% url search_results tag.name %}" ><font size="{{tag.font_size}}"> {{tag.name}}</font></a>
   {% endfor %}
 </div>
-
