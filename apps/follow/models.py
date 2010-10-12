@@ -1,15 +1,10 @@
-from datetime import datetime
-import urlparse
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 
-from tagging.fields import TagField
-from tagging.models import Tag
-
 class FollowAuthor(models.Model):
     
     UserFrom = models.ForeignKey(User, related_name="following", verbose_name=_('follower'))    
-    UserTo = models.ForeignKey(User, related_name="follower", verbose_name=_('following'))        
+    UserTo = models.ForeignKey(User, related_name="follower", verbose_name=_('following'))
+

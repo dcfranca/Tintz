@@ -102,8 +102,8 @@ def profiles(request, template_name="profiles/profiles.html"):
         "title": "Perfis",
     }, context_instance=RequestContext(request))
 
-def profile(request, username, template_name="profiles/profile.html"):
-    other_user = get_object_or_404(User, username=username)    
+def profile(request, username, to_follow = None, template_name="profiles/profile.html"):
+    other_user = get_object_or_404(User, username=username)
     publications = []
     is_follow = False
     
@@ -114,30 +114,11 @@ def profile(request, username, template_name="profiles/profile.html"):
     else:
         is_me = False
 
-    if  request.user.is_authenticated() and request.method == "POST":
-        if request.POST["action"] == "follow":
-            #invite_form = InviteFriendForm(request.user, {
-            #    'to_user': username,
-            #    'message': ugettext("Vamos ser Amigos!"),
-            #})
-            
-            follow = FollowAuthor()
-            follow.UserFrom = request.user
-            follow.UserTo = other_user                
-            request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
-            follow.save()
-        elif request.POST["action"] == "unfollow":
-            #invite_form = InviteFriendForm(request.user, {
-            #    'to_user': username,
-            #    'message': ugettext("Vamos ser Amigos!"),
-            #})
-            try:
-                follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-                request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
-                follow.delete()                
-            except FollowAuthor.DoesNotExist:
-                pass                
-    
+    if not is_me and to_follow == '1':
+        button_follow(request, other_user)
+    elif not is_me and to_follow == '0':
+        button_unfollow(request, other_user)
+
     #Finding publications
     calc_age(request.user.get_profile())
 
@@ -208,7 +189,23 @@ def profile(request, username, template_name="profiles/profile.html"):
     }, context_instance=RequestContext(request))
 
 
-def calc_age(profile):    
+def button_follow(request, other_user):
+    follow = FollowAuthor()
+    follow.UserFrom = request.user
+    follow.UserTo = other_user
+    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
+    follow.save()
+
+def button_unfollow(request, other_user):
+    try:
+        follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
+        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        follow.delete()
+    except FollowAuthor.DoesNotExist:
+        pass
+
+
+def calc_age(profile):
     if profile.birth_date.month > date.today().month or ( profile.birth_date.month == date.today().month and profile.birth_date.day > date.today().day ):
         profile.age = date.today().year - profile.birth_date.year - 1
     else:

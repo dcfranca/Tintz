@@ -12,6 +12,15 @@
 {% endif %}
 
 {% if user.is_authenticated %}
+    {% if not is_me %}
+        {% if is_follow %}
+            <div class="left-button"><a href="{% url profile_detail other_user 0 %}"><img src="{{MEDIA_URL}}/images/bt_cancel.png">Excluir</a></div>
+        {% else %}
+            <div class="left-button"><a href="{% url profile_detail other_user 1 %}"><img src="{{MEDIA_URL}}/images/bt_follow.png">Seguir</a></div>
+        {% endif %}
+    {% endif %}
+
+
     <div class="left-button"><a href="{% url publications other_user %}"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</a></div>
     <div class="left-button"><a href="{% url blog_list_user other_user %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</a></div>
     <div class="left-button"><a href="{% url following other_user %}"><img src="{{MEDIA_URL}}/images/bt_contacts.png">Seguindo</a></div>
