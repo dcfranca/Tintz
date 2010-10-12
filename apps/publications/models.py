@@ -3,9 +3,6 @@ import os
 from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from profiles.models import *
 
 from tagging.fields import TagField
