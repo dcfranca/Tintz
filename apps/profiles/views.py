@@ -165,8 +165,8 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
 
 #    other_friends = other_friends[:10]
     publications  = publications[:6]
-    followinUsers = followinUsers[:10]
-    followerUsers = followerUsers[:10]
+    followinUsers = followinUsers[:21]
+    followerUsers = followerUsers[:21]
 
     #posts no blog
     posts = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish").filter(author=other_user)

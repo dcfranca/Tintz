@@ -42,7 +42,7 @@ class LoginForm(forms.Form):
         email_address = EmailAddress.objects.get_primary(user)
         
         if user:
-            if user.is_active and email_address != None and email_address.verified == True:
+            if user.is_active and email_address != None:
                 self.user = user
             else:
                 raise forms.ValidationError(_(u"Esta conta está inativa."))
@@ -53,7 +53,7 @@ class LoginForm(forms.Form):
     def login(self, request):
         if self.is_valid():
             login(request, self.user)
-            request.user.message_set.create(message=ugettext("Logado com sucesso: %(username)s.") % {'username': self.user.username})
+            #request.user.message_set.create(message=ugettext("Logado com sucesso: %(username)s.") % {'username': self.user.username})
             if self.cleaned_data['remember']:
                 request.session.set_expiry(60 * 60 * 24 * 7 * 3)
             else:
