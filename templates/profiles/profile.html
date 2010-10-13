@@ -40,7 +40,7 @@
 </div>
 <div class="span-8 last" id="right-panel">
     <div class="preview-blog">
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png">Posts no Blog</div>
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_blog.png"><a href="{% url blog_list_user other_user %}">Posts no Blog</a></div>
         <table>
             <tr>
                 <td class="span-4 post-profile">
@@ -52,25 +52,26 @@
         </table>
 
     </div>
-    <div class="preview-following">
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png">Seguindo</div>
+
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url following other_user %}">Seguindo</a></div>
+    <div class="preview-contacts">
         <table>
             {% for following in followings %}
                 {% if forloop.counter0|divisibleby:"7" %}<tr>{% endif %}
-                <td class="span-4 follow-profile">
-                    <div class="details"><a href="{% url profile_detail following.username %}" title="{{ following.get_profile.first_name }} {{ following.get_profile.last_name }}">{% avatar following 40 %}</a></div>
+                <td class="span-1 follow-profile">
+                    <a href="{% url profile_detail following.username %}" title="{{ following.get_profile.first_name }} {{ following.get_profile.last_name }}">{% avatar following 30 %}</a>
                 </td>
             {% endfor %}
             {% if followings|length|divisibleby:"7" %}{% else %}</tr>{% endif %}
         </table>
     </div>
-    <div class="preview-followers">
-        <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png">Seguidores</div>
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url followers other_user %}">Seguidores</a></div>
+    <div class="preview-contacts">
         <table>
             {% for follower in followers %}
                 {% if forloop.counter0|divisibleby:"7" %}<tr>{% endif %}
-                <td class="span-4 follow-profile">
-                    <div class="details"><a href="{% url profile_detail follower.username %}" title="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}">{% avatar follower 40 %}</a></div>
+                <td class="follow-profile">
+                    <a href="{% url profile_detail follower.username %}" title="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}">{% avatar follower 30 %}</a>
                 </td>
             {% endfor %}
             {% if followings|length|divisibleby:"7" %}{% else %}</tr>{% endif %}
