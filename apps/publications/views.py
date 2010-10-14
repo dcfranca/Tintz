@@ -202,7 +202,7 @@ def editpublication(request, id, form_class=PublicationEditForm,
         publication_form = form_class(instance=publication)
 
     return render_to_response(template_name, {
-        "publication_form": publication_form,
+        "form": publication_form,
         "publication": publication,
         "is_me": True,
         "other_user": request.user,
