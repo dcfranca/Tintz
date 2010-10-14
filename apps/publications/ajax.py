@@ -9,8 +9,8 @@ import os, datetime
 
 def set_stars(request, score):
 
-    star_empty = '/site_media/media/images/star_empty.png'
-    star_full  = '/site_media/media/images/star_full.png'
+    star_empty = '/site_media/images/star_empty.png'
+    star_full  = '/site_media/images/star_full.png'
 
     dajax = Dajax()
 

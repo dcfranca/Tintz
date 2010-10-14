@@ -44,7 +44,7 @@ class PublicationEditForm(forms.ModelForm):
 
     class Meta:
         model = Publication
-        exclude = ('title','file_name','author','date_added', 'nr_pages', 'rate', 'status', 'views')
+        exclude = ('title','file_name','author','date_added', 'nr_pages', 'rate', 'status', 'views','images_ext')
 
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
