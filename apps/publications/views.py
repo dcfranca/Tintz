@@ -309,8 +309,8 @@ def detailspublication(request, id, username, template_name="publications/detail
         "publication_score": publication_score.rate,
         "publications": publications,
         "followers":followerUsers,
-	"pages": publication_pages,
-	"file_ext": mypublication.images_ext,
+	    "pages": publication_pages,
+	    "file_ext": mypublication.images_ext,
         "followings":followingUsers,
     }, context_instance=RequestContext(request))
 

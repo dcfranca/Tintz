@@ -6,6 +6,8 @@ import random
 import logging
 import pdb
 import os, datetime
+from tintz import settings
+import dajax
 
 cur_page = 1
 
@@ -22,8 +24,6 @@ def set_stars(request, score):
     dajax.assign('#star4','src', star_empty)
     dajax.assign('#star5','src', star_empty)
 
-    #pdb.set_trace()
-
     cur_star = 1
     logging.debug('Stars - Score: '+str(score))
     while score >= cur_star:
@@ -31,9 +31,6 @@ def set_stars(request, score):
         dajax.assign(id_star,'src', star_full)
         cur_star += 1
 
-    #dajax.assign('#star1','src', star_full)
-    #dajax.assign('#star2','src', star_full)
-    #dajax.assign('#star3','src', star_full)
     return dajax.json()
 
 dajaxice_functions.register(set_stars)
@@ -102,3 +99,26 @@ def vote_publication(request, publication_id, rate):
     #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % publication.title )
     is_voted = True
 
+
+def change_page(request, image_file, publication_id, change):
+
+    publication = Publication.objects.get(pk=publication_id)
+
+    cur_page= int(image_file[len(image_file)-16:len(image_file)-13])
+    dajax = Dajax()
+
+    change_page = (cur_page + change)
+
+    if change_page > publication.nr_pages or change_page < 1:
+        return dajax.json()
+
+
+    format_number = '%03d' % (change_page)
+    new_page_file = '/site_media/'+publication.get_basename()+'_'+format_number+'_thumb700'+publication.images_ext
+
+    dajax = Dajax()
+    dajax.assign('#page_publication','src', new_page_file)
+
+    return dajax.json()
+
+dajaxice_functions.register(change_page)

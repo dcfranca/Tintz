@@ -24,7 +24,7 @@
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
 </div>
-<div class="span-14 last" onload="Dajaxice.publications.set_stars('Dajax.process',{'score':{{publication_score}} })">
+<div class="span-14 last" onload="Dajaxice.publications.change_page('Dajax.process',{'image_file': 'teste1234567890', 'publication':'ola', 'change':-1 })">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es / {{ publication.title }}</div>
     {% if publication %}
 	{% if not publication.is_public and not user.is_authenticated %}
@@ -32,15 +32,26 @@
 	{% else %}
 
 	    <div class="publication_page last">
-	       {% if pages %}
+	      {% comment %} {% if pages %}
 		  {% for pagenr in pages.object_list %}
 		     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 		  {% endfor %}
 	       {% endif %}
+	       {% endcomment %}
+           <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_001_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 	    </div>
 
-	    <div class="navigator span-2">
-		{% if pages.has_previous %}
+        document.getElementById('page_publication').src
+
+        <div class="navigator span-2">
+
+            <a class="prev_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })" href=""><<</a></div>
+            <div class="page_number">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
+            <a class="next_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1 })" href="">>></a>
+
+
+		 {% comment %}
+         {% if pages.has_previous %}
 		    <div class="prev_arrow"><a href="?page={{ pages.previous_page_number }}"><<</a></div>
 		{% else %}
 		    <div class="prev_arrow_inactive"><<</div>
@@ -51,6 +62,7 @@
 		{% else %}
 		    <div class="next_arrow_inactive">>></div>
 		{% endif %}
+		{% endcomment %}
 	    </div>
 
 	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
@@ -77,6 +89,13 @@
     <script type="text/javascript">
     window.onload=Dajaxice.publications.set_stars('Dajax.process',{'score':{{publication_score}} });
     </script>
+
+    <!--script type="text/javascript">
+    //text = document.getElementById('page_publication').src;
+    //window.alert(text)
+
+    window.onload=Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1 })
+    </script-->
 
     <script type="text/JavaScript">
     function fullScreen(theURL) {
