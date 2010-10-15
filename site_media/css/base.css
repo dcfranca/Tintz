@@ -367,7 +367,7 @@ body {
 
 .next_arrow {
     position: relative;
-    top: -12px;
+    top: 4px;
     float: right;
     right: 10px;
 }
