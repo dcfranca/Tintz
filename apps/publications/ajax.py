@@ -7,6 +7,8 @@ import logging
 import pdb
 import os, datetime
 
+cur_page = 1
+
 def set_stars(request, score):
 
     star_empty = '/site_media/images/star_empty.png'
@@ -99,3 +101,4 @@ def vote_publication(request, publication_id, rate):
 
     #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % publication.title )
     is_voted = True
+
