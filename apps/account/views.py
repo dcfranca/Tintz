@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import logout as django_logout
 
 from account.utils import get_default_redirect
 from account.models import OtherServiceInfo
@@ -41,6 +42,12 @@ def login(request, form_class=LoginForm,
         "is_me": True,
         "other_user": request.user,
     }, context_instance=RequestContext(request))
+
+def logout(request):
+    success_url = get_default_redirect(request)
+
+    django_logout(request)
+    return  HttpResponseRedirect(success_url)
 
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
@@ -78,7 +85,7 @@ def signup_complete(request, form_class=SignupCompleteForm,
         
     #if request.user.is_authenticated():
     #    return HttpResponseRedirect(success_url)
-        
+
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
