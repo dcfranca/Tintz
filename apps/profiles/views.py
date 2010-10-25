@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden,HttpResponseRedirect
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
@@ -143,6 +144,7 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
                 else:
                     is_edit = True
             elif request.POST["action"] == "edit":
+                template_name="profiles/profile_edit.html"
                 profile_form = ProfileForm(instance=other_user.get_profile())
                 is_edit = True
             else:
@@ -172,7 +174,7 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
     posts = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish").filter(author=other_user)
     
     return render_to_response(template_name, {
-        "profile_form": profile_form,
+        "form": profile_form,
         "is_me": is_me,
         #"is_friend": is_friend,
         "is_follow": is_follow, 
