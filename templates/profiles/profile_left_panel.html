@@ -9,6 +9,15 @@
 	</div> 
 	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
 	<div class="about">{{ other_user.get_profile.about }}</div>
+
+    {% if is_me %}
+        <form method="POST" action="{% url profile_detail other_user %}">
+           <input type="submit" value="Editar" title="{% trans "Editar" %}"/>
+           <input type="hidden" name="action" value="edit" />
+        </form>
+
+    {% endif %}
+
 {% endif %}
 
 {% if user.is_authenticated %}
