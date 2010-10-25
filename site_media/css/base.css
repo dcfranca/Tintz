@@ -341,7 +341,7 @@ body {
     height: 30px;
     width: 200px;
     position: relative;
-    top: 20px;
+    top: 23px;
     left: -40px;
 }
 
@@ -363,13 +363,15 @@ body {
     position: relative;
     float: left;
     left: 10px;
+    cursor: pointer;
 }
 
 .next_arrow {
     position: relative;
-    top: 4px;
+    top: -13px;
     float: right;
     right: 10px;
+    cursor: pointer;
 }
 
 
@@ -398,7 +400,7 @@ body {
     height: 30px;
     width: 100px;
     position: relative;
-    top: 20px;
+    top: 5px;
     left: -30px;
 }
 
@@ -423,7 +425,7 @@ body {
     height: 30px;
     width: 110px;
     position: relative;
-    top: 20px;
+    top: 5px;
     left: -20px;
 }
 
@@ -448,7 +450,7 @@ body {
     height: 30px;
     width: 70px;
     position: relative;
-    top: 20px;
+    top: 5px;
     left: -20px;
 }
 
@@ -466,7 +468,7 @@ body {
     width: 110px;
     position: relative;
     float: right;
-    top: -10px;
+    top: -25px;
     left: 50px;
 }
 
@@ -497,7 +499,9 @@ body {
 
 .comment-body {
     position: relative;
-    left: 25px;
+    float: left;
+    top: 18px;
+    left: -102px;
 }
 
 .separator {
@@ -510,9 +514,18 @@ body {
 
 .delete-comment {
     position: relative;
+    float: left;
+    top: 0px;
+    left: 400px;
+}
+
+.publication-rate {
+    position: relative;
     float: right;
-    top: -40px;
-    left: 500px;
+    top: -20px;
+    left: 220px;
+    font-size: 14pt;
+    font-weight: bold;
 }
 
 .viewer {

@@ -268,12 +268,13 @@ def detailspublication(request, id, username, template_name="publications/detail
             publications_scores = PublicationScore.objects.filter( publication = mypublication )
             total_rates = 0
 
-            if publications_scores.count() > 100:
+            if publications_scores.count() > 0:
                 for rates in publications_scores:
                     total_rates += int(rates.rate)
 
                 mypublication.rate = str(float((float(total_rates)/publications_scores.count())*20))
                 mypublication.save()
+
 
             request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % mypublication.title )
             is_voted = True
@@ -283,6 +284,10 @@ def detailspublication(request, id, username, template_name="publications/detail
         related_publications = TaggedItem.objects.get_by_model( Publication, mypublication.tags ).exclude(author = mypublication.author)
     except Publication.DoesNotExist:
         related_publications = None
+
+    if mypublication.rate == None:
+        mypublication.rate = 0
+        mypublication.save()
 
     pages = range(1, mypublication.nr_pages+1)
     paginator = Paginator(pages, 1)
