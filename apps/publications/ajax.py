@@ -116,8 +116,11 @@ def change_page(request, image_file, publication_id, change):
     format_number = '%03d' % (change_page)
     new_page_file = '/site_media/'+publication.get_basename()+'_'+format_number+'_thumb700'+publication.images_ext
 
+    new_page_text = "Pagina %s" % format_number
+
     dajax = Dajax()
     dajax.assign('#page_publication','src', new_page_file)
+    dajax.assign('#page_number_text','innerText', new_page_text)
 
     return dajax.json()
 
