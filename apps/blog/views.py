@@ -168,15 +168,16 @@ def edit(request, id, form_class=BlogForm, template_name="blog/edit.html"):
                         #if friends: # @@@ might be worth having a shortcut for sending to all friends
                         #    notification.send((x['friend'] for x in Friendship.objects.friends_for_user(blog.author)), "blog_follow_post", {"post": blog})
                 
-                return HttpResponseRedirect(reverse("blog_list_yours"))
+                return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
         else:
             blog_form = form_class(instance=post)
     else:
         blog_form = form_class(instance=post)
 
     return render_to_response(template_name, {
-        "blog_form": blog_form,
+        "form": blog_form,
         "post": post,
+        "other_user": request.user,
     }, context_instance=RequestContext(request))
 
 def slugfy(text, separator):

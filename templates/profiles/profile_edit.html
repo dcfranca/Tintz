@@ -22,8 +22,8 @@
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
 </div>
-<div class="span-12 last">
-    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Configura&ccedil;&otilde;es</div>
+<div class="span-13 last">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">{% trans "Editar Perfil" %}</div>
 
         <form enctype="multipart/form-data" class="standard-form" method="POST" action="">
             <fieldset class="standard-fieldset">
@@ -64,7 +64,7 @@
                 <label for="{{form.website.auto_id}}" class="span-7 last login-label">{{form.website.label}}</label>
                 <div class="span-7 last">{{ form.website }}</div>
 
-                <div class="span-10 pull-5 last">
+                <div class="span-10 pull-8 last">
 		    <input type="hidden" name="action" value="update" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
                 </div>
 
