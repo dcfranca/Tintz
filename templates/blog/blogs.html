@@ -27,9 +27,13 @@
 <div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
 
+        <table class="span-14">
         {% for post in blogs %}
-            <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date:"d/m/Y" }}</div></a>
-                <div class="span-10 last list-description">
+        <tr><td>
+            <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                <div class="list-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
+
+                <div class="span-10 list-description last">
                 {% with post.tease|truncatewords:"50" as body %}
                     {% if post.markup %}
                         {% switch post.markup %}
@@ -41,17 +45,16 @@
                         {{ post.body|force_escape|linebreaks|safe }}
                     {% endif %}
                 {% endwith %}
-                <div class="separator"></div>
                 </div>
 
               {% if is_me %}
                   <div class="span-1 list-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
                   <div class="span-1 list-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
               {% endif %}
-
-
-
+            <div class="separator span-13 last"></div>
+        </td></tr>
         {% endfor %}
+        </table>
 </div>
 {% endblock %}
 
