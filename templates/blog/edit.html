@@ -1,3 +1,69 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
+
+{% block head_title %}{% trans "Tintz - Editar Perfil" %}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-13 last">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Configura&ccedil;&otilde;es</div>
+
+        <form enctype="multipart/form-data" class="standard-form" method="POST" action="">
+            <fieldset class="standard-fieldset">
+                <div class="span-12 errorlist pull-1">
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+
+                <label for="{{form.title.auto_id}}" class="span-7 last login-label">{{form.title.label}}</label>
+                <div class="span-7 last">{{ form.title }}</div>
+
+                <label for="{{form.body.auto_id}}" class="span-7 last login-label">{{form.body.label}}</label>
+                <div class="span-7 last">{{ form.body }}</div>
+
+                <label for="{{form.allow_comments.auto_id}}" class="span-7 last login-label">{{form.allow_comments.label}}</label>
+                <div class="span-7 last">{{ form.allow_comments }}</div>
+
+                <label for="{{form.tags.auto_id}}" class="span-7 last login-label">{{form.tags.label}}</label>
+                <div class="span-7 last">{{ form.tags }}</div>
+
+
+                <div class="span-10 pull-8 last">
+		    <input type="hidden" name="action" value="update" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
+                </div>
+
+
+            </fieldset>
+        </form>
+</div>
+{% endblock %}
+
+
+{% comment %}
+
+
 {% extends "blog/base.html" %}
 
 {% load i18n %}
@@ -6,7 +72,7 @@
 {% block head_title %}{% blocktrans %}Editar Post{% endblocktrans %}{% endblock %}
 
 {% block body %}
-    
+
     {% ifequal post.author request.user %}
         {# @@@ not sure how to bring back teaser toggle with uni_form #}
         <form class="uniForm" id="edit-profile" method="POST" action="">
@@ -21,5 +87,7 @@
     {% else %}
         <p>You are not the author of this post.</p>
     {% endifequal %}
-    
+
 {% endblock %}
+
+{% endcomment %}
