@@ -774,7 +774,6 @@ body {
     color: red;
     font-weight: bold;
     text-decoration: none;
-
 }
 
 .profiles {
@@ -785,4 +784,13 @@ body {
 .profiles-item {
     min-height: 115px;
 
+}
+
+.publication-views {
+    position: relative;
+    float: right;
+    right: -250px;
+    top: 20px;
+    color: red;
+    font-size: 9pt;
 }
