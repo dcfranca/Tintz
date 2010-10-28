@@ -289,7 +289,7 @@ body {
     left: 10px;
 }
 
-.list-title {
+.list-posts-title {
     position: relative;
     top: 20px;
     left: 20px;
@@ -298,7 +298,7 @@ body {
     color: black;
 }
 
-.list-subtitle {
+.list-posts-subtitle {
     color: red;
     position: relative;
     top: 20px;
@@ -307,7 +307,7 @@ body {
     font-size: 8pt;
 }
 
-.list-description {
+.list-posts-description {
     position: relative;
     top: 60px;
     left: -180px;
@@ -316,7 +316,41 @@ body {
     font-size: 9pt;
 }
 
-.list-button {
+.list-posts-button {
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+
+
+.list-pub-title {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    font-size: 13pt;
+    text-decoration: none;
+    color: black;
+}
+
+.list-pub-subtitle {
+    color: red;
+    position: relative;
+    top: 0px;
+    left: -30px;
+    float: right;
+    font-size: 8pt;
+}
+
+.list-pub-description {
+    position: relative;
+    top: 50px;
+    left: 10px;
+    min-height: 200px;
+    text-align: left;
+    font-size: 9pt;
+}
+
+.list-pub-button {
     position: relative;
     top: 0px;
     left: 0px;

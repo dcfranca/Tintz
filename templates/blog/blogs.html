@@ -30,10 +30,10 @@
         <table class="span-14">
         {% for post in blogs %}
         <tr><td>
-            <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                <div class="list-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
+            <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                <div class="list-posts-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
 
-                <div class="span-10 list-description last">
+                <div class="span-10 list-posts-description last">
                 {% with post.tease|truncatewords:"50" as body %}
                     {% if post.markup %}
                         {% switch post.markup %}
@@ -48,8 +48,8 @@
                 </div>
 
               {% if is_me %}
-                  <div class="span-1 list-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
-                  <div class="span-1 list-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
+                  <div class="span-1 list-posts-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
+                  <div class="span-1 list-posts-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
               {% endif %}
             <div class="separator span-13 last"></div>
         </td></tr>
