@@ -766,3 +766,23 @@ body {
     position: relative;
     left: 140px;
 }
+
+.profiles-details, .profiles-details a, .profiles-details a:visited {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    color: red;
+    font-weight: bold;
+    text-decoration: none;
+
+}
+
+.profiles {
+    position: relative;
+    top: 20px;
+}
+
+.profiles-item {
+    min-height: 115px;
+
+}
