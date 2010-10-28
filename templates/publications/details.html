@@ -79,6 +79,8 @@
         <div class="publication-rate span-1 last">
                 {{ publication.rate|stringformat:".1f" }}
         </div>
+        <div class="publication-views">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
+
 	    <div class="comments">
 		{% comments publication %}
 	    </div>
