@@ -37,7 +37,7 @@
 	{% endifequal %}
 	</div>
 
-	<div class="span-5 list-title">
+	<div class="span-8 list-pub-title">
 	{% ifequal publication.status 0 %}
 	    {{ publication.title }}
 	{% else %}
@@ -45,13 +45,13 @@
 	{% endifequal %}
 	</div>
 
-	<div class="span-8 last list-description">{{ publication.description }}</div>
+	<div class="span-8 last list-pub-description">{{ publication.description }}</div>
 	
-	<div class="list-subtitle"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
+	<div class="list-pub-subtitle"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
 	
 	{% if is_me %}
-	    <div class="span-1 list-button"><a href="{% url edit_publication publication.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Publicação"></img></a></div>
-	    <div class="span-1 list-button last"><a href="{% url destroy_publication publication.id %}" onclick=" ConfirmChoice('{% url destroy_publication publication.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Publicação"></img></a></div>
+	    <div class="span-1 list-pub-button"><a href="{% url edit_publication publication.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Publicação"></img></a></div>
+	    <div class="span-1 list-pub-button last"><a href="{% url destroy_publication publication.id %}" onclick=" ConfirmChoice('{% url destroy_publication publication.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Publicação"></img></a></div>
 	{% endif %}	
 
 	
