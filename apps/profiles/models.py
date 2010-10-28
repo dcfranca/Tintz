@@ -66,6 +66,11 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return ('profile_detail', None, {'username': self.user.username})
     get_absolute_url = models.permalink(get_absolute_url)
+
+    def get_small_about(self):
+        if len(self.about) < 200:
+            return self.about
+        return self.about[0:197]+"..."
     
     class Meta:
         verbose_name = _('profile')
