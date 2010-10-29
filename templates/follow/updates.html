@@ -4,4 +4,18 @@
 
 {% block body %}
     <div class="title"><img src="{{MEDIA_URL}}/images/updates.png">Atualiza&ccedil;&otilde;es</div>
+
+
+    <div class="show_updates">
+        {% if notices %}
+
+            {% for notice in notices %}
+                <div class="update-item">
+                    <class="notice_message">{{ notice.message|safe }}</span>
+                    <class="notice_time">{{ notice.added|localtime:account.timezone|time:"P" }}</span>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    </div>
 {% endblock %}

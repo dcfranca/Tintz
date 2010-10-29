@@ -7,7 +7,7 @@ sys.path.append("/Users/danielfranca/Workspace/django/view")
 sys.path.append("/Users/danielfranca/Workspace/django/view/tintz/apps")
 sys.path.append("/Users/danielfranca/Workspace/django/view//pinax//lib/python2.7/site-packages/pinax/apps/")
 
-os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.tintzsettings'
+os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
 
 from django.core.management import setup_environ
 from django.shortcuts import render_to_response, get_object_or_404
@@ -42,9 +42,16 @@ from operator import itemgetter, attrgetter
 FULL_VIEW   = 700
 SIDE_THUMB  = 64
 
-def create_thumbnail(file_path, file_ext, width=150, height=200):
+def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False, cur_datetime = None):
+
     file_name = os.path.splitext(file_path)[0]
     thumb = Image.open(file_path)
+
+
+    if eh_pdf:
+        ind = file_name.find(cur_datetime)
+        if ind > 0:
+            file_name = file_name[0:ind-1]+file_name[ind+len(cur_datetime):len(file_name)]
 
     xsize, ysize = thumb.size
     widht_display = width
@@ -57,6 +64,7 @@ def create_thumbnail(file_path, file_ext, width=150, height=200):
 
 def from_pdf_file(publication, dirname, file_name):
 
+
     import datetime
 
     cur_datetime = datetime.datetime.now()
@@ -67,15 +75,15 @@ def from_pdf_file(publication, dirname, file_name):
 
     os.system(command)
 
-    create_thumbnail(dirname+"/"+file_name+"_"+"001.jpg",".jpg")
+    create_thumbnail(dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"001.jpg",".jpg", eh_pdf=True, cur_datetime=str(cur_datetime))
 
     listfiles = glob.glob( dirname+"/"+file_name+"_"+str(cur_datetime)+"_*.jpg" )
 
     pag = 0
 
     for filename in listfiles:
-        create_thumbnail(filename,".jpg", FULL_VIEW, 1400)
-        create_thumbnail(filename,".jpg", SIDE_THUMB, 128)
+        create_thumbnail(filename,".jpg", FULL_VIEW, 1400, eh_pdf=True, cur_datetime=str(cur_datetime))
+        create_thumbnail(filename,".jpg", SIDE_THUMB, 128, eh_pdf=True, cur_datetime=str(cur_datetime))
         pag += 1
 
     return pag, ".jpg"
@@ -147,7 +155,7 @@ def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
 
     #Create directory if it doesnt exist
-    dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/media/publications/"+publication.author.__unicode__()
+    dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 

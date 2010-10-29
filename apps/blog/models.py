@@ -62,6 +62,12 @@ class Post(models.Model):
     })
     get_absolute_url = models.permalink(get_absolute_url)
 
+    def get_small_text(self):
+        if len(self.body) < 500:
+            return self.body
+        return self.body[0:496]+"..."
+
+
     def save(self, force_insert=False, force_update=False):
         self.updated_at = datetime.now()
         super(Post, self).save(force_insert, force_update)
