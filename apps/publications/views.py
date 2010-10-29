@@ -107,7 +107,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                         if followers:
                             notification.send((x.UserFrom for x in followers), "publication_follow_post", {"publication": publication})
                     request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
-                    return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
+                    return HttpResponseRedirect(reverse('publications', args=(publication.author,)))
 
     calc_age(request.user.get_profile())
     return render_to_response(template_name, {

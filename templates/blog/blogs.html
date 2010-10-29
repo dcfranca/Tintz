@@ -42,7 +42,7 @@
                             {% case 'txl' %}{{ body|force_escape|textile }}{% endcase %}
                         {% endswitch %}
                     {% else %}
-                        {{ post.body|force_escape|linebreaks|safe }}
+                        {{ post.get_small_text|force_escape|linebreaks|safe }}
                     {% endif %}
                 {% endwith %}
                 </div>
