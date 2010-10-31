@@ -16,7 +16,7 @@ import logging
 
 from blog.models import Post
 from blog.forms import *
-from follow.models import FollowAuthor
+from follow.models import FollowAuthor,Update
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -125,18 +125,9 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                 
                 request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
 
-                try:
-                    followers = FollowAuthor.objects.filter( UserTo = blog.author )
-                except FollowAuthor.DoesNotExist:
-                    pass
+                Update.objects.update_followers(blog)
 
-                if notification:
-                    if blog.status == 2: # published
-                        #if friends: # @@@ might be worth having a shortcut for sending to all friends
-                        #   notification.send((x['friend'] for x in Friendship.objects.friends_for_user(blog.author)), "blog_friend_post", {"post": blog})
-                        if followers: # @@@ might be worth having a shortcut for sending to all friends
-                           notification.send((x.UserFrom for x in followers), "blog_follow_post", {"post": blog})
-                
+
                 return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
         else:
             blog_form = form_class()

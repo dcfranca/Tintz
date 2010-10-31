@@ -12,7 +12,7 @@ from django.utils.translation import ugettext
 from profiles.models import Profile
 from profiles.forms import ProfileForm
 from publications.models import Publication
-from follow.models import FollowAuthor
+from follow.models import FollowAuthor,Update
 from notification.models import *
 
 from datetime import *
@@ -28,16 +28,6 @@ if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
     notification = None
-
-def getNotices(request):
-    notices = []
-    notice_types = NoticeType.objects.filter( to_follow=True )
-    for notice_type in notice_types:
-        notices += Notice.objects.notices_for(request.user, notice_type=notice_type,  on_site=True)
-    for medium_id, medium_display in NOTICE_MEDIA:
-        form_label = "%s_%s" % (notice_type.label, medium_id)
-
-    return notices;
 
 def getPublications(request, other_user, is_me):
     publications = []
@@ -68,7 +58,7 @@ def getFollowings(request, other_user):
 @login_complete
 def home(request, template_name="homepage.html"):
     
-    notices = []
+    updates = []
     publications   = []
     followingUsers = []
     followerUsers  = []
@@ -77,7 +67,7 @@ def home(request, template_name="homepage.html"):
 
     if request.user.is_authenticated():
         logging.debug("home - Usuario logado")    
-        notices = getNotices(request)
+        updates = Update.objects.filter(user = request.user)
         publications = getPublications(request, request.user, True)
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
@@ -90,7 +80,8 @@ def home(request, template_name="homepage.html"):
     return render_to_response(template_name, {
         "other_user": request.user,
         "is_me": True,
-        "notices": notices,
+        "updates": updates,
+        "notices": None,
         "publications": publications,
         "followers":followerUsers,
         "followings":followingUsers,
