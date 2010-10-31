@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from publications.models import Publication, PublicationScore
 from profiles.views import calc_age
 from follow.models import FollowAuthor
+
 from publications.forms import PublicationUploadForm, PublicationEditForm
 from tagging.models import *
 from django.http import Http404
@@ -99,14 +100,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                     publication.nr_pages = 0
                     publication.save()
 
-                    try:
-                        followers = FollowAuthor.objects.filter( UserTo = publication.author )
-                    except FollowAuthor.DoesNotExist:
-                        pass
-                    if notification:
-                        if followers:
-                            notification.send((x.UserFrom for x in followers), "publication_follow_post", {"publication": publication})
-                    request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
+                    #request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
                     return HttpResponseRedirect(reverse('publications', args=(publication.author,)))
 
     calc_age(request.user.get_profile())
@@ -276,7 +270,7 @@ def detailspublication(request, id, username, template_name="publications/detail
                 mypublication.save()
 
 
-            request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % mypublication.title )
+            #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % mypublication.title )
             is_voted = True
 
     #Found Related Publications

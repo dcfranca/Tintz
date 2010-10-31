@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from publications.models import Publication
+from follow.models import FollowAuthor, Update
 from follow.models import FollowAuthor
 from publications.forms import PublicationUploadForm, PublicationEditForm
 from tagging.models import *
@@ -194,6 +195,8 @@ def convert2images(publication):
     publication.nr_pages = pages
     publication.images_ext = file_ext
     publication.save()
+    Update.objects.update_followers(publication)
+
 
 
 print 'Starting Process Publications'
