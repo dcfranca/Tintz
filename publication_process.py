@@ -195,7 +195,7 @@ def convert2images(publication):
     publication.nr_pages = pages
     publication.images_ext = file_ext
     publication.save()
-    Update.objects.update_followers(publication)
+    Update.objects.update_followers(1, publication)
 
 
 

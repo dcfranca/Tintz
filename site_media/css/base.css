@@ -528,8 +528,8 @@ body {
 .comment-user {
     font-weight: bold;
     position: relative;
-    left: 6px;
 }
+left: 6px;
 
 .comment-body {
     position: relative;
@@ -827,4 +827,77 @@ body {
     top: 20px;
     color: red;
     font-size: 9pt;
+}
+
+.update-avatar {
+    position: relative;
+    top: 15px;
+    left: -30px;
+}
+
+.update-name, .update-name a, .update-name a:visited {
+    position: relative;
+    top: 7px;
+    left: -15px;
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.update-posts-title {
+    position: relative;
+    top: 10px;
+    left: -30px;
+    font-size: 13pt;
+    text-decoration: none;
+    color: black;
+}
+
+.update-posts-description {
+    position: relative;
+    top: 10px;
+    left: -30px;
+    min-height: 70px;
+    text-align: left;
+    font-size: 9pt;
+}
+
+.update-separator {
+    position: relative;
+    top: 0px;
+    left: -30px;
+    background-color: #E0E0E0;
+    height: 1px;
+    width: 600px;
+}
+
+.update-pub-cover {
+    position: relative;
+    top: 40px;
+    left: -220px;
+
+}
+
+.update-pub-title, .update-pub-title a, .update-pub-title a:visited {
+    position: relative;
+    top: -86px;
+    left: 95px;
+    width: 200px;
+    font-size: 11pt;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.update-pub-description {
+    position: relative;
+    top: -170px;
+    left: 195px;
+    min-height: 70px;
+    text-align: left;
+    font-size: 9pt;
+}
+
+.update-item {
+    position: relative;
 }
