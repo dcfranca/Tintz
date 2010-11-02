@@ -125,7 +125,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                 
                 request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
 
-                Update.objects.update_followers(blog)
+                Update.objects.update_followers(2, blog)
 
 
                 return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))

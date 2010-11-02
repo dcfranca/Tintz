@@ -16,10 +16,10 @@ class FollowAuthor(models.Model):
 class UpdateManager(models.Manager):
 
     #Update followers timeline
-    def update_followers(self, item_to_update):
+    def update_followers(self, type, item_to_update):
         update = Update()
 
-        if item_to_update is Publication:
+        if type == 1:
             update.type = 1
             update.publication = item_to_update
         else:
