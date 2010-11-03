@@ -23,24 +23,18 @@
                 <div class="page-full span-10">
                     {% if pages %}
                        {% for pagenr in pages.object_list %}
-                          <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+                          <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
                        {% endfor %}
                     {% endif %}
                 </div>
 
                 <div class="right-view span-10 pull-2 last">
                     <div class="navigator-full span-2">
-                        {% if pages.has_previous %}
-                            <a class="prev_arrow-full" href="?page={{ pages.previous_page_number }}"><<</a>
-                        {% else %}
-                            <div class="prev_arrow_inactive-full"><<</div>
-                        {% endif %}
-                        <div class="page_number-full">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
-                        {% if pages.has_next %}
-                            <a class="next_arrow-full" href="?page={{ pages.next_page_number }}">>></a>
-                        {% else %}
-                            <div class="next_arrow_inactive-full">>></div>
-                        {% endif %}
+
+                        <div class="prev_arrow-full" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })"><<</div>
+                        <div id="page_number_text" class="page_number-full">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
+                        <div class="next_arrow-full" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">>></div>
+
                     </div>
                     <div class="fullscreen-close span-2 last"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen_close.png"></a></div>
 
@@ -50,9 +44,9 @@
                            {% for pagenr in pages_viewer.object_list %}
                            {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
                               <td class="thumb-page">
-                                <a href="?page={{ pagenr }}">
+                                <div class="thumb-page-click" onclick="Dajaxice.publications.change_to_newpage('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'new_page':{{ pagenr }} })">
                                 <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" title="P&aacute;gina    {{ pagenr }}"/>
-                                </a>
+                                </div>
                               </td>
                               {% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
                            {% endfor %}

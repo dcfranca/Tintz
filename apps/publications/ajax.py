@@ -8,6 +8,7 @@ import pdb
 import os, datetime
 from tintz import settings
 import dajax
+import logging
 
 cur_page = 1
 
@@ -102,6 +103,8 @@ def vote_publication(request, publication_id, rate):
 
 def change_page(request, image_file, publication_id, change):
 
+    logging.debug("Change_Page - Inicio")
+
     publication = Publication.objects.get(pk=publication_id)
 
     cur_page= int(image_file[len(image_file)-16:len(image_file)-13])
@@ -122,6 +125,38 @@ def change_page(request, image_file, publication_id, change):
     dajax.assign('#page_publication','src', new_page_file)
     dajax.assign('#page_number_text','innerText', new_page_text)
 
+    logging.debug("Change_Page - Fim")
+
     return dajax.json()
 
 dajaxice_functions.register(change_page)
+
+def change_to_newpage(request, image_file, publication_id, new_page):
+
+    logging.debug("Change_Page - Inicio")
+
+    publication = Publication.objects.get(pk=publication_id)
+
+    cur_page= int(image_file[len(image_file)-16:len(image_file)-13])
+    dajax = Dajax()
+
+    change_page = new_page
+
+    if change_page > publication.nr_pages or change_page < 1:
+        return dajax.json()
+
+
+    format_number = '%03d' % (change_page)
+    new_page_file = '/site_media/'+publication.get_basename()+'_'+format_number+'_thumb700'+publication.images_ext
+
+    new_page_text = "Pagina %s" % format_number
+
+    dajax = Dajax()
+    dajax.assign('#page_publication','src', new_page_file)
+    dajax.assign('#page_number_text','innerText', new_page_text)
+
+    logging.debug("Change_Page - Fim")
+
+    return dajax.json()
+
+dajaxice_functions.register(change_to_newpage)

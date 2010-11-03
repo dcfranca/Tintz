@@ -41,28 +41,12 @@
            <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_001_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 	    </div>
 
-        document.getElementById('page_publication').src
-
         <div class="navigator span-2">
 
             <div class="prev_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })"><<</div>
             <div id="page_number_text" class="page_number">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
             <div class="next_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">>></div>
 
-
-		 {% comment %}
-         {% if pages.has_previous %}
-		    <div class="prev_arrow"><a href="?page={{ pages.previous_page_number }}"><<</a></div>
-		{% else %}
-		    <div class="prev_arrow_inactive"><<</div>
-		{% endif %}
-		<div class="page_number">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
-		{% if pages.has_next %}
-		    <a class="next_arrow" href="?page={{ pages.next_page_number }}">>></a>
-		{% else %}
-		    <div class="next_arrow_inactive">>></div>
-		{% endif %}
-		{% endcomment %}
 	    </div>
 
 	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
