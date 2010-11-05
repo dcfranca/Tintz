@@ -26,8 +26,7 @@
 </div>
 <div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
-
-        <table class="span-14">
+        <table id="list-posts" class="span-14">
         {% for post in blogs %}
         <tr><td>
             <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
@@ -55,6 +54,10 @@
         </td></tr>
         {% endfor %}
         </table>
+    <div id="last_post" style="display: none">10</div>
+
+    <div class="more span-10 last" onclick="Dajaxice.blog.more_posts('Dajax.process',{ 'other_user_id': {{ other_user.id }}, 'last_post':document.getElementById('last_post').innerHTML })">{% trans "Postagens anteiores" %} >></div>
+
 </div>
 {% endblock %}
 

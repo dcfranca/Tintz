@@ -32,12 +32,6 @@
 	{% else %}
 
 	    <div class="publication_page last">
-	      {% comment %} {% if pages %}
-		  {% for pagenr in pages.object_list %}
-		     <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
-		  {% endfor %}
-	       {% endif %}
-	       {% endcomment %}
            <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_001_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
 	    </div>
 

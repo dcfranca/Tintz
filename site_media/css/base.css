@@ -50,6 +50,20 @@ body {
     width: 700px;
 }
 
+.more {
+    position: relative;
+    top: 20px;
+    left: -40px;
+    text-align: right;
+    background: #232323;
+    color: white;
+    font-weight: bold;
+    font-size: 11px;
+    height: 20px;
+    width: 700px;
+    cursor: pointer;
+}
+
 .title-profile {
     position: relative;
     left: -40px;
