@@ -9,8 +9,10 @@ import os, datetime
 from tintz import settings
 import dajax
 import logging
-
-cur_page = 1
+from django.contrib.auth.models import User
+from operator import div
+from django.template.defaulttags import ifequal
+from django.core.urlresolvers import reverse
 
 def set_stars(request, score):
 
@@ -160,3 +162,74 @@ def change_to_newpage(request, image_file, publication_id, new_page):
     return dajax.json()
 
 dajaxice_functions.register(change_to_newpage)
+
+def more_publications(request, other_user_id, last_publication):
+    publications = []
+
+    more_num = 5
+
+    other_user = User.objects.get( pk = other_user_id )
+    media_url = '/site_media/'
+
+    last_pub = int(last_publication)
+
+    if other_user == request.user:
+        is_me = True
+    else:
+        is_me = False
+
+
+    template = """<div class="span-4 publications-cover">
+                    <a href="%s">
+                    <img src="%s%s" href="%s" alt="%s"/></a>
+                  </div>
+
+                  <div class="span-8 list-pub-title">
+                    <a href="%s">%s</a>
+                  </div>
+
+                  <div class="span-8 last list-pub-description">%s</div>
+                  <div class="list-pub-subtitle"> %s </div>
+                  """
+
+    if is_me:
+        template += """<div class="span-1 list-pub-button"><a href="%s" ><img src="%simages/publication_edit.png" title="Editar Publica&ccedil;&atilde;o"></img></a></div>
+                       <div class="span-1 list-pub-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Publica&ccedil;&atilde;o"></img></a></div>"""
+
+
+    if is_me == True:
+        publications = Publication.objects.filter( author = other_user )[last_pub:last_pub+more_num]
+    else:
+        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age )[last_pub:last_pub+more_num]
+
+    htmlOutput = ""
+
+    for publication in publications:
+        str_pages = str(publication.nr_pages)
+        if publication.nr_pages > 1:
+            str_pages += 'P&aacute;ginas'
+        else:
+            str_pages += 'P&aacute;gina'
+
+        link_details = reverse('publication_details', args=(publication.author,publication.id,))
+        link_edit = reverse('edit_publication', args=(publication.id,))
+        link_destroy = reverse('destroy_publication', args=(publication.id,))
+
+        if is_me:
+            htmlOutput += template % ( link_details, media_url, publication.get_thumbnail150_name(), link_details, publication.title,
+            link_details, publication.title, publication.get_small_text(), str_pages, link_edit, media_url, link_destroy, link_destroy ,media_url )
+        else:
+            htmlOutput += template % ( link_details, media_url, publication.get_thumbnail150_name(), link_details, publication.title,
+            link_details, publication.title, publication.get_small_text(), str_pages,  )
+
+
+    dajax = Dajax()
+    dajax.append('#list-publications','innerHTML', htmlOutput)
+    dajax.assign('#last_publication','innerText', last_pub+len(publications))
+
+    return dajax.json()
+
+
+dajaxice_functions.register(more_publications)
+
+

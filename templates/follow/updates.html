@@ -11,8 +11,7 @@
 
     <div class="show_updates span-14">
         {% if updates %}
-
-            <table>
+            <table id="list-updates">
             <tr><td>
             {% for update in updates %}
                 <div class="update-item span-14">
@@ -44,4 +43,5 @@
             </table>
         {% endif %}
     </div>
+
 {% endblock %}
