@@ -24,7 +24,7 @@
 
 <div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">{{ title }}</div>
-    <div class="profiles">
+    <div id="list-profiles" class="profiles">
     {% for profile in other_profiles %}
        <tr><td>
        <div class="profiles-item">
@@ -35,7 +35,12 @@
        </div>
        </td></tr>
     {% endfor %}
+
     </div>
+    <div id="last_profile" style="display: none">10</div>
+
+    <div class="more span-10 last" onclick="Dajaxice.profiles.more_profiles('Dajax.process',{ 'other_user_id': {{ other_user.id }}, 'last_profile':document.getElementById('last_profile').innerHTML, 'type':'{{ title }}' })">{% trans "Mais perfis" %} >></div>
+
 </div>
 
 {% endblock %}
