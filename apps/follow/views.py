@@ -24,6 +24,8 @@ def followers(request,  username):
         for  follow in followers:        
             users.append( follow.UserFrom ) 
             
+    users = users[0:10]
+
     if request.user == user:
         is_me = True
     else:
@@ -44,6 +46,8 @@ def following(request,  username):
         followings = FollowAuthor.objects.filter( UserFrom = user )
         for  follow in followings:
             users.append( follow.UserTo )
+
+    users = users[0:10]
         
     if request.user == user:
         is_me = True
