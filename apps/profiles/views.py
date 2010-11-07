@@ -16,6 +16,7 @@ from follow.models import FollowAuthor,Update
 from notification.models import *
 
 from datetime import *
+from blog.models import Post
 
 from avatar.templatetags.avatar_tags import avatar
 from account.utils import login_complete
@@ -38,7 +39,7 @@ def getPublications(request, other_user, is_me):
             publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age )        
     except Publication.DoesNotExist:
         pass
-    return publications[:4]
+    return publications
 
 def getFollowers(request, other_user):
     followers = FollowAuthor.objects.filter( UserTo = other_user )
@@ -94,13 +95,29 @@ def profiles(request, template_name="profiles/profiles.html"):
         "title": "Perfis",
     }, context_instance=RequestContext(request))
 
+def button_follow(request, other_user):
+    follow = FollowAuthor()
+    follow.UserFrom = request.user
+    follow.UserTo = other_user
+    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
+    follow.save()
+
+
+def button_unfollow(request, other_user):
+    try:
+        follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
+        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        follow.delete()
+    except FollowAuthor.DoesNotExist:
+        pass
+
 def profile(request, username, to_follow = None, template_name="profiles/profile.html"):
     other_user = get_object_or_404(User, username=username)
     publications = []
     is_follow = False
-    
+
     calc_age(other_user.get_profile())
-    
+
     if request.user == other_user:
         is_me = True
     else:
@@ -115,15 +132,18 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
     calc_age(request.user.get_profile())
 
     publications = getPublications(request, other_user, is_me)
-    
+
     #Finding followings
     followinUsers = getFollowings(request,other_user)
-            
-    #Finding followers            
-    followerUsers = getFollowers(request,other_user)    
-    
+
+    #Finding followers
+    followerUsers = getFollowers(request,other_user)
+
+    blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
+    posts = blogs.filter(author=other_user)
+
     is_edit = False
-    
+
     if is_me:
         if request.method == "POST":
             if request.POST["action"] == "update":
@@ -143,8 +163,8 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
         else:
             profile_form = ProfileForm(instance=other_user.get_profile())
     else:
-        profile_form = None        
-        
+        profile_form = None
+
     if request.user.is_authenticated:
         try:
             follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=other_user )
@@ -152,50 +172,35 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
                 is_follow = True
             else:
                 is_follow = False
-                
+
         except FollowAuthor.DoesNotExist:
             pass
 
-#    other_friends = other_friends[:10]
+    nr_publications = len(publications)
+    nr_posts        = len(posts)
+    nr_followings   = len(followinUsers)
+    nr_followers    = len(followerUsers)
+
     publications  = publications[:6]
+    posts         = posts[:8]
     followinUsers = followinUsers[:21]
     followerUsers = followerUsers[:21]
 
-    #posts no blog
-    posts = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish").filter(author=other_user)
-    
     return render_to_response(template_name, {
         "form": profile_form,
         "is_me": is_me,
-        #"is_friend": is_friend,
-        "is_follow": is_follow, 
+        "is_follow": is_follow,
         "other_user": other_user,
-        #"other_friends": other_friends,
-        #"invite_form": invite_form,
-        #"previous_invitations_to": previous_invitations_to,
-        #"previous_invitations_from": previous_invitations_from,
-        "publications": publications, 
+        "publications": publications,
         "followings": followinUsers,
         "followers": followerUsers,
         "is_edit": is_edit,
         "posts": posts,
-    }, context_instance=RequestContext(request))
-
-
-def button_follow(request, other_user):
-    follow = FollowAuthor()
-    follow.UserFrom = request.user
-    follow.UserTo = other_user
-    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
-    follow.save()
-
-def button_unfollow(request, other_user):
-    try:
-        follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
-        follow.delete()
-    except FollowAuthor.DoesNotExist:
-        pass
+        "nr_publications": nr_publications,
+        "nr_posts": nr_posts,
+        "nr_followings": nr_followings,
+        "nr_followers": nr_followers,
+        }, context_instance=RequestContext(request))
 
 
 def calc_age(profile):

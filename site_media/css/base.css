@@ -805,10 +805,38 @@ left: 6px;
     min-width: 30px;
 }
 
+.preview-blog {
+    position: relative;
+    top: -15px;
+}
+
+.post-profile {
+    position: relative;
+    left: -40px;
+}
+
+.list-title, .list-title a, .list-title a:visited {
+    background: #F5F5F5;
+    width: 290px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    margin-bottom: 1px;
+    text-decoration: none;
+    color:black;
+    font-size: 9pt;
+
+}
+
+.publications-profile {
+    position: relative;
+    top: -14px;
+}
+
 .preview-contacts {
     position: relative;
     left: -40px;
-    top: 10px;
+    top: -5px;
     min-width: 300px;
 }
 
@@ -920,4 +948,17 @@ left: 6px;
 
 .thumb-page-click {
     cursor: pointer;
+}
+
+.items-count {
+    position: relative;
+    float: right;
+    top: 3px;
+    right: 2px;
+}
+
+.items-nr {
+    position: relative;
+    left: 8px;
+    top: -23px;
 }
