@@ -22,7 +22,7 @@
     {% include "profiles/profile_left_panel.html" %}
 </div>
 <div class="span-8" id="center-panel">
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</div>
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es<div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_publications }}</div></div></div>
     <div class="publications-profile">
         <table>
             {% for publication in publications %}
@@ -39,21 +39,20 @@
     </div>
 </div>
 <div class="span-8 last" id="right-panel">
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_blog.png"><a href="{% url blog_list_user other_user %}">Posts no Blog</a><div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_posts }}</div></div></div>
     <div class="preview-blog">
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_blog.png"><a href="{% url blog_list_user other_user %}">Posts no Blog</a></div>
         <table>
             <tr>
                 <td class="span-4 post-profile">
-                    {% for post in blogs %}
+                    {% for post in posts %}
                         <a class="span-5 list-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                     {% endfor %}
                 </td>
             </tr>
         </table>
-
     </div>
 
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url following other_user %}">Seguindo</a></div>
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url following other_user %}">Seguindo</a><div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_followings }}</div></div></div>
     <div class="preview-contacts">
         <table>
             {% for following in followings %}
@@ -65,7 +64,7 @@
             {% if followings|length|divisibleby:"7" %}{% else %}</tr>{% endif %}
         </table>
     </div>
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url followers other_user %}">Seguidores</a></div>
+    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url followers other_user %}">Seguidores</a><div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_followers }}</div></div></div>
     <div class="preview-contacts">
         <table>
             {% for follower in followers %}
