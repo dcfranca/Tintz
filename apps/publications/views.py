@@ -366,7 +366,7 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
 	    page_view += 1
 
     if page == 1 and page_view > 1:
-	page = (21*(page_view-1))+1
+	    page = (21*(page_view-1))+1
 
     # If page request (9999) is out of range, deliver last page of results.
     try:
@@ -387,8 +387,8 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
         "pages": pages,
         "file_ext":publication.images_ext,
         "is_me": is_me,
-	"pages": publication_pages,
-	"pages_viewer":pages_viewer,
+	    "pages": publication_pages,
+	    "pages_viewer":pages_viewer,
         "other_user": publication.author,
     }, context_instance=RequestContext(request))
 
