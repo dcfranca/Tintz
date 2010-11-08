@@ -868,7 +868,7 @@ left: 6px;
     position: relative;
     float: right;
     right: -250px;
-    top: 20px;
+    top: 27px;
     color: red;
     font-size: 9pt;
 }
@@ -961,4 +961,16 @@ left: 6px;
     position: relative;
     left: 8px;
     top: -23px;
+}
+
+.list_related-publications {
+    position: relative;
+    float: left;
+    left: -30px;
+    top: 20px;
+    width: 700px;
+}
+
+.related-publication {
+    position: relative;
 }
