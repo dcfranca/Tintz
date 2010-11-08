@@ -12,7 +12,7 @@
 
     {% if is_me %}
         <form method="POST" action="{% url profile_detail other_user %}">
-           <input type="submit" value="Editar" title="{% trans "Editar" %}"/>
+           <input class="submit-edit" type="submit" value="Editar" title="{% trans "Editar" %}"/>
            <input type="hidden" name="action" value="edit" />
         </form>
 
