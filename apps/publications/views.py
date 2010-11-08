@@ -31,6 +31,7 @@ import os, datetime
 from PIL import Image
 
 #service = JSONRPCService()
+from django.core.context_processors import request
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -123,6 +124,17 @@ def publications(request, username, template_name="publications/latest.html"):
     followingUsers = []
     followerUsers  = []
 
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=other_user )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+
+    except FollowAuthor.DoesNotExist:
+        pass
+
     if request.user.is_authenticated():
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
@@ -152,6 +164,7 @@ def publications(request, username, template_name="publications/latest.html"):
         "title": u"Minhas Publicações",
         "followers":followerUsers,
         "followings":followingUsers,
+        "is_follow":is_follow,
     }, context_instance=RequestContext(request))
 
 @login_required
@@ -209,10 +222,6 @@ def detailspublication(request, id, username, template_name="publications/detail
     """
 
     mypublication = get_object_or_404(Publication, id=id)
-    # @@@: test
-    #if not publication.is_public and request.user != publication.author:
-    #    raise Http404
-    #publication_url = publication.get_display_url()
 
     title = mypublication.title
     host = "http://%s" % get_host(request)
@@ -220,6 +229,17 @@ def detailspublication(request, id, username, template_name="publications/detail
     publications   = []
     followingUsers = []
     followerUsers  = []
+
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=mypublication.author )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
+
 
     if request.user.is_authenticated():
         publications = getPublications(request, mypublication.author, True)
@@ -311,6 +331,7 @@ def detailspublication(request, id, username, template_name="publications/detail
 	    "pages": publication_pages,
 	    "file_ext": mypublication.images_ext,
         "followings":followingUsers,
+        "is_follow":is_follow,
     }, context_instance=RequestContext(request))
 
 def viewerpublication(request, username, id, template_name="publications/viewer.html"):

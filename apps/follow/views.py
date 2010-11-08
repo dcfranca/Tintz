@@ -26,6 +26,16 @@ def followers(request,  username):
             
     users = users[0:10]
 
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
+
     if request.user == user:
         is_me = True
     else:
@@ -36,6 +46,7 @@ def followers(request,  username):
         "title": "Seguidores", 
         "is_me": is_me,
         "other_user": user,
+        "is_follow": is_follow,
     }, context_instance=RequestContext(request))
 
 @login_required
@@ -48,6 +59,16 @@ def following(request,  username):
             users.append( follow.UserTo )
 
     users = users[0:10]
+
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
         
     if request.user == user:
         is_me = True
@@ -58,7 +79,8 @@ def following(request,  username):
         "other_profiles": users,
         "title": "Seguindo",
         "is_me": is_me,
-        "other_user": user,         
+        "other_user": user,
+        "is_follow": is_follow,
     }, context_instance=RequestContext(request))   
 
 
