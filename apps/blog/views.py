@@ -27,16 +27,29 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     is_me = False
     user = None
-    
+
+
     if username is not None:
         user = get_object_or_404(User, username=username.lower())
         blogs = blogs.filter(author=user)[0:10]
     else:
         blogs = blogs.filter(author=request.user)[0:10]
     
+
     if user == None:
         user = request.user
     
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
+
+
     if request.user == user:
         is_me = True     
 
@@ -44,6 +57,7 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
         "blogs": blogs,
         "other_user": user,
         "is_me": is_me,
+        "is_follow":is_follow,
     }, context_instance=RequestContext(request))
 
 
@@ -134,10 +148,22 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
     else:
         blog_form = form_class()
 
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=other_user )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
+
+
     return render_to_response(template_name, {
         "form": blog_form,
         "is_me": True,
         "other_user": request.user,
+        "is_follow":is_follow,
     }, context_instance=RequestContext(request))
 
 @login_required

@@ -99,7 +99,6 @@ def vote_publication(request, publication_id, rate):
         publication.rate = str(float((float(total_rates)/publications_scores.count())*20))
         publication.save()
 
-    #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % publication.title )
     is_voted = True
 
 

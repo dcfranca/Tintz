@@ -98,7 +98,7 @@ class SignupForm(forms.Form):
         
         new_user = User.objects.create_user(username, email, password)
         if email:
-            new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
+            #new_user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': email})
             EmailAddress.objects.add_email(new_user, email)
         
         return username, password,  email # required for authenticate()
@@ -179,7 +179,7 @@ class OpenIDSignupForm(forms.Form):
         new_user = User.objects.create_user(username, "", "!")
 
         if email:
-            new_user.message_set.create(message=u"Confirmação enviada para %s" % email)
+            #new_user.message_set.create(message=u"Confirmação enviada para %s" % email)
             EmailAddress.objects.add_email(new_user, email)
 
         if self.openid:
@@ -216,7 +216,7 @@ class AddEmailForm(UserForm):
         raise forms.ValidationError(_(u"Este email já está associado com esta conta."))
 
     def save(self):
-        self.user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': self.cleaned_data["email"]})
+        #self.user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': self.cleaned_data["email"]})
         return EmailAddress.objects.add_email(self.user, self.cleaned_data["email"])
 
 
@@ -240,7 +240,7 @@ class ChangePasswordForm(UserForm):
     def save(self):
         self.user.set_password(self.cleaned_data['password1'])
         self.user.save()
-        self.user.message_set.create(message=ugettext(u"Senha alterada com sucesso."))
+        #self.user.message_set.create(message=ugettext(u"Senha alterada com sucesso."))
 
 
 class SetPasswordForm(UserForm):
@@ -257,7 +257,7 @@ class SetPasswordForm(UserForm):
     def save(self):
         self.user.set_password(self.cleaned_data["password1"])
         self.user.save()
-        self.user.message_set.create(message=ugettext(u"Senhada criada com sucesso."))
+        #self.user.message_set.create(message=ugettext(u"Senhada criada com sucesso."))
 
 class ResetPasswordForm(forms.Form):
 
@@ -293,7 +293,7 @@ class ChangeTimezoneForm(AccountForm):
     def save(self):
         self.account.timezone = self.cleaned_data["timezone"]
         self.account.save()
-        self.user.message_set.create(message=ugettext(u"Timezone successfully updated."))
+        #self.user.message_set.create(message=ugettext(u"Timezone successfully updated."))
 
 class ChangeLanguageForm(AccountForm):
 
@@ -306,7 +306,7 @@ class ChangeLanguageForm(AccountForm):
     def save(self):
         self.account.language = self.cleaned_data["language"]
         self.account.save()
-        self.user.message_set.create(message=ugettext(u"Language successfully updated."))
+        #self.user.message_set.create(message=ugettext(u"Language successfully updated."))
 
 
 # @@@ these should somehow be moved out of account or at least out of this module
@@ -328,4 +328,4 @@ class TwitterForm(UserForm):
             twitter_user = self.cleaned_data['username'],
             twitter_password = get_twitter_password(settings.SECRET_KEY, self.cleaned_data['password']),
         )
-        self.user.message_set.create(message=ugettext(u"Successfully authenticated."))
+        #self.user.message_set.create(message=ugettext(u"Successfully authenticated."))
