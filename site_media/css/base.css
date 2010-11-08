@@ -974,3 +974,15 @@ left: 6px;
 .related-publication {
     position: relative;
 }
+
+.submit-edit {
+    position: relative;
+    background: white;
+    top: 10px;
+    margin-bottom: 15px;
+    left: -10px;
+    border: 1px;
+    font-size: 9pt;
+    font-weight: bold;
+    cursor: pointer;
+}
