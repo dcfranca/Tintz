@@ -76,3 +76,29 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_elements %}
+
+    <script type="text/javascript">
+
+    function handleArrowKeys(evt) {
+        evt = (evt) ? evt : ((window.event) ? event : null);
+        if (evt) {
+            switch (evt.keyCode) {
+                //Left
+                case 37:
+                    Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })
+                    break;
+                //Right
+                case 39:
+                    Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })
+                    break;
+             }
+        }
+    }
+
+    document.onkeyup = handleArrowKeys;
+
+    </script>
+
+{% endblock %}
