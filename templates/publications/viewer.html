@@ -36,7 +36,7 @@
                         <div class="next_arrow-full" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">>></div>
 
                     </div>
-                    <div class="fullscreen-close span-2 last"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href=""><img src="{{MEDIA_URL}}/images/fullscreen_close.png"></a></div>
+                    <div class="fullscreen-close span-2 last"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href="javascript:window.opener='x';window.close();"><img src="{{MEDIA_URL}}/images/fullscreen_close.png"></a></div>
 
                     <div class="page-viewer span-5 push-2 last">
                         {% if pages %}
