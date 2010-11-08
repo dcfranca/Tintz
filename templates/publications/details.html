@@ -59,6 +59,19 @@
         </div>
         <div class="publication-views">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
 
+        <div class="list_related-publications">
+        <table>
+            {%  for related_publication in related_publications %}
+                <td>
+                <div class="related-publication">
+                    <a href="{% url publication_details related_publication.author related_publication.id %}">
+                    <img src="{{ MEDIA_URL }}{{ related_publication.get_thumbnail150_name }}" href="{% url publication_details related_publication.author related_publication.id %}" title="{{ related_publication.title }}"/></a>
+                </div>
+                </td>
+            {% endfor %}
+        </table>
+        </div>
+
 	    <div class="comments">
 		{% comments publication %}
 	    </div>

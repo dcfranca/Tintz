@@ -275,7 +275,7 @@ def detailspublication(request, id, username, template_name="publications/detail
 
     #Found Related Publications
     try:
-        related_publications = TaggedItem.objects.get_by_model( Publication, mypublication.tags ).exclude(author = mypublication.author)
+        related_publications = TaggedItem.objects.get_by_model( Publication, mypublication.tags ).exclude(author = mypublication.author)[:4]
     except Publication.DoesNotExist:
         related_publications = None
 
