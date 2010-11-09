@@ -33,12 +33,19 @@ class UpdateManager(models.Manager):
         if type == 1:
             update.type = 1
             update.publication = item_to_update
-        else:
+        elif type == 2:
             update.post = item_to_update
             update.type = 2
+        elif type == 0:
+            subject = _("Tintz - Novo Seguidor")
+            message_html = render_to_string("follow/new_follower_message.html", {
+                "follower": item_to_update,
+            })
+            send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email], priority="high")
+            return
+
 
         update.date_post = datetime.datetime.now()
-
 
         try:
             followers = FollowAuthor.objects.filter( UserTo = item_to_update.author )
@@ -70,12 +77,6 @@ class UpdateManager(models.Manager):
                         subject = _("Tintz - Novo Post")
                         message_html = render_to_string("follow/new_post_message.html", {
                             "update": update,
-                        })
-                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
-                    elif type == 0 and follower_settings.email_follow == True:
-                        subject = _("Tintz - Novo Seguidor")
-                        message_html = render_to_string("follow/new_follower_message.html", {
-                            "follower": follower,
                         })
                         send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
 
