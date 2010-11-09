@@ -273,7 +273,7 @@ class ResetPasswordForm(forms.Form):
             new_password = User.objects.make_random_password()
             user.set_password(new_password)
             user.save()
-            subject = _("Alterar Senha")
+            subject = _("Tintz Alterar Senha")
             message = render_to_string("account/password_reset_message.txt", {
                 "user": user,
                 "new_password": new_password,

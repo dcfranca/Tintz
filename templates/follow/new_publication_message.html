@@ -1,0 +1,20 @@
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load markup %}
+{% load switchcase %}
+{% load avatar_tags %}
+
+<html><body>
+<div class="update-avatar span-2"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{% avatar update.publication.author 70 %}</a></div>
+<div class="update-name span-5 last"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a></div>
+
+<div class="update-pub-cover span-4">
+<a href="{% url publication_details update.publication.author update.publication.id %}">
+<img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+</div>
+<div class="update-pub-title span-5 last">
+<a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
+</div>
+<div class="span-10 last update-pub-description">{{ update.publication.get_small_text }}</div>
+</body></html>
