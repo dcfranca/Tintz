@@ -99,6 +99,7 @@ def button_follow(request, other_user):
     follow = FollowAuthor()
     follow.UserFrom = request.user
     follow.UserTo = other_user
+    Update.objects.update_followers(0, other_user)
     #request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
