@@ -17,6 +17,7 @@ import logging
 from blog.models import Post
 from blog.forms import *
 from follow.models import FollowAuthor,Update
+from tintzsettings.models import TintzSettings
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -137,7 +138,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                     blog.creator_ip = request.META['REMOTE_ADDR']
                 blog.save()
                 
-                request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
+                #request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
 
                 Update.objects.update_followers(2, blog)
 
@@ -148,22 +149,11 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
     else:
         blog_form = form_class()
 
-    is_follow = False
-    try:
-        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=other_user )
-        if follow:
-            is_follow = True
-        else:
-            is_follow = False
-    except FollowAuthor.DoesNotExist:
-        pass
-
-
     return render_to_response(template_name, {
         "form": blog_form,
         "is_me": True,
         "other_user": request.user,
-        "is_follow":is_follow,
+        "is_follow":False,
     }, context_instance=RequestContext(request))
 
 @login_required

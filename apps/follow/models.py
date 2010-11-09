@@ -6,6 +6,17 @@ from django.contrib.auth.models import User
 from apps.publications.models import Publication
 from apps.blog.models import Post
 import datetime
+from tintzsettings.models import TintzSettings
+from emailconfirmation.models import EmailAddress
+from django.utils.translation import ugettext_lazy as _, ugettext
+from django.template.loader import render_to_string
+
+from misc.utils import get_send_mail
+from markdown import message
+import settings
+import user
+
+send_mail = get_send_mail()
 
 class FollowAuthor(models.Model):
     
@@ -28,6 +39,7 @@ class UpdateManager(models.Manager):
 
         update.date_post = datetime.datetime.now()
 
+
         try:
             followers = FollowAuthor.objects.filter( UserTo = item_to_update.author )
         except FollowAuthor.DoesNotExist:
@@ -35,10 +47,37 @@ class UpdateManager(models.Manager):
 
         if followers:
             for follower in followers:
-                update.id = None
-                update.user = follower.UserFrom
-                update.save()
+                if type != 0:
+                    update.id = None
+                    update.user = follower.UserFrom
+                    update.save()
 
+                #Check if it's to send Email
+                follower_settings = None
+                try:
+                    follower_settings = TintzSettings.objects.get( user = follower )
+                except:
+                    continue
+
+                if follower_settings != None:
+                    if type == 1 and follower_settings.email_publication:
+                        subject = _("Tintz - Nova Publica&ccedil;&atilde;o")
+                        message_html = render_to_string("follow/new_publication_message.html", {
+                            "update": update,
+                        })
+                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                    elif type == 2 and follower_settings.email_post == True:
+                        subject = _("Tintz - Novo Post")
+                        message_html = render_to_string("follow/new_post_message.html", {
+                            "update": update,
+                        })
+                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                    elif type == 0 and follower_settings.email_follow == True:
+                        subject = _("Tintz - Novo Seguidor")
+                        message_html = render_to_string("follow/new_follower_message.html", {
+                            "follower": follower,
+                        })
+                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
 
 class Update(models.Model):
 
