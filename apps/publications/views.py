@@ -149,9 +149,9 @@ def publications(request, username, template_name="publications/latest.html"):
     logging.debug("Publications - Step 2")
 
     if is_me == True:
-        publications = Publication.objects.filter( author = other_user )[0:5]
+        publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[0:5]
     else:
-        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age )[0:5]
+        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[0:5]
 
     for publication in publications:
         logging.debug("Publication Title %s" % publication.title)

@@ -10,6 +10,7 @@ from tintzsettings.models import TintzSettings
 from emailconfirmation.models import EmailAddress
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 from misc.utils import get_send_mail
 from markdown import message
@@ -22,6 +23,11 @@ class FollowAuthor(models.Model):
     
     UserFrom = models.ForeignKey(User, related_name="following", verbose_name=_('follower'))    
     UserTo = models.ForeignKey(User, related_name="follower", verbose_name=_('following'))
+
+def send_mail_html(subject, message_html, email_from, email_to, priority):
+    msg = EmailMessage(subject, message_html, email_from, email_to)
+    msg.content_subtype = 'html'
+    msg.send()
 
 
 class UpdateManager(models.Manager):
@@ -41,7 +47,7 @@ class UpdateManager(models.Manager):
             message_html = render_to_string("follow/new_follower_message.html", {
                 "follower": item_to_update,
             })
-            send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email], priority="high")
+            send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email], priority="high")
             return
 
 
@@ -72,13 +78,13 @@ class UpdateManager(models.Manager):
                         message_html = render_to_string("follow/new_publication_message.html", {
                             "update": update,
                         })
-                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                        send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
                     elif type == 2 and follower_settings.email_post == True:
                         subject = _("Tintz - Novo Post")
                         message_html = render_to_string("follow/new_post_message.html", {
                             "update": update,
                         })
-                        send_mail(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                        send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
 
 class Update(models.Model):
 

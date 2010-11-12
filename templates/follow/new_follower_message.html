@@ -5,6 +5,10 @@
 {% load switchcase %}
 {% load avatar_tags %}
 
-<html><body>
-O usuario {{ follower.get_profile.name }} {{ follower.get_profile.lastname }} est&aacute; seguindo voc&ecirc;
-</body></html>
+<html>
+<body>
+<a href="http://127.0.0.1:8000{% url profile_detail follower %}" title="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}"><img src="http://127.0.0.1:8000{%  avatar_url follower 70 %}" alt="{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }}" width="70" height="70" /></a>
+<br>
+{{ follower.get_profile.first_name }} {{ follower.get_profile.last_name }} est&aacute; seguindo voc&ecirc;
+</body>
+</html>
