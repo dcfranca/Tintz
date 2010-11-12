@@ -165,7 +165,7 @@ dajaxice_functions.register(change_to_newpage)
 def more_publications(request, other_user_id, last_publication):
     publications = []
 
-    more_num = 5
+    more_num = 6
 
     other_user = User.objects.get( pk = other_user_id )
     media_url = '/site_media/'
@@ -204,8 +204,6 @@ def more_publications(request, other_user_id, last_publication):
     htmlOutput = ""
 
     for publication in publications:
-        if publication.status == 0:
-            continue
 
         str_pages = str(publication.nr_pages)
         if publication.nr_pages > 1:
@@ -213,12 +211,18 @@ def more_publications(request, other_user_id, last_publication):
         else:
             str_pages += 'P&aacute;gina'
 
-        link_details = reverse('publication_details', args=(publication.author,publication.id,))
+        link_details = ''
+        if publication.status != 0:
+            link_details = reverse('publication_details', args=(publication.author,publication.id,))
+
         link_edit = reverse('edit_publication', args=(publication.id,))
         link_destroy = reverse('destroy_publication', args=(publication.id,))
+        pub_image = 'images/cover_default150.png'
+        if publication.status != 0:
+            pub_image = publication.get_thumbnail150_name()
 
         if is_me:
-            htmlOutput += template % ( link_details, media_url, publication.get_thumbnail150_name(), link_details, publication.title,
+            htmlOutput += template % ( link_details, media_url, pub_image, link_details, publication.title,
             link_details, publication.title, publication.get_small_text(), str_pages, link_edit, media_url, link_destroy, link_destroy ,media_url )
         else:
             htmlOutput += template % ( link_details, media_url, publication.get_thumbnail150_name(), link_details, publication.title,
