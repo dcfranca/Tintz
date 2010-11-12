@@ -84,8 +84,6 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication.author = request.user
     publication_form = form_class()
 
-    #import pdb; pdb.set_trace()
-
     if request.method == 'POST':
         if request.POST.get("action") == "upload":
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
@@ -95,6 +93,8 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                 not request.FILES['file_name'].name.endswith('.zip') and not request.FILES['file_name'].name.endswith('.cbz') and not request.FILES['file_name'].name.endswith('.rar') and not request.FILES['file_name'].name.endswith('.cbr'):
                     request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
                 else:
+
+
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
                     publication.status = 0
@@ -153,9 +153,6 @@ def publications(request, username, template_name="publications/latest.html"):
     else:
         publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[0:5]
 
-    for publication in publications:
-        logging.debug("Publication Title %s" % publication.title)
-
     logging.debug("Publications - Leave")
 
     return render_to_response(template_name, {
@@ -180,7 +177,7 @@ def destroypublication(request, id):
         return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
     publication.delete()
-    request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
+    #request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
 @login_required
