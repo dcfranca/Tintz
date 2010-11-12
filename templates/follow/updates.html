@@ -31,16 +31,23 @@
                     <a href="{% url publication_details update.publication.author update.publication.id %}">
                     <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
                     </div>
-                    <div class="update-pub-title span-5 last">
+                    <div class="update-pub-title span-10 last">
                     <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
                     </div>
-                    <div class="span-10 last update-pub-description">{{ update.publication.get_small_text }}</div>
+                    <div class="update-pub-description span-10 last">{{ update.publication.get_small_text }}</div>
                 {% endifequal %}
                 </div>
                 <div class="update-separator span-13 last"></div>
             {% endfor %}
             </td></tr>
+
             </table>
+
+            <div id="last_update" style="display: none">10</div>
+
+            <div class="more span-10 last" onclick="Dajaxice.follow.more_updates('Dajax.process',{ 'last_update':document.getElementById('last_update').innerHTML })">{% trans "Atualiza&ccedil;&otilde;es anteiores" %} >></div>
+
+
         {% endif %}
     </div>
 

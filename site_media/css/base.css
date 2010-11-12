@@ -908,7 +908,7 @@ left: 6px;
 
 .update-separator {
     position: relative;
-    top: 0px;
+    top: 15px;
     left: -30px;
     background-color: #E0E0E0;
     height: 1px;
@@ -935,8 +935,9 @@ left: 6px;
 
 .update-pub-description {
     position: relative;
-    top: -170px;
-    left: 195px;
+    top: -140px;
+    max-width: 300px;
+    left: -10px;
     min-height: 70px;
     text-align: left;
     font-size: 9pt;
