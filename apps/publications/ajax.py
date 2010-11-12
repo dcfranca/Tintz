@@ -197,13 +197,16 @@ def more_publications(request, other_user_id, last_publication):
 
 
     if is_me == True:
-        publications = Publication.objects.filter( author = other_user )[last_pub:last_pub+more_num]
+        publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[last_pub:last_pub+more_num]
     else:
-        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age )[last_pub:last_pub+more_num]
+        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[last_pub:last_pub+more_num]
 
     htmlOutput = ""
 
     for publication in publications:
+        if publication.status == 0:
+            continue
+
         str_pages = str(publication.nr_pages)
         if publication.nr_pages > 1:
             str_pages += 'P&aacute;ginas'
