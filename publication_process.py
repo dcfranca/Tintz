@@ -70,6 +70,8 @@ def from_pdf_file(publication, dirname, file_name):
 
     cur_datetime = datetime.datetime.now()
 
+    file_name = remove_specialchars(file_name)
+
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
     command = command+"\""+dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
     print "RUN: "+command
@@ -96,12 +98,15 @@ def unzip_file_into_dir(file, dir, filename):
     pag = 0
     file_ext = ""
 
+    filename = remove_specialchars(filename)
+
     for name in zfobj.namelist():
         if name.endswith('/'):
             continue
         pag += 1
         if (len(file_ext) == 0):
             file_ext = os.path.splitext(name)[1]
+
         new_file_name = filename+"_"+"{0:03d}".format(pag) + file_ext
         outfile = open(os.path.join(dir, new_file_name ), 'wb')
         outfile.write(zfobj.read(name))
@@ -130,11 +135,14 @@ def unrar_file_into_dir(file, dir, filename_noext):
 
     files_coll.sort()
 
+    filename_noext = remove_specialchars(filename_noext)
+
     pag = 0
     for filename in files_coll:
         pag += 1
         if len(file_ext) == 0:
             file_ext = os.path.splitext(filename)[1]
+
         new_file_name = filename_noext+"_"+"{0:03d}".format(pag) + file_ext
 
         try:
@@ -151,9 +159,27 @@ def unrar_file_into_dir(file, dir, filename_noext):
 
     return pag, file_ext
 
+def remove_specialchars(file_name):
+
+    #import pdb; pdb.set_trace()
+
+    new_file_name = ''
+
+    for ch in file_name:
+        try:
+            if (ord(ch) >= 48 and ord(ch) <= 57) or (ord(ch) >= 65 and ord(ch) <= 90) or (ord(ch) >= 97 and ord(ch) <= 122) or (ch == '_'):
+               new_file_name += ch
+            else:
+               new_file_name += '_'
+        except:
+            new_file_name += '_'
+
+    return new_file_name
+
 
 def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
+    old_file_ext = file_ext
 
     #Create directory if it doesnt exist
     dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/publications/"+publication.author.__unicode__()
@@ -194,6 +220,8 @@ def convert2images(publication):
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext
+    import pdb;pdb.set_trace()
+    publication.file_name   = remove_specialchars(file_name)+old_file_ext
     publication.save()
     Update.objects.update_followers(1, publication)
 
