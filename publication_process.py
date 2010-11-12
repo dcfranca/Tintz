@@ -44,10 +44,14 @@ FULL_VIEW   = 700
 SIDE_THUMB  = 64
 
 def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False, cur_datetime = None):
+    #import pdb; pdb.set_trace()
 
     file_name = os.path.splitext(file_path)[0]
-    thumb = Image.open(file_path)
 
+    try:
+        thumb = Image.open(file_path)
+    except IOError:
+        return
 
     if eh_pdf:
         ind = file_name.find(cur_datetime)
@@ -101,8 +105,10 @@ def unzip_file_into_dir(file, dir, filename):
     filename = remove_specialchars(filename)
 
     for name in zfobj.namelist():
-        if name.endswith('/'):
+        if not name.upper().endswith('JPG') and not name.upper().endswith('GIF')\
+        and not name.upper().endswith('PNG'):
             continue
+
         pag += 1
         if (len(file_ext) == 0):
             file_ext = os.path.splitext(name)[1]
@@ -129,8 +135,10 @@ def unrar_file_into_dir(file, dir, filename_noext):
     file_ext = ""
     sorted(rar_file.infoiter(),key=attrgetter('filename'))
     for info in rar_file.infoiter():
-        if info.filename.endswith('/'):
+        if not info.filename.upper().endswith('JPG') and not info.filename.upper().endswith('GIF')\
+        and not info.filename.upper().endswith('PNG'):
             continue
+
         files_coll.append(info.filename)
 
     files_coll.sort()
@@ -220,7 +228,6 @@ def convert2images(publication):
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext
-    import pdb;pdb.set_trace()
     publication.file_name   = remove_specialchars(file_name)+old_file_ext
     publication.save()
     Update.objects.update_followers(1, publication)

@@ -29,7 +29,7 @@
 
             <div class="span-4 publications-cover">
             {% ifequal publication.status 0 %}
-                <img src="{{ MEDIA_URL }}images/cover_default160.png">
+                <img src="{{ MEDIA_URL }}images/cover_default150.png">
             {% else %}
                  <a href="{% url publication_details publication.author publication.id %}">
                  <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name }}" href="{% url publication_details publication.author publication.id %}" title="{{ publication.title }}"/></a>
@@ -38,7 +38,7 @@
 
             <div class="span-8 list-pub-title">
             {% ifequal publication.status 0 %}
-                {{ publication.title }}
+                <a href="">{{ publication.title }}</a>
             {% else %}
                 <a href="{% url publication_details publication.author publication.id %}">{{ publication.title }}</a>
             {% endifequal %}
@@ -58,7 +58,7 @@
 
     </div>
 
-    <div id="last_publication" style="display: none">5</div>
+    <div id="last_publication" style="display: none">6</div>
 
     <div class="more span-10 last" onclick="Dajaxice.publications.more_publications('Dajax.process',{ 'other_user_id': {{ other_user.id }}, 'last_publication':document.getElementById('last_publication').innerHTML })">{% trans "Publica&ccedil;&otilde;es anteiores" %} >></div>
 
