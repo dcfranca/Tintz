@@ -25,7 +25,9 @@ def more_updates(request, last_update):
         <div class="span-10 update-posts-description last">
             %s
         </div>
-        </div></td></tr>"""
+        </div>
+        <div class="update-separator span-13 last"></div>
+        </td></tr>"""
 
     template_pub  = """<tr><td><div class="update-avatar span-2"><a href="%s" title="%s %s"><img src="%s" alt="%s" width="70" height="70" /></a></div>
         <div class="update-name span-5 last"><a href="%s" title="%s %s">%s %s</a></div>
@@ -33,13 +35,15 @@ def more_updates(request, last_update):
         <a href="%s">
         <img src="%s%s" href="%s" alt="%s"/></a>
         </div>
-        <div class="update-pub-title span-5 last">
+        <div class="update-pub-title span-10 last">
         <a href="%s">%s</a>
         </div>
-        <div class="span-10 last update-pub-description">%s</div></td></tr>
+        <div class="update-pub-description span-10 last ">%s</div>
+        <div class="update-separator span-13 last"></div>
+        </td></tr>
         """
 
-    updates = Update.objects.filter( user = request.user )[last_up:last_up+more_num]
+    updates = Update.objects.filter( user = request.user ).order_by('-date_post')[last_up:last_up+more_num]
 
     htmlOutput = ""
 
@@ -65,7 +69,7 @@ def more_updates(request, last_update):
             text_post = update.post.get_small_text()
             username = update.post.author.username
             avatar_post = avatar_url(update.post.author, 70)
-            htmlOutput += template_pub % ( link_prof_details_post, name, lastname, avatar_post, username, link_prof_details_post,
+            htmlOutput += template_post % ( link_prof_details_post, name, lastname, avatar_post, username, link_prof_details_post,
                                            name, lastname,
                                            name, lastname, link_post_url, update.post.title, text_post )
 
