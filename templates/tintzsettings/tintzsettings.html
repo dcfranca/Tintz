@@ -52,6 +52,15 @@
                 <label for="{{form.email_post.auto_id}}" class="span-3 tintz-label">{{form.email_post.label}}:</label>
                 <div class="span-10 last">{{ form.email_post }}</div>
 		
+                <label for="{{form.oldpassword.auto_id}}" class="span-3 tintz-label">{{form.oldpassword.label}}:</label>
+                <div class="span-10 last">{{ form.oldpassword }}</div>
+
+                <label for="{{form.password1.auto_id}}" class="span-3 tintz-label">{{form.password1.label}}:</label>
+                <div class="span-10 last">{{ form.password1 }}</div>
+
+                <label for="{{form.password2.auto_id}}" class="span-3 tintz-label">{{form.password2.label}}:</label>
+                <div class="span-10 last">{{ form.password2 }}</div>
+
                 <div class="span-10 pull-5 last">
 		    <input type="hidden" name="action" value="update" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
                 </div>		
