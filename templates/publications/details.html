@@ -44,7 +44,9 @@
 	    </div>
 
 	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
-	    <div id="share" class="share span-1"><div class="share-text">{% trans "Compartilhe" %}</div><a href=""><img src="{{MEDIA_URL}}/images/share.png"></a></div>
+
+	    <div id="share" class="share span-1" onclick="show_share_box(false);"><div class="share-text">{% trans "Compartilhe" %}</div><img src="{{MEDIA_URL}}/images/share.png" onmouseover="show_share_box(true);"></div>
+
 	    <div class="rate span-1"><div class="rate-text">{% trans "Avalia&ccedil;&atilde;o" %}</div><a href=""></a></div>
 
 	    <div class="stars span-2">
@@ -57,7 +59,16 @@
         <div class="publication-rate span-1 last">
                 {{ publication.rate|stringformat:".1f" }}
         </div>
-        <div class="publication-views">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
+        <div class="publication-views last">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
+
+        <div id="share-box" class="share-box">
+            <div class="share-items">
+            <a target="_blank" href="http://twitter.com/?status={{ "Publicação: "|urlencode }}{{ publication.title|urlencode }}%20http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/twitter_32.png" alt=""></a>
+            <a target="_blank" href="http://facebook.com/share.php?u=http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/facebook_32.png" alt=""></a>
+            <a target="_blank" href="http://digg.com/submit?url=http://www.tintz.com.br{% url publication_details publication.author publication.id %}&title={{ publication.title|urlencode }}&topic=comics"><img src="{{ MEDIA_URL }}images/digg_32.png" alt=""></a>
+            <a target="_blank" href="http://www.google.com/buzz/post?message={{ publication.title|urlencode }}&url=http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/buzz_32.png" alt=""></a>
+            </div>
+        </div>
 
         <div class="list_related-publications">
         <table>
@@ -112,6 +123,17 @@
                     Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })
                     break;
              }
+        }
+    }
+
+    function show_share_box(show_share) {
+        if (show_share)
+        {
+            share_box = document.getElementById("share-box").style.display = "block";
+        }
+        else
+        {
+            share_box = document.getElementById("share-box").style.display = "none";
         }
     }
 
