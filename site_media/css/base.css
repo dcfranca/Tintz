@@ -170,7 +170,6 @@ body {
     position: relative;
     top: -40px;
     left: 335px;
-
 }
 
 .form-search input[type="text"] {
@@ -505,6 +504,23 @@ body {
     top: -10px;
     float: right;
     right: 7px;
+    cursor: pointer;
+}
+
+.share-box {
+    position: relative;
+    background: green;
+    top: 33px;
+    padding-left: 7px;
+    width: 145px;
+    left: 405px;
+    height: 40px;
+    display: none;
+}
+
+.share-items {
+    position: relative;
+    top: -27px;
 }
 
 .rate {
