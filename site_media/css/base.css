@@ -164,6 +164,23 @@ body {
     background: transparent url("/site_media/images/textbox_password.png") no-repeat;
 }
 
+.form-search {
+    font-size: 9pt;
+    border: none;
+    position: relative;
+    top: -40px;
+    left: 335px;
+
+}
+
+.form-search input[type="text"] {
+    width: 110px;
+    height: 15px;
+    border: none;
+    color: white;
+    background: transparent;
+}
+
 .standard-form textarea {
     font-size: 9pt;
     width:200px;
