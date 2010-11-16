@@ -8,6 +8,24 @@ import datetime
 
 from timezones.fields import TimeZoneField
 
+class AccountType(models.Model):
+
+    name = models.CharField(_("name"), max_length=100, null=False)
+    credits_month = models.IntegerField(_("max credits month"), null=False)
+    credits_total = models.IntegerField(_("max credits total"), null=False)
+    enable_sell   = models.BooleanField(_("enable sell"), null=False)
+    price         = models.DecimalField(_("price"), max_digits=10, decimal_places=2, null=False)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('account type')
+        verbose_name_plural = _('account types')
+
+    class Admin:
+        pass
+
 class Profile(models.Model):
     """
     User Profile
@@ -57,8 +75,8 @@ class Profile(models.Model):
     location = models.CharField(_('location'), max_length=40, null=True, blank=True)
     state    = models.CharField(_('state'), choices=STATE_CHOICE,  max_length=40, null=True, blank=True)
     country  = models.CharField(_('country'), max_length=40, null=True, blank=True)
-    website = models.URLField(_('website'), null=True, blank=True)    
-#    account_type = models.CharField(_('state'), choices=ACCOUNT_CHOICE,  max_length=20, null=True, blank=True)
+    website = models.URLField(_('website'), null=True, blank=True)
+    account_type = models.ForeignKey(AccountType, verbose_name=('account type'), null=True)
     
     def __unicode__(self):
         return self.user.username
@@ -82,3 +100,5 @@ def create_profile(sender, instance=None, **kwargs):
     profile, created = Profile.objects.get_or_create(user=instance)
     
 post_save.connect(create_profile, sender=User)
+
+

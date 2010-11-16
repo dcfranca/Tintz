@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 from django import forms
-from profiles.models import Profile
+from profiles.models import Profile, AccountType
 
 class ProfileForm(forms.ModelForm):
     first_name = forms.CharField(label=u'Nome', required=True)
@@ -11,7 +11,6 @@ class ProfileForm(forms.ModelForm):
     location = forms.CharField(label=u'Cidade',  required=False)
     state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
     country  = forms.CharField(label=u'País', required=False)
-    #email    = forms.EmailField(label=u'Email', required=True)
     website  = forms.URLField(label=u'Website', required=False)
 
     class Meta:

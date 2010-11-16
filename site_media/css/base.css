@@ -13,6 +13,9 @@ body {
 
 #main-content {
     background: white;
+  -moz-border-radius: 15px; /* Firefox */
+  -webkit-border-radius: 15px; /* Safari and Chrome */
+  border-radius: 15px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
     min-height: 1300px;
     width: 1000px;
     margin-top: 20px;
@@ -176,7 +179,8 @@ body {
     width: 110px;
     height: 15px;
     border: none;
-    color: white;
+    color: #C0C0C0;
+    font-style: italic;
     background: transparent;
 }
 
