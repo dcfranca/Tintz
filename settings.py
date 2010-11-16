@@ -39,10 +39,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = 'tintz_dev.db'       # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
+DATABASE_ENGINE = 'postgresql_psycopg2'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
+DATABASE_NAME = 'tintz_dev'       # Or path to database file if using sqlite3.
+DATABASE_USER = 'tintz'             # Not used with sqlite3.
+DATABASE_PASSWORD = 'abc123'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
@@ -148,7 +148,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 COMBINED_INBOX_COUNT_SOURCES = (
     "messages.context_processors.inbox",
-    "notification.context_processors.notification",
+    #"notification.context_processors.notification",
 )
 
 INSTALLED_APPS = (
@@ -211,6 +211,7 @@ INSTALLED_APPS = (
     'tintzsettings',
     'follow',
     'misc',
+    'pagseguropy',
 
     #Ajax
     'dajaxice',
@@ -234,7 +235,7 @@ MARKUP_CHOICES = (
 WIKI_MARKUP_CHOICES = MARKUP_CHOICES
 
 AUTH_PROFILE_MODULE = 'profiles.Profile'
-NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
+#NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
 
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_REQUIRED_EMAIL = False

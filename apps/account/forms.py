@@ -118,6 +118,8 @@ class SignupCompleteForm(forms.Form):
     state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
     country  = forms.CharField(label=u'País', required=False) 
     website  = forms.URLField(label=u'Website', required=False)
+    account_type  = forms.ModelChoiceField(label=u'Tipo da Conta',queryset=AccountType.objects.all(), required=True,
+                                           error_messages = {'required': u'Favor escolher o tipo da conta.' })
     
     def clean(self):
         return self.cleaned_data

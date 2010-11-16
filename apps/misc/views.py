@@ -14,6 +14,8 @@ from django.utils.http import http_date
 from django.views.static import was_modified_since, directory_index
 from django.conf import settings
 
+import sys
+import urllib2, urllib
 
 
 SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',

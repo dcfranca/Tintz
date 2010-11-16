@@ -19,7 +19,10 @@ from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginFor
     ChangeTimezoneForm, ChangeLanguageForm, TwitterForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
+from pagseguropy import *
 import logging
+from apps.pagseguropy.pagseguro import Pagseguro
+from apps.misc.paylib import PagSeguro
 
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
@@ -78,14 +81,9 @@ def signup(request, form_class=SignupForm,
 def signup_complete(request, form_class=SignupCompleteForm,
         template_name="account/signup_complete.html", success_url=None):
 
-    #import pdb; pdb.set_trace();
-    
     if success_url is None:
         success_url = get_default_redirect(request)
         
-    #if request.user.is_authenticated():
-    #    return HttpResponseRedirect(success_url)
-
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
@@ -99,6 +97,36 @@ def signup_complete(request, form_class=SignupCompleteForm,
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
+
+
+@login_required
+def pay_account(request):
+
+    success_url = get_default_redirect(request)
+
+    if request.method == 'POST':
+        # token gerado no painel de controle do PagSeguro
+        token = '12345699CA2AAAF4599EA697BB2F7FFF'
+        p = PagSeguro()
+        retorno = p.processar(token, request.POST)
+
+        if retorno == True:
+            try:
+                pass
+                
+                # Cadastra os dados recebidos no banco de dados.
+                # Utilize o request.POST.get('nomedocampo') para obter os valores
+            except:
+                pass
+            return HttpResponse('Ok')
+        else:
+            return HttpResponse('Error')
+
+    else:
+        # Carrega tela contendo a mensagem de compra realizada
+        return  HttpResponseRedirect(success_url)
+
+
 
 @login_required
 def email(request, form_class=AddEmailForm,

@@ -54,12 +54,13 @@
                 <label for="{{form.website.auto_id}}" class="span-7 last login-label">{{form.website.label}}</label>
                 <div class="span-7 last">{{ form.website }}</div>                  
                 
+                <label for="{{form.account_type.auto_id}}" class="span-7 last login-label">{{form.account_type.label}}</label>
+                <div class="span-7 last">{{ form.account_type }}</div>
+
                 <div class="span-1 pull-1 last">
                     <input type="image" id="login-bt-ok" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
                 </div>
                 
-                <label for="{{form.remember.auto_id}}" class="span-4 login-label">{{form.remember.label}}</label>
-                <div class="span-2 last" id="login-remember">{{ form.remember }}</div>  
             </fieldset>            
         </form>
         <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
