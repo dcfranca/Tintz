@@ -68,7 +68,7 @@ def home(request, template_name="homepage.html"):
 
     if request.user.is_authenticated():
         logging.debug("home - Usuario logado")    
-        updates = Update.objects.filter(user = request.user)[0:10]
+        updates = Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
         publications = getPublications(request, request.user, True)
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
