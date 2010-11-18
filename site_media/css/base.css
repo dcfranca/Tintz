@@ -303,8 +303,10 @@ body {
 
 .choose {
     position: relative;
-    padding-left: 20px;
-    top: 30px;
+    float: left;
+    left: -30px;
+    font-size: 7pt;
+    top: 10px;
 }
 
 .choose img {
@@ -314,7 +316,7 @@ body {
 .choose a, a:visited {
     text-decoration: none;
     color: black;
-    font-size: 12pt;
+    font-size: 11pt;
 }
 
 .publications-cover {
@@ -323,20 +325,21 @@ body {
     left: 10px;
 }
 
-.list-posts-title {
+.list-posts-title, .list-posts-title a, .list-posts-title a:visited {
     position: relative;
     top: 20px;
-    left: 20px;
-    font-size: 13pt;
+    left: -20px;
+    font-size: 15pt;
     text-decoration: none;
     color: black;
+    width: 500px;
 }
 
 .list-posts-subtitle {
     color: red;
     position: relative;
     top: 20px;
-    left: -30px;
+    left: -50px;
     float: right;
     font-size: 8pt;
 }
@@ -344,7 +347,8 @@ body {
 .list-posts-description {
     position: relative;
     top: 60px;
-    left: -180px;
+    left: -20px;
+    width: 500px;
     min-height: 200px;
     text-align: left;
     font-size: 9pt;
@@ -352,7 +356,7 @@ body {
 
 .list-posts-button {
     position: relative;
-    top: 0px;
+    top: 10px;
     left: 0px;
 }
 
@@ -580,7 +584,6 @@ body {
     font-weight: bold;
     position: relative;
 }
-left: 6px;
 
 .comment-body {
     position: relative;
@@ -592,6 +595,7 @@ left: 6px;
 .separator {
     position: relative;
     top: 15px;
+    left: -20px;
     background-color: #E0E0E0;
     height: 1px;
     width: 600px;
