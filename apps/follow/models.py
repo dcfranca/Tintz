@@ -17,23 +17,34 @@ from markdown import message
 import settings
 import user
 
+from threading import Thread
+
 send_mail = get_send_mail()
+
+class EmailHtml(Thread):
+
+
+   def __init__ (self,subject, message_html, email_from, email_to):
+      Thread.__init__(self)
+      self.subject = subject
+      self.message_html = message_html
+      self.email_from   = email_from
+      self.email_to     = email_to
+
+   def run(self):
+       msg = EmailMessage(self.subject, self.message_html, self.email_from, self.email_to)
+       msg.content_subtype = 'html'
+       msg.send()
 
 class FollowAuthor(models.Model):
     
     UserFrom = models.ForeignKey(User, related_name="following", verbose_name=_('follower'))    
     UserTo = models.ForeignKey(User, related_name="follower", verbose_name=_('following'))
 
-def send_mail_html(subject, message_html, email_from, email_to, priority):
-    msg = EmailMessage(subject, message_html, email_from, email_to)
-    msg.content_subtype = 'html'
-    msg.send()
-
-
 class UpdateManager(models.Manager):
 
     #Update followers timeline
-    def update_followers(self, type, item_to_update):
+    def update_followers(self, type, item_to_update, user=None):
         update = Update()
 
         if type == 1:
@@ -45,11 +56,11 @@ class UpdateManager(models.Manager):
         elif type == 0:
             subject = _("Tintz - Novo Seguidor")
             message_html = render_to_string("follow/new_follower_message.html", {
-                "follower": item_to_update,
+                "follower": user,
             })
-            send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email], priority="high")
+            email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email])
+            email_follower.start()
             return
-
 
         update.date_post = datetime.datetime.now()
 
@@ -78,13 +89,17 @@ class UpdateManager(models.Manager):
                         message_html = render_to_string("follow/new_publication_message.html", {
                             "update": update,
                         })
-                        send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                        email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email])
+                        email_follower.start()
+
                     elif type == 2 and follower_settings.email_post == True:
                         subject = _("Tintz - Novo Post")
                         message_html = render_to_string("follow/new_post_message.html", {
                             "update": update,
                         })
-                        send_mail_html(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email], priority="high")
+                        email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [follower.UserFrom.email])
+                        email_follower.start()
+
 
 class Update(models.Model):
 
