@@ -15,5 +15,5 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ('user','age')
+        exclude = ('user','age','account_type')
 
