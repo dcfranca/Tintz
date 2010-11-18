@@ -42,6 +42,11 @@ body {
     text-decoration: none;
 }
 
+.tag_cloud {
+    position: relative;
+    width: 260px;
+}
+
 .title {
     position: relative;
     left: -40px;
