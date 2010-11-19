@@ -27,8 +27,10 @@
 <div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
 
-    <div class="choose"><a href="{% url blog_new %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post</a></div>
-    <div class="separator span-13 last"></div>
+    {% if is_me %}
+        <div class="choose"><a href="{% url blog_new %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post</a></div>
+        <div class="separator span-13 last"></div>
+    {% endif %}
         <table id="list-posts" class="span-14">
         {% for post in blogs %}
         <tr><td>
