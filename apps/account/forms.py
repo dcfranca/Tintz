@@ -59,7 +59,7 @@ class LoginForm(forms.Form):
     def login(self, request):
         if self.is_valid():
             login(request, self.user)
-            request.user.message_set.create(message=ugettext("Logado com sucesso com %(username)s.") % {'username': self.user.username})
+            #request.user.message_set.create(message=ugettext("Logado com sucesso com %(username)s.") % {'username': self.user.username})
             if self.cleaned_data['remember']:
                 request.session.set_expiry(60 * 60 * 24 * 7 * 3)
             else:

@@ -37,9 +37,11 @@
     </div>
     <div class="span-14 last blog-meta"><p>Postado por: <a href="{% url profile_detail post.author.username %}">{{ post.author.username }}</a></p></div>
 
+    {% if post.allow_comments %}
     <div class="comments">
         {% comments post %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 
