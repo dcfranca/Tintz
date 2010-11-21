@@ -65,7 +65,9 @@
             {% endif %}
         </div>
         <div class="publication-rate span-1 last">
-                {{ publication.rate|stringformat:".0f" }}
+            {% if publication.rate %}
+                {{ publication.rate|stringformat:".0f" }}/100
+            {% endif %}
         </div>
         <div class="publication-views last">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
 

@@ -209,7 +209,6 @@ def editpublication(request, id, form_class=PublicationEditForm,
         "other_user": request.user,
     }, context_instance=RequestContext(request))
 
-@login_required
 def detailspublication(request, id, username, template_name="publications/details.html"):
     """
     show the publication details
@@ -231,7 +230,7 @@ def detailspublication(request, id, username, template_name="publications/detail
             is_follow = True
         else:
             is_follow = False
-    except FollowAuthor.DoesNotExist:
+    except:
         pass
 
 
@@ -239,8 +238,11 @@ def detailspublication(request, id, username, template_name="publications/detail
         publications = getPublications(request, mypublication.author, True)
         followerUsers = getFollowers(request, mypublication.author)
         followingUsers = getFollowings(request, mypublication.author)
+    elif mypublication.is_public == True:
+        return HttpResponseRedirect(reverse('publication_viewer', args=(mypublication.author, mypublication.id,)))
     else:
-        HttpResponseRedirect(reverse('acct_login'))
+        return HttpResponseRedirect(reverse('acct_login'))
+
 
     if mypublication.author == request.user:
         is_me = True
@@ -336,9 +338,10 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
     """
     publication = get_object_or_404(Publication, id=id)
 
-
-    logging.debug("viewerpublication Username = [%s] - publication.is_public [%s]" % (request.user,publication.is_public) )
     host = "http://%s" % get_host(request)
+
+    if not request.user.is_authenticated() and publication.is_public == False:
+        return HttpResponseRedirect(reverse('acct_login'))
 
     if not request.user.is_authenticated() and not publication.is_public:
         return render_to_response(template_name, {
