@@ -29,7 +29,11 @@
         {% if find_pub %}
             <a href="{% url search_results search_text %}">Publica&ccedil;&otilde;es</a>
         {% endif %}
-        <a href="{% url search_results_prof search_text %}">Pessoas</a>
+        {% if other_profiles %}
+            <a href="{% url search_results_prof search_text %}">Pessoas</a>
+        {% else %}
+            {% trans "Nenhum resultado encontrado" %}
+        {% endif %}
     </div>
 
     <div id="list-profiles" class="profiles">
