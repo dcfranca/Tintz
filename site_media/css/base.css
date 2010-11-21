@@ -631,7 +631,7 @@ body {
 .publication-rate {
     position: relative;
     float: right;
-    top: -20px;
+    top: 0px;
     left: 220px;
     font-size: 14pt;
     font-weight: bold;

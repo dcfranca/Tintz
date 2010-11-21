@@ -50,14 +50,22 @@
 	    <div class="rate span-1"><div class="rate-text">{% trans "Avalia&ccedil;&atilde;o" %}</div><a href=""></a></div>
 
 	    <div class="stars span-2">
-            <img class="star" id="star1" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':1 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':1 })" />
-            <img class="star" id="star2" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':2 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':2 })" />
-            <img class="star" id="star3" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':3 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':3 })" />
-            <img class="star" id="star4" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':4 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':4 })" />
-            <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':5 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':5 })" />
+            {% if is_me %}
+                <img class="star" id="star1" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star2" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star3" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star4" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" />
+            {% else %}
+                <img class="star" id="star1" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':1 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':1 })" />
+                <img class="star" id="star2" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':2 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':2 })" />
+                <img class="star" id="star3" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':3 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':3 })" />
+                <img class="star" id="star4" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':4 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':4 })" />
+                <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':5 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':5 })" />
+            {% endif %}
         </div>
         <div class="publication-rate span-1 last">
-                {{ publication.rate|stringformat:".1f" }}
+                {{ publication.rate|stringformat:".0f" }}
         </div>
         <div class="publication-views last">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
 
