@@ -262,6 +262,7 @@ def detailspublication(request, id, username, template_name="publications/detail
         publication_score.rate = 0
         is_voted = False
 
+    """
     if request.method == "POST":
         rate = request.POST["rate"]
         if rate and rate > 0:
@@ -286,6 +287,7 @@ def detailspublication(request, id, username, template_name="publications/detail
 
             #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % mypublication.title )
             is_voted = True
+    """
 
     #Found Related Publications
     try:

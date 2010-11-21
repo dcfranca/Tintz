@@ -92,7 +92,7 @@ def vote_publication(request, publication_id, rate):
     publications_scores = PublicationScore.objects.filter( publication = publication )
     total_rates = 0
 
-    if publications_scores.count() > 100:
+    if publications_scores.count() > 10:
         for rates in publications_scores:
             total_rates += int(rates.rate)
 
