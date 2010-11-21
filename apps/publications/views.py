@@ -19,18 +19,15 @@ from django.http import Http404
 from django.conf import settings
 from django.test.client import Client
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from profiles.models import Profile
+from haystack.query import SearchQuerySet
 
 import logging
 
 import unittest
 
-#from django.pimentech.network import *
-
 import os, datetime
 
-from PIL import Image
-
-#service = JSONRPCService()
 from django.core.context_processors import request
 
 if "notification" in settings.INSTALLED_APPS:
@@ -415,29 +412,43 @@ def searchprepare(request):
     """
     Prepare the search
     """
-    logging.debug('searchprepare - Enter')
-
     if request.method == 'POST':
         search_text = request.POST['search_text']
-
-    logging.debug('searchprepare - Leave')
 
     return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
 
 
 @login_required
-def searchresults(request, template_name="publications/latest.html", search_text="", publications=None):
+def searchresults(request, template_name="publications/results.html", search_text=""):
     """
     Show the results of publications search
     """
     publications = []
+    users = []
 
-    queryset = Publication.search.query(search_text.encode('utf-8'))
-    publications  = queryset.filter().order_by("@weight")
+    results = SearchQuerySet().filter(content=search_text).order_by('-date_added')
+
+    for result in results:
+        if isinstance( result.object, Publication):
+            publications.append(result.object)
+        elif isinstance( result.object, Profile):
+            users.append(result.object.user)
+
+    if len(publications) == 0:
+        return HttpResponseRedirect(reverse('search_results_prof',args=(search_text.encode('utf-8'),)))
+
+    find_prof = False
+
+    if len(users) > 0:
+        find_prof = True
 
     return render_to_response(template_name, {
         "publications": publications,
         "title": "Resultados",
+        "other_user": request.user,
+        "search_text": search_text,
+        "is_me": True,
+        "find_prof": find_prof,
     }, context_instance=RequestContext(request))
 
 @login_required

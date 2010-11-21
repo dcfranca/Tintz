@@ -194,6 +194,7 @@ INSTALLED_APPS = (
     'django_markup',
     'staticfiles',
     'djangosphinx',
+    'haystack',
 
     # internal (for now)
     'analytics',
@@ -308,3 +309,9 @@ try:
     from local_settings import *
 except ImportError:
     pass
+
+
+# Haystack
+HAYSTACK_SITECONF = 'tintz.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'xapian'
+HAYSTACK_XAPIAN_PATH = '/Users/danielfranca/Workspace/django/view/tintz/xapian-index'

@@ -30,11 +30,10 @@
 		    <area shape="rect" coords="160,13,212,31" href="{% url publication_upload %}" alt="" title=""    />
 		    <area shape="rect" coords="225,13,314,31" href="{% url tintz_settings %}" alt="" title=""    />
 
-            <form class="form-search span-3" method="POST" action="">
-                <input id="search_box" type="text" value="Buscar"/>
+            <form id="formsearch" class="form-search span-3" method="POST" action="{% url search_prepare %}">
+                <input type="text" name="search_text" value="Buscar"/>
+                <area shape="rect" coords="450,10,480,35" href="javascript: submitform();" alt="" title="Buscar"    />
             </form>
-                
-            <area shape="rect" coords="450,10,480,35" href="http://www.google.com" alt="" title="Pesquisar"    />
 
 		    <area shape="rect" coords="492,12,525,32" href="{% url acct_logout %}" alt="" title=""    />
 		    </map>
@@ -63,6 +62,15 @@
 	{% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_elements %}
+    <script type="text/javascript">
+    function submitform()
+    {
+      document.forms["formsearch"].submit();
+    }
+    </script>
 {% endblock %}
 
 {% block footer %}
