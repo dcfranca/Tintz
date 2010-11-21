@@ -47,7 +47,7 @@
                 <a href="{% url profile_detail publication.author.username %}">{{ publication.author.username }}</a>
             </div>
 
-            <div class="span-8 last list-pub-description">{{ publication.get_small_text }}</div>
+            <div class="span-8 last list-pub-description">{{ publication.get_small_text|linebreaks }}</div>
 
             <div class="list-pub-subtitle"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
 

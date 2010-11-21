@@ -30,7 +30,7 @@
        <div class="profiles-item">
        <div class="avatar span-2"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{% avatar profile 70 %}</a></div>
        <div class="profiles-details span-5 last"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}</a></div>
-       <div class="profiles-about span-10 last">{{ profile.get_profile.get_small_about }}</div>
+       <div class="profiles-about span-10 last">{{ profile.get_profile.get_small_about|linebreaks }}</div>
        <div class="separator span-10 last"></div>
        </div>
        </td></tr>
