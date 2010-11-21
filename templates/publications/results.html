@@ -26,9 +26,9 @@
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Resultados</div>
 
     <div class="type-result">
-        <a href="{% url search_results search_text %}">Publica&ccedil;&otilde;es</a>
+        <a href="{% url search_results search_text %}"><b>{% trans "Publica&ccedil;&otilde;es" %}</b></a>
         {% if find_prof %}
-            <a href="{% url search_results_prof search_text %}">Pessoas</a>
+            <a href="{% url search_results_prof search_text %}">{% trans "Pessoas" %}</a>
         {% endif %}
     </div>
 

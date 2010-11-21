@@ -1055,3 +1055,10 @@ body {
     padding: 10px;
 
 }
+
+#messages {
+    position: relative;
+    top: 0px;
+    left: 300px;
+    font-style: italic;
+}

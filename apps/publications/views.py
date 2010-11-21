@@ -98,7 +98,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                     publication.nr_pages = 0
                     publication.save()
 
-                    #request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
+                    request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
                     return HttpResponseRedirect(reverse('publications', args=(publication.author,)))
 
     calc_age(request.user.get_profile())
@@ -174,7 +174,7 @@ def destroypublication(request, id):
         return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
     publication.delete()
-    #request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
+    request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
 @login_required

@@ -102,14 +102,14 @@ def button_follow(request, other_user):
     follow.UserFrom = request.user
     follow.UserTo = other_user
     Update.objects.update_followers(0, other_user, request.user)
-    #request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
+    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
 
 def button_unfollow(request, other_user):
     try:
         follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-        #request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
         follow.delete()
     except FollowAuthor.DoesNotExist:
         pass
