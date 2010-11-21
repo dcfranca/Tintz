@@ -8,7 +8,7 @@
 	    <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
 	</div> 
 	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
-	<div class="about">{{ other_user.get_profile.about }}</div>
+	<div class="about">{{ other_user.get_profile.about|linebreaks }}</div>
 
     {% if is_me %}
         <form method="POST" action="{% url profile_detail other_user %}">
