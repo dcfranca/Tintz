@@ -23,6 +23,8 @@ from account.utils import login_complete
 
 from blog.models import Post
 
+from haystack.query import SearchQuerySet
+
 import logging
 
 if "notification" in settings.INSTALLED_APPS:
@@ -210,3 +212,35 @@ def calc_age(profile):
     else:
         profile.age = date.today().year - profile.birth_date.year
    
+
+@login_required
+def searchresults(request, template_name="profiles/results.html", search_text=""):
+    """
+    Show the results of publications search
+    """
+    users = []
+    publications = []
+
+    results = SearchQuerySet().filter(content=search_text)
+
+    for result in results:
+        if isinstance( result.object, Profile):
+            users.append(result.object.user)
+        elif isinstance( result.object, Publication):
+            publications.append(result.object)
+
+    find_pub = False
+
+    if len(publications) > 0:
+        find_pub = True
+
+    return render_to_response(template_name, {
+        "other_profiles": users,
+        "title": "Resultados",
+        "is_me": True,
+        "other_user": request.user,
+        "search_text": search_text,
+        "is_follow": False,
+        "find_pub": find_pub,
+        },
+    context_instance=RequestContext(request))

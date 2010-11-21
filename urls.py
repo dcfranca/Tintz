@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     (r'^avatar/', include('avatar.urls')),
     (r'^flag/', include('flag.urls')),
     (r'^tintzsettings/', include('tintzsettings.urls')),
+    (r'^search/', include('haystack.urls')),
 
     #Dajax
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),

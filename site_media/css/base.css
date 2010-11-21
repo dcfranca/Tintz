@@ -45,9 +45,12 @@ body {
     text-decoration: none;
 }
 
-.tag_cloud {
+.tag_cloud, .tag_cloud a, .tag_cloud a:visited {
     position: relative;
+    top: 20px;
     width: 260px;
+    text-decoration: none;
+    color: blue;
 }
 
 .title {
@@ -369,13 +372,22 @@ body {
 }
 
 
-.list-pub-title {
+.list-pub-title, .list-pub-title a, .list-pub-title a:visited {
     position: relative;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 0px;
     font-size: 13pt;
     text-decoration: none;
     color: black;
+}
+
+.list-pub-author, .list-pub-author a, .list-pub-author a:visited {
+    position: relative;
+    top: 10px;
+    left: 0px;
+    font-size: 9pt;
+    text-decoration: none;
+    color: red;
 }
 
 .list-pub-subtitle {
@@ -389,8 +401,8 @@ body {
 
 .list-pub-description {
     position: relative;
-    top: 50px;
-    left: 10px;
+    top: 30px;
+    left: 0px;
     min-height: 200px;
     text-align: left;
     font-size: 9pt;
@@ -1035,4 +1047,11 @@ body {
     font-size: 9pt;
     font-weight: bold;
     cursor: pointer;
+}
+
+.type-result,  .type-result a, .type-result a:visited {
+    position: relative;
+    font-size: 10pt;
+    padding: 10px;
+
 }
