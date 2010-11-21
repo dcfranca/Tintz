@@ -40,19 +40,21 @@
 		    </div>
 	    </div>
 
-
+	    {% if messages %}
+		<table id="messages">
+		{% for message in messages %}
+            <tr><td>
+		    <div id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "X" %}</small></a> {{ message }}</div>
+            </td></tr>
+		{% endfor %}
+		</table>
+	    {% endif %}
 
 	    <div class="span-24 last prepend-1" id="main-content">
 		{% block main_content %}{% endblock %}
 	    </div>
 
-	    {% if messages %}
-		<ul id="messages">
-		{% for message in messages %}
-		    <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "Limpar" %}</small></a> {{ message }}</li>
-		{% endfor %}
-		</ul>
-	    {% endif %}
+
 
 	{% else %}
 	    <div class="span-24 push-5">

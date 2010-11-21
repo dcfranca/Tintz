@@ -102,7 +102,7 @@ def destroy(request, id):
             return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
     post.delete()
-    request.user.message_set.create(message=_(u"Post apagado com sucesso'%s'") % title)
+    request.user.message_set.create(message=_(u"Post excluido com sucesso'%s'") % title)
     return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
 @login_required
@@ -138,7 +138,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                     blog.creator_ip = request.META['REMOTE_ADDR']
                 blog.save()
                 
-                #request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
+                request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
 
                 Update.objects.update_followers(2, blog)
 

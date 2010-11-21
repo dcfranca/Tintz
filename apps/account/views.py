@@ -180,8 +180,8 @@ def send_email_confirmation(user,  email):
             user=user,
             email=email,
         )
-        #request.user.message_set.create(
-        #    message=u"Confirma��o de email enviada para %s" % email)
+        request.user.message_set.create(
+            message=u"Confirmacao de email enviada para %s" % email)
         
         EmailConfirmation.objects.send_confirmation(email_address)
         logging.debug('Email - Sent to: %s' % email_address)
