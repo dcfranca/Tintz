@@ -93,9 +93,11 @@
         </table>
         </div>
 
-	    <div class="comments">
-		{% comments publication %}
-	    </div>
+	    {% if publication.allow_comments %}
+            <div class="comments">
+            {% comments publication %}
+            </div>
+        {% endif %}
 	{% endif %}
     {% endif %}
 </div>
