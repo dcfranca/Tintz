@@ -90,7 +90,18 @@ class SignupForm(forms.Form):
             return self.cleaned_data["username"]
         raise forms.ValidationError(_(u"Usuário já existe. Escolha outro."))
 
-    
+    def clean_email(self):
+        emails = []
+
+        try:
+            emails = EmailAddress.objects.filter(email=self.cleaned_data["email"])
+        except:
+            return
+
+        if len(emails) == 0:
+            return self.cleaned_data["email"]
+        raise forms.ValidationError(_(u"Este email já está associado com uma conta."))
+
     def clean(self):
         if "password1" in self.cleaned_data and "password2" in self.cleaned_data:
             if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
