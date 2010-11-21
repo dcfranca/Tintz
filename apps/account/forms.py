@@ -26,7 +26,7 @@ alnum_re = re.compile(r'^\w+$')
 
 class LoginForm(forms.Form):
 
-    username = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(),
+    username = forms.CharField(label=_(u"Usuário ou E-mail"), max_length=30, widget=forms.TextInput(),
                 error_messages = {'required': u'Campo Usuário é obrigatório.' } )
     password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False),
                 error_messages = {'required': u'Campo Senha é obrigatório.' } )
@@ -37,7 +37,13 @@ class LoginForm(forms.Form):
     def clean(self):
         if self._errors:
             return
-        user = authenticate(username=self.cleaned_data["username"], password=self.cleaned_data["password"])
+        username = self.cleaned_data["username"]
+
+        if username.find('@') > -1:
+            email = EmailAddress.objects.filter(email__iexact=username, verified=True)[0]
+            username = email.user.username
+
+        user = authenticate(username=username, password=self.cleaned_data["password"])
         
         email_address = EmailAddress.objects.get_primary(user)
         
@@ -66,7 +72,7 @@ class SignupForm(forms.Form):
 
     username  = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(), 
                                error_messages = {'required': u'Campo Usuário é obrigatório.' } )     
-    email       = forms.EmailField(label=_(u"Email"), required=True, widget=forms.TextInput(), 
+    email       = forms.EmailField(label=_(u"E-mail"), required=True, widget=forms.TextInput(), 
                                               error_messages = {'required': u'Campo Email é obrigatório.' } )
     password1  = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False), 
                                 error_messages = {'required': u'Campo Senha é obrigatório.' } ) 
@@ -213,10 +219,10 @@ class AddEmailForm(UserForm):
 
     def clean_email(self):
         try:
-            EmailAddress.objects.get(user=self.user, email=self.cleaned_data["email"])
+            EmailAddress.objects.get(email=self.cleaned_data["email"])
         except EmailAddress.DoesNotExist:
             return self.cleaned_data["email"]
-        raise forms.ValidationError(_(u"Este email já está associado com esta conta."))
+        raise forms.ValidationError(_(u"Este email já está associado com uma conta."))
 
     def save(self):
         #self.user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': self.cleaned_data["email"]})
