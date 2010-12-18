@@ -10,8 +10,6 @@ from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from publications.utils import get_profile_path
 
-from djangosphinx import SphinxSearch
-
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
@@ -95,16 +93,6 @@ class Publication(models.Model):
     def get_total_pages(self):
       return str(self.nr_pages)
 
-    search = SphinxSearch(
-           index ='search_publications',
-           weights = { # individual field weighting
-               'title': 100,
-               'author': 20,
-               'file_name': 10,
-               'description': 10,
-               'tags': 50,
-           }
-      )
 
 class PublicationScore(models.Model):
     """

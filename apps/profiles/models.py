@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-from djangosphinx import SphinxSearch
 import datetime
 
 from timezones.fields import TimeZoneField
@@ -94,15 +93,6 @@ class Profile(models.Model):
     class Meta:
         verbose_name = _('profile')
         verbose_name_plural = _('profiles')
-
-    search = SphinxSearch(
-           index ='search_profiles',
-           weights = { # individual field weighting
-               'first_name': 80,
-               'last_name': 80,
-           }
-      )
-
 
 def create_profile(sender, instance=None, **kwargs):
     if instance is None:

@@ -59,35 +59,3 @@
         </form>
 </div>
 {% endblock %}
-
-
-{% comment %}
-
-
-{% extends "blog/base.html" %}
-
-{% load i18n %}
-{% load uni_form %}
-
-{% block head_title %}{% blocktrans %}Editar Post{% endblocktrans %}{% endblock %}
-
-{% block body %}
-
-    {% ifequal post.author request.user %}
-        {# @@@ not sure how to bring back teaser toggle with uni_form #}
-        <form class="uniForm" id="edit-profile" method="POST" action="">
-            <fieldset class="inlineLabels">
-                {{ blog_form|as_uni_form }}
-                <div class="form_block">
-                <input type="hidden" name="action" value="create" />
-                <input type="submit" value="{% trans "Criar" %}"/>
-                </div>
-            </fieldset>
-        </form>
-    {% else %}
-        <p>You are not the author of this post.</p>
-    {% endifequal %}
-
-{% endblock %}
-
-{% endcomment %}

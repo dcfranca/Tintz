@@ -1,11 +1,10 @@
 # -*- coding: iso-8859-1 -*-
-#!python
 
 import sys,os, shutil
 from datetime import *
-sys.path.append("/Users/danielfranca/Workspace/django/view")
-sys.path.append("/Users/danielfranca/Workspace/django/view/tintz/apps")
-sys.path.append("/Users/danielfranca/Workspace/django/view//pinax//lib/python2.7/site-packages/pinax/apps/")
+sys.path.append("/home/danielfranca/Workspace/django/")
+sys.path.append("/home/danielfranca/Workspace/django/tintz/apps")
+sys.path.append("/home/danielfranca/Workspace/django/pinax-env/lib/python2.6/site-packages/pinax/apps/")
 
 os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
 
@@ -28,8 +27,8 @@ from tagging.models import *
 from django.http import Http404
 from django.conf import settings
 
-import warnings
-warnings.simplefilter('ignore', DeprecationWarning)
+#import warnings
+#warnings.simplefilter('ignore', DeprecationWarning)
 
 import os, datetime, mimetypes
 import pdb
@@ -190,7 +189,7 @@ def convert2images(publication):
     old_file_ext = file_ext
 
     #Create directory if it doesnt exist
-    dirname = "/Users/danielfranca/Workspace/django/view/tintz/site_media/publications/"+publication.author.__unicode__()
+    dirname = "/home/danielfranca/Workspace/django/tintz/site_media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
