@@ -1,4 +1,4 @@
-from notification.models import NoticeType, get_formatted_messages
+#from notification.models import NoticeType, get_formatted_messages
 
 FORMATS = [
     'short.txt',

@@ -16,13 +16,14 @@ from account.utils import get_default_redirect
 from account.models import OtherServiceInfo
 from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, \
     ChangePasswordForm, SetPasswordForm, ResetPasswordForm, \
-    ChangeTimezoneForm, ChangeLanguageForm, TwitterForm
+    ChangeTimezoneForm, ChangeLanguageForm, TwitterForm, ForgotPasswordForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
-from pagseguropy import *
+
+#from pagseguropy import *
 import logging
-from apps.pagseguropy.pagseguro import Pagseguro
-from apps.misc.paylib import PagSeguro
+#from apps.pagseguropy.pagseguro import Pagseguro
+#from apps.misc.paylib import PagSeguro
 
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
@@ -83,7 +84,7 @@ def signup_complete(request, form_class=SignupCompleteForm,
 
     if success_url is None:
         success_url = get_default_redirect(request)
-        
+
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
@@ -93,12 +94,34 @@ def signup_complete(request, form_class=SignupCompleteForm,
             return  HttpResponseRedirect(success_url)
     else:
         form = form_class()
-    
+
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
 
 
+def forgot_password(request, form_class=ForgotPasswordForm,
+        template_name="account/forgot_password.html", success_url=None):
+
+    sent_email = None
+
+    if success_url is None:
+        success_url = get_default_redirect(request)
+
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            sent_email = u"Nova senha enviada para o email informado"
+    else:
+        form = form_class()
+
+    return render_to_response(template_name, {
+        "form": form,
+        "sent_email": sent_email,
+    }, context_instance=RequestContext(request))
+
+
+"""
 @login_required
 def pay_account(request):
 
@@ -125,7 +148,7 @@ def pay_account(request):
     else:
         # Carrega tela contendo a mensagem de compra realizada
         return  HttpResponseRedirect(success_url)
-
+"""
 
 
 @login_required

@@ -10,7 +10,7 @@ class Account(models.Model):
     
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
         
-    timezone = TimeZoneField(_('timezone'))
+    #timezone = TimeZoneField(_('timezone'))
     language = models.CharField(_('language'), max_length=10, choices=settings.LANGUAGES, default=settings.LANGUAGE_CODE)
     
     def __unicode__(self):

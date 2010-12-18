@@ -13,7 +13,7 @@ from profiles.models import Profile
 from profiles.forms import ProfileForm
 from publications.models import Publication
 from follow.models import FollowAuthor,Update
-from notification.models import *
+#from notification.models import *
 
 from datetime import *
 from blog.models import Post

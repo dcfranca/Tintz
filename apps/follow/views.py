@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from follow.models import FollowAuthor, Update
-from notification.models import *
+#from notification.models import *
 
 @login_required
 def followers(request,  username): 

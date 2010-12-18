@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 
 from misc.utils import get_send_mail
-from markdown import message
+#from markdown import message
 import settings
 import user
 

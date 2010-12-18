@@ -113,12 +113,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_openid.consumer.SessionConsumer',
+    #'django_openid.consumer.SessionConsumer',
     'account.middleware.LocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'pagination.middleware.PaginationMiddleware',
-    'django_sorting.middleware.SortingMiddleware',
-    'djangodblog.middleware.DBLogMiddleware',
+    #'django_sorting.middleware.SortingMiddleware',
+    #'djangodblog.middleware.DBLogMiddleware',
     'pinax.middleware.security.HideSensistiveFieldsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
@@ -175,29 +175,29 @@ INSTALLED_APPS = (
 #    'gravatar',
     'threadedcomments',
     'threadedcomments_extras',
-    'wiki',
-    'swaps',
+    #'wiki',
+    #'swaps',
     'timezones',
     #'voting',
     #'voting_extras',
     'tagging',
-    'bookmarks',
+    #'bookmarks',
     'blog',
     'ajax_validation',
     #'photologue',
     'avatar',
-    'flag',
+    #'flag',
     #'microblogging',
-    'locations',
+    #'locations',
     'uni_form',
-    'django_sorting',
-    'django_markup',
-    'staticfiles',
-    'djangosphinx',
+    #'django_sorting',
+    #'django_markup',
+    #'staticfiles',
+    #'djangosphinx',
     'haystack',
 
     # internal (for now)
-    'analytics',
+    #'analytics',
     'profiles',
     'account',
     'signup_codes',
@@ -211,8 +211,8 @@ INSTALLED_APPS = (
     'publications',
     'tintzsettings',
     'follow',
-    'misc',
-    'pagseguropy',
+    #'misc',
+    #'pagseguropy',
 
     #Ajax
     'dajaxice',
@@ -314,4 +314,4 @@ except ImportError:
 # Haystack
 HAYSTACK_SITECONF = 'tintz.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'xapian'
-HAYSTACK_XAPIAN_PATH = '/Users/danielfranca/Workspace/django/view/tintz/xapian-index'
+HAYSTACK_XAPIAN_PATH = '/home/danielfranca/Workspace/django/tintz/xapian-index'
