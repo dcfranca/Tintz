@@ -9,18 +9,18 @@
 <div id="viewer-body">
     <div class="container">
         <div class="viewer">
-            <div id="container span-24">
-                <div class="span-3 left-view pull-3">
+            <div id="container span-22">
+                <div class="span-1 left-view">
                     <div class="span-5 logo-tintz-black last"><img src="{{MEDIA_URL}}images/logo_tintz_black.png"/></div>
                     <div class="publication-title span-5 last">
                         {{ publication.title }}
                     </div>
-                    <div class="publication-description span-5 last">
+                    <div class="publication-description span-3 last">
                         {{ publication.description }}
                     </div>
                 </div>
 
-                <div class="page-full span-10">
+                <div class="page-full span-9">
                     {% if pages %}
                        {% for pagenr in pages.object_list %}
                           <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
@@ -28,7 +28,7 @@
                     {% endif %}
                 </div>
 
-                <div class="right-view span-10 pull-2 last">
+                <div class="right-view span-10 last">
                     <div class="navigator-full span-2">
 
                         <div class="prev_arrow-full" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })"><<</div>

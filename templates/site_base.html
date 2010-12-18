@@ -2,7 +2,6 @@
 
 {% load i18n %}
 {% load svn_app_version %}
-{% load analytics %}
 
 {% block javascript %}
 {% endblock %}
@@ -77,7 +76,7 @@
 
 {% block footer %}
 <div class="footer span-24 last">
-    {% trans "&copy; 2010 Tintz" %}
+    {% trans "2010 Tintz" %}
      <a href="{% url about %}">{% trans "Sobre" %}</a>
      <a href="{% url terms %}">{% trans "Termos de servi&ccedil;o" %}</a>
      <a href="{% url privacy %}">{% trans "Pol&iacute;tica de privacidade" %}</a>

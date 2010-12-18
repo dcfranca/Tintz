@@ -1,5 +1,6 @@
 body {
     background: #f4e30c;
+    overflow-x: hidden;
 }
 
 #main-body {
@@ -646,14 +647,14 @@ body {
 .logo-tintz-black {
     position: relative;
     top: 40px;
-    left: 0px;
+    left: -50px;
 }
 
 .publication-title {
     position: relative;
     color: white;
     text-align: right;
-    right: 10px;
+    right: 0px;
     font-weight: bold;
     font-size: 12pt;
     top: 70px;
@@ -672,13 +673,14 @@ body {
    text-align: right;
    font-size: 9pt;
    float: right;
-   right: 10px;
+   right: 0px;
    top: 80px;
 }
 
 .page-full {
     position: relative;
     top: 40px;
+    left: 20px;
     min-width: 670px;
 }
 
@@ -776,7 +778,7 @@ body {
     position: relative;
     max-width: 200px;
     top: -5px;
-    left: 30px;
+    left: -20px;
 }
 
 .page-viewer {

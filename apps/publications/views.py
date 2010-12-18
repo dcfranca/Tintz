@@ -53,12 +53,13 @@ def getPublications(request, other_user, is_me):
     except Publication.DoesNotExist:
         pass
     return publications[:4]
-
+ 
 def getFollowers(request, other_user):
     followers = FollowAuthor.objects.filter( UserTo = other_user )
     followerUsers = []
 
     for follow in followers:
+        
         followerUsers.append( follow.UserFrom )
     return followerUsers
 
@@ -80,6 +81,8 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication      = Publication()
     publication.author = request.user
     publication_form = form_class()
+    
+    #publication.
 
     if request.method == 'POST':
         if request.POST.get("action") == "upload":
