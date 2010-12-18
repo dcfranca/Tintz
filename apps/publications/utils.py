@@ -4,3 +4,4 @@ import string
 def get_profile_path(instance, filename):
     dir = "publications/"+instance.author.__unicode__()+"/"+filename
     return dir
+    
