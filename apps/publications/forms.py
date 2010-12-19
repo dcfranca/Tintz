@@ -2,7 +2,7 @@
 from django import forms
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
-from publications.models import Publication
+from publications.models import Publication, PublicationReportAbuse
 
 class PublicationUploadForm(forms.ModelForm):
 
@@ -50,4 +50,14 @@ class PublicationEditForm(forms.ModelForm):
         self.user = user
         super(PublicationEditForm, self).__init__(*args, **kwargs)
 
+class PublicationReportAbuseForm(forms.ModelForm):
 
+    message = forms.CharField(label=u'Mensagem', widget=forms.Textarea, max_length=1024)
+
+    class Meta:
+        model = PublicationReportAbuse
+        exclude = ('publication','reporter')
+
+    def __init__(self, user=None, *args, **kwargs):
+        self.user = user
+        super(PublicationReportAbuseForm, self).__init__(*args, **kwargs)        

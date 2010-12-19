@@ -114,6 +114,15 @@ class PublicationScore(models.Model):
 	verbose_name =_('publication rate')
 	verbose_name_plural = _('publication rates')
 
+class PublicationReportAbuse(models.Model):
+    publication = models.ForeignKey(Publication,related_name="publication_report_abuse", default="", null=False)
+    reporter    = models.ForeignKey(User, related_name="my_report", default="", null=False)
+    message     = models.TextField(_('message'), null=False)
+
+    class Meta:
+        verbose_name = _('publication report abuse')
+        verbose_name = _('publication report abuses')
+
 # handle notification of new comments
 from threadedcomments.models import ThreadedComment
 def new_comment(sender, instance, **kwargs):
