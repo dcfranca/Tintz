@@ -9,11 +9,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from publications.models import Publication, PublicationScore
+from publications.models import Publication, PublicationScore, PublicationReportAbuse
 from profiles.views import calc_age
 from follow.models import FollowAuthor
 
-from publications.forms import PublicationUploadForm, PublicationEditForm
+from publications.forms import PublicationUploadForm, PublicationEditForm, PublicationReportAbuseForm
 from tagging.models import *
 from django.http import Http404
 from django.conf import settings
@@ -179,6 +179,35 @@ def destroypublication(request, id):
     publication.delete()
     request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
+
+@login_required
+def reportabuse(request, id, form_class=PublicationReportAbuseForm,
+                template_name="publications/report_abuse.html"):
+    publication = get_object_or_404(Publication, id=id)
+
+    if publication.author == request.user:
+        request.user.message_set.create(message=u"Voce não pode denunciar sua própria publicão")
+        return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
+
+    report_abuse_form = form_class(request.user, instance=publication)
+
+    if request.method == "POST":
+        report_abuse = PublicationReportAbuse()
+        report_abuse_form = form_class(request.user, request.POST, instance=report_abuse)
+        if report_abuse_form.is_valid():
+            report_abuse = report_abuse_form.save(commit=False)
+            report_abuse.reporter = request.user
+            report_abuse.publication = publication
+            report_abuse.save()
+            request.user.message_set.create(message=_(u"Publicação denunciada com sucesso.'%s'") % publication.title)
+            return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
+
+    return render_to_response(template_name, {
+        "form": report_abuse_form,
+        "other_user": publication.author,
+        "publication": publication,
+    }, context_instance=RequestContext(request))        
+
 
 @login_required
 def editpublication(request, id, form_class=PublicationEditForm,

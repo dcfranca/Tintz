@@ -930,7 +930,7 @@ body {
 .publication-views {
     position: relative;
     float: right;
-    right: -250px;
+    right: -150px;
     top: 27px;
     color: red;
     font-size: 9pt;
@@ -1063,4 +1063,12 @@ body {
     top: 0px;
     left: 300px;
     font-style: italic;
+}
+
+.report-abuse, .report-abuse a, .report-abuse a:visited{
+    position: relative;
+    left: -20px;
+    top: 27px;
+    color: red;
+    font-size: 9pt;
 }
