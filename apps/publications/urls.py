@@ -19,4 +19,7 @@ urlpatterns = patterns('',
     url(r'^edit/(\d+)/$', 'publications.views.editpublication', name="edit_publication"),
     #view my publications
     url(r'^(?P<username>[^/]+)/$', 'publications.views.publications', name='publications'),
+    #report abuse
+    url(r'^report_abuse/(?P<id>\d+)/$', 'publications.views.reportabuse', name='report_abuse'),
+
 )

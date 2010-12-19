@@ -200,7 +200,7 @@ INSTALLED_APPS = (
     #'analytics',
     'profiles',
     'account',
-    'signup_codes',
+    #'signup_codes',
     #'tribes',
     #'photos',
     'tag_app',
