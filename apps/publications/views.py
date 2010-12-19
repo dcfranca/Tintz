@@ -112,7 +112,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def publications(request, username, template_name="publications/latest.html"):
+def publications(request, username, template_name="publications/list_publications.html"):
     """"
     Show publications
     """
@@ -296,33 +296,6 @@ def detailspublication(request, id, username, template_name="publications/detail
         publication_score.rate = 0
         is_voted = False
 
-    """
-    if request.method == "POST":
-        rate = request.POST["rate"]
-        if rate and rate > 0:
-            if not is_voted:
-                publication_score.publication = mypublication
-                publication_score.who_vote    = request.user
-
-            publication_score.vote_date   = datetime.datetime.now()
-            publication_score.rate        = rate
-
-            publication_score.save()
-            publications_scores = PublicationScore.objects.filter( publication = mypublication )
-            total_rates = 0
-
-            if publications_scores.count() > 0:
-                for rates in publications_scores:
-                    total_rates += int(rates.rate)
-
-                mypublication.rate = str(float((float(total_rates)/publications_scores.count())*20))
-                mypublication.save()
-
-
-            #request.user.message_set.create(message=_("Voto efetuado com sucesso para '%s'") % mypublication.title )
-            is_voted = True
-    """
-
     #Found Related Publications
     try:
         related_publications = TaggedItem.objects.get_by_model( Publication, mypublication.tags ).exclude(author = mypublication.author)[:4]
@@ -487,17 +460,6 @@ def searchresults(request, template_name="publications/results.html", search_tex
         "is_me": True,
         "find_prof": find_prof,
     }, context_instance=RequestContext(request))
-
-@login_required
-def choose_publication(request, template_name="publications/choose.html"):
-    """
-    Choose the publication type
-    """
-
-    return render_to_response(template_name, {
-    "other_user": request.user,
-    }, context_instance=RequestContext(request))
-
 
 
 """
