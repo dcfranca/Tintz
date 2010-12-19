@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.generic import date_based
 from django.conf import settings
 import htmlentitydefs, re
 import logging
@@ -64,8 +63,7 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
 
 def post(request, username, year, month, slug,
          template_name="blog/post.html"):
-    #import pdb; pdb.set_trace()
-    
+
     post = Post.objects.filter(slug=slug, publish__year=int(year), publish__month=int(month)).filter(author__username=username)
     if not post:
        raise Http404
@@ -77,19 +75,10 @@ def post(request, username, year, month, slug,
     if post[0].author == request.user:
         is_me = True
 
-    logging.debug( 'Is_Me = %s - other_user = %s' %( is_me,  username ) )
     return render_to_response(template_name, {
         "post": post[0],
         "is_me": is_me, 
         "other_user":post[0].author, 
-    }, context_instance=RequestContext(request))
-
-@login_required
-def your_posts(request, template_name="blog/your_posts.html"):
-    return render_to_response(template_name, {
-        "blogs": Post.objects.filter(author=request.user),
-        "is_me": True,
-        "other_user": request.user,
     }, context_instance=RequestContext(request))
 
 @login_required
