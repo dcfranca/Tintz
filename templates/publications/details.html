@@ -154,6 +154,12 @@
     }
 
     document.onkeyup = handleArrowKeys;
+    document.getElementById('form-bt-comment').onclick=click_comment;
+
+    function click_comment() {
+       if ( document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length == 0 )
+          return false;
+    }
 
     </script>
 
