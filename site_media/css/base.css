@@ -95,6 +95,10 @@ body {
     font-size: 14px;
     height: 23px;
     width: 300px;
+    -moz-border-radius: 3px; /* Firefox */
+    -webkit-border-radius: 3px; /* Safari and Chrome */
+    border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+
 }
 
 .title-profile a, .title-profile a:visited {
