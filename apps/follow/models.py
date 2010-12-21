@@ -3,8 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 
-from apps.publications.models import Publication
-from apps.blog.models import Post
+from publications.models import Publication
+from blog.models import Post
 import datetime
 from tintzsettings.models import TintzSettings
 from emailconfirmation.models import EmailAddress
@@ -14,7 +14,7 @@ from django.core.mail import EmailMessage
 
 from misc.utils import get_send_mail
 #from markdown import message
-import settings
+#import settings
 import user
 
 from threading import Thread

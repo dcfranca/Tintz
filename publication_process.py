@@ -2,9 +2,9 @@
 
 import sys,os, shutil
 from datetime import *
-sys.path.append("/home/danielfranca/Workspace/django/")
-sys.path.append("/home/danielfranca/Workspace/django/tintz/apps")
-sys.path.append("/home/danielfranca/Workspace/django/pinax-env/lib/python2.6/site-packages/pinax/apps/")
+sys.path.append("/home/danielfranca/workspace/")
+sys.path.append("/home/danielfranca/workspace/tintz/apps")
+sys.path.append("/home/danielfranca/workspace/pinax-env/lib/python2.6/site-packages/pinax/apps/")
 
 os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
 
@@ -49,6 +49,8 @@ def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False,
 
     try:
         thumb = Image.open(file_path)
+        if thumb.mode != "RGB":
+           thumb = thumb.convert("RGB")
     except IOError:
         return
 
@@ -189,7 +191,7 @@ def convert2images(publication):
     old_file_ext = file_ext
 
     #Create directory if it doesnt exist
-    dirname = "/home/danielfranca/Workspace/django/tintz/site_media/publications/"+publication.author.__unicode__()
+    dirname = "/home/danielfranca/workspace/tintz/site_media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
