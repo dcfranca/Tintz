@@ -114,6 +114,8 @@ def button_unfollow(request, other_user):
     except FollowAuthor.DoesNotExist:
         pass
 
+
+@login_required
 def profile(request, username, to_follow = None, template_name="profiles/profile.html"):
     other_user = get_object_or_404(User, username=username)
     publications = []
