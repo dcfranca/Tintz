@@ -32,9 +32,9 @@ body {
     background: #232323;
     height: 30px;
     width: 260px;
-    -moz-border-radius: 5px; /* Firefox */
-    -webkit-border-radius: 5px; /* Safari and Chrome */
-    border-radius: 5px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+    -moz-border-radius: 8px; /* Firefox */
+    -webkit-border-radius: 8px; /* Safari and Chrome */
+    border-radius: 8px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
 
 }
 
@@ -135,6 +135,10 @@ body {
     position: relative;
     top: 10px;
     background: url("/site_media/images/form_bg.png") repeat-y;
+    -moz-border-radius: 15px; /* Firefox */
+    -webkit-border-radius: 15px; /* Safari and Chrome */
+    border-radius: 15px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+
 }
 
 .standard-fieldset {
