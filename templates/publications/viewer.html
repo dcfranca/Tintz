@@ -6,11 +6,16 @@
 {% block head_title %}{% trans "Tintz - Publica&ccedil;&atilde;o" %}{% endblock %}
 
 {% block body %}
+<style type="text/css">
+body{
+   background: black;
+}
+</style>
 <div id="viewer-body">
     <div class="container">
         <div class="viewer">
             <div id="container span-22">
-                <div class="span-1 left-view">
+                <div class="span-3 left-view">
                     <div class="span-5 logo-tintz-black last"><img src="{{MEDIA_URL}}images/logo_tintz_black.png"/></div>
                     <div class="publication-title span-5 last">
                         {{ publication.title }}
@@ -38,7 +43,7 @@
                     </div>
                     <div class="fullscreen-close span-2 last"><div class="fullscreen-close-text">{% trans "Fechar" %}</div><a href="javascript:window.opener='x';window.close();"><img src="{{MEDIA_URL}}/images/fullscreen_close.png"></a></div>
 
-                    <div class="page-viewer span-5 push-2 last">
+                    <div class="page-viewer span-5 last">
                         {% if pages %}
                            <table>
                            {% for pagenr in pages_viewer.object_list %}

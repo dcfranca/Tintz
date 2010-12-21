@@ -1,11 +1,11 @@
 body {
     background: #f4e30c;
-    overflow-x: hidden;
 }
 
 #main-body {
     background: #f4e30c;
     min-height: 600px;
+    min-width: 100%;
 }
 
 #viewer-body {
@@ -32,6 +32,10 @@ body {
     background: #232323;
     height: 30px;
     width: 260px;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari and Chrome */
+    border-radius: 5px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+
 }
 
 .left-button img {
@@ -63,6 +67,9 @@ body {
     font-size: 14px;
     height: 30px;
     width: 700px;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari and Chrome */
+    border-radius: 5px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
 }
 
 .more {
@@ -647,18 +654,18 @@ body {
 .logo-tintz-black {
     position: relative;
     top: 40px;
-    left: -50px;
+    left: 0px;
 }
 
 .publication-title {
     position: relative;
     color: white;
     text-align: right;
-    right: 0px;
+    left: -80px;
     font-weight: bold;
     font-size: 12pt;
     top: 70px;
-    float: right;
+    float: left;
 }
 
 .publication-profile {
@@ -672,16 +679,16 @@ body {
    position: relative;
    text-align: right;
    font-size: 9pt;
-   float: right;
-   right: 0px;
+   float: left;
+   left: 0px;
    top: 80px;
 }
 
 .page-full {
     position: relative;
     top: 40px;
-    left: 20px;
-    min-width: 670px;
+    left: 0px;
+    min-width: 600px;
 }
 
 
@@ -695,7 +702,7 @@ body {
     width: 150px;
     position: relative;
     top: 50px;
-    left: 100px;
+    left: 0px;
 }
 
 .navigator-full a, .navigator-full a:active {
@@ -758,7 +765,7 @@ body {
     width: 100px;
     top: 20px;
     position: relative;
-    left: 260px;
+    left: 160px;
 }
 
 .fullscreen-close-text {
@@ -778,7 +785,7 @@ body {
     position: relative;
     max-width: 200px;
     top: -5px;
-    left: -20px;
+    left: 100px;
 }
 
 .page-viewer {
@@ -800,7 +807,7 @@ body {
     width: 70px;
     position: relative;
     top: 50px;
-    left: 100px;
+    left: 0px;
 }
 
 .navigator-viewer a, .navigator-viewer a:active {

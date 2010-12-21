@@ -12,9 +12,6 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PINAX_THEME = 'default'
 
 # Sphinx 0.9.8
-SPHINX_API_VERSION = 0x113
-SPHINX_SERVER = 'localhost'
-SPHINX_PORT = 3312
 
 #SMTP Server #TODO: change email
 EMAIL_HOST = 'smtp.gmail.com'
@@ -42,7 +39,7 @@ MANAGERS = ADMINS
 DATABASE_ENGINE = 'postgresql_psycopg2'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = 'tintz_dev'       # Or path to database file if using sqlite3.
 DATABASE_USER = 'tintz'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'abc123'         # Not used with sqlite3.
+DATABASE_PASSWORD = 'visio@123!'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
@@ -169,7 +166,7 @@ INSTALLED_APPS = (
     'mailer',
     'messages',
     'announcements',
-    'oembed',
+    #'oembed',
     #'djangodblog',
     'pagination',
 #    'gravatar',
@@ -295,7 +292,7 @@ import logging
 logging.basicConfig(
     level = logging.DEBUG,
     format = '%(asctime)s %(levelname)s %(message)s',
-    filename = 'log/tintz.log',
+    filename = '/home/danielfranca/workspace/tintz/log/tintz.log',
     filemode = 'w'
 )
 
@@ -314,4 +311,4 @@ except ImportError:
 # Haystack
 HAYSTACK_SITECONF = 'tintz.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'xapian'
-HAYSTACK_XAPIAN_PATH = '/home/danielfranca/Workspace/django/tintz/xapian-index'
+HAYSTACK_XAPIAN_PATH = '/home/danielfranca/workspace/tintz/xapian-index'

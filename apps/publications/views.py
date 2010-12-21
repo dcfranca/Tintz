@@ -24,7 +24,7 @@ from haystack.query import SearchQuerySet
 
 import logging
 
-import unittest
+
 
 import os, datetime
 
@@ -71,6 +71,20 @@ def getFollowings(request, other_user):
         followinUsers.append( follow.UserTo )
     return followinUsers
 
+def is_valid_format(filename, content_type):
+    logging.debug('IS_VALID_FORMAT: '+filename)
+    if content_type != 'application/pdf' and content_type != 'image/jpeg' and \
+    content_type != 'image/png' and content_type != 'image/gif' and \
+    not filename.endswith('.zip') and not filename.endswith('.cbz') and not filename.endswith('.rar') and not filename.endswith('.cbr'):
+	logging.debug('VALID FORMAT = FALSE')
+        return False
+    
+    logging.debug('VALID FORMAT = TRUE')
+    return True
+
+
+
+
 
 @login_required
 def uploadpublication(request, form_class=PublicationUploadForm,
@@ -82,19 +96,13 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication.author = request.user
     publication_form = form_class()
     
-    #publication.
-
     if request.method == 'POST':
         if request.POST.get("action") == "upload":
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
             if publication_form.is_valid():
-                if request.FILES['file_name'].content_type != 'application/pdf' and request.FILES['file_name'].content_type != 'image/jpeg' and \
-                request.FILES['file_name'].content_type != 'image/png' and request.FILES['file_name'].content_type != 'image/gif' and \
-                not request.FILES['file_name'].name.endswith('.zip') and not request.FILES['file_name'].name.endswith('.cbz') and not request.FILES['file_name'].name.endswith('.rar') and not request.FILES['file_name'].name.endswith('.cbr'):
+                if not is_valid_format(request.FILES['file_name'].name, request.FILES['file_name'].content_type):
                     request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
                 else:
-
-
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
                     publication.status = 0
@@ -105,6 +113,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                     return HttpResponseRedirect(reverse('publications', args=(publication.author,)))
 
     calc_age(request.user.get_profile())
+    
     return render_to_response(template_name, {
         "form": publication_form,
         "is_me": True,
@@ -166,7 +175,7 @@ def publications(request, username, template_name="publications/list_publication
 
 @login_required
 def destroypublication(request, id):
-    publication = Publication.objects.get(pk=id)
+    publication = get_object_or_404(Publication, pk=id)
 
     if not publication:
         return HttpResponseRedirect(reverse('publications'))
@@ -265,7 +274,6 @@ def detailspublication(request, id, username, template_name="publications/detail
     except:
         pass
 
-
     if request.user.is_authenticated():
         publications = getPublications(request, mypublication.author, True)
         followerUsers = getFollowers(request, mypublication.author)
@@ -274,7 +282,6 @@ def detailspublication(request, id, username, template_name="publications/detail
         return HttpResponseRedirect(reverse('publication_viewer', args=(mypublication.author, mypublication.id,)))
     else:
         return HttpResponseRedirect(reverse('acct_login'))
-
 
     if mypublication.author == request.user:
         is_me = True
@@ -462,21 +469,3 @@ def searchresults(request, template_name="publications/results.html", search_tex
     }, context_instance=RequestContext(request))
 
 
-"""
-Teste
-"""
-class PublicationTestCase(unittest.TestCase):
-    def setUp(self):
-        publication = Publication()
-
-    def TestWebRequests(self):
-        cl = Client()
-        response = cl.post()
-
-    def publicComic(self):
-        publication.author = "daniel"
-        publication.date_added = datetime.datetime.now()
-        publication.is_public = False
-        publication.status = 0
-        publication.title = "Titulo teste"
-        publication.save()
