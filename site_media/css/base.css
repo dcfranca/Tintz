@@ -899,6 +899,9 @@ body {
     text-decoration: none;
     color:black;
     font-size: 9pt;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari and Chrome */
+    border-radius: 5px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
 
 }
 
