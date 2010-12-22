@@ -99,6 +99,7 @@ def signup_complete(request, form_class=SignupCompleteForm,
 
     return render_to_response(template_name, {
         "form": form,
+	"username": request.user.username,
     }, context_instance=RequestContext(request))
 
 

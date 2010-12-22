@@ -262,6 +262,14 @@ body {
     right: 145px;
 }
 
+.message-form {
+    position: relative;
+    color: black;
+    font-weight: bold;
+    float: right;
+    right: 145px;
+}
+
 .login-links li {
     text-decoration: none;
     font-size: 9pt;
