@@ -25,6 +25,8 @@ import logging
 #from apps.pagseguropy.pagseguro import Pagseguro
 #from apps.misc.paylib import PagSeguro
 
+from account.utils import login_complete
+
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
     
@@ -122,7 +124,7 @@ def forgot_password(request, form_class=ForgotPasswordForm,
 
 
 """
-@login_required
+@login_complete
 def pay_account(request):
 
     success_url = get_default_redirect(request)

@@ -4,6 +4,8 @@ from django.http import   HttpResponseRedirect
 
 LOGIN_REDIRECT_URLNAME = getattr(settings, "LOGIN_REDIRECT_URLNAME", '')
 
+import logging
+
 
 #the decorator
 def login_complete(f):
@@ -11,13 +13,15 @@ def login_complete(f):
         
         #this check the session if userid key exist, if not it will redirect to login page
         if not request.user.is_authenticated():
+            logging.debug('LOGIN_COMPLETE - USER IS AUTHENTICATED')
             return HttpResponseRedirect(reverse("acct_login"))
-            
-        profile = request.user.get_profile()
 
-        #import pdb; pdb.set_trace()
+        try:
+           profile = request.user.get_profile()
+        except:
+           return HttpResponseRedirect(reverse("acct_login"))
 
-        if profile != None and len(profile.first_name) == 0:
+        if len(profile.first_name) == 0:
             return HttpResponseRedirect(reverse("acct_signup_complete"))
             
         return f(request, *args, **kwargs)

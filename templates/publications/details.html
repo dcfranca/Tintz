@@ -97,6 +97,7 @@
         <div class="report-abuse"><a href="{% url report_abuse publication.id %}">{% trans "Denunciar abuso" %}</a></div>
         {% endif %}
 
+
 	    {% if publication.allow_comments %}
             <div class="comments">
             {% comments publication %}
