@@ -8,13 +8,15 @@ LOGIN_REDIRECT_URLNAME = getattr(settings, "LOGIN_REDIRECT_URLNAME", '')
 #the decorator
 def login_complete(f):
     def wrap(request, *args, **kwargs):
-        #import pdb; pdb.set_trace()
         
         #this check the session if userid key exist, if not it will redirect to login page
         if not request.user.is_authenticated():
             return HttpResponseRedirect(reverse("acct_login"))
             
         profile = request.user.get_profile()
+
+        #import pdb; pdb.set_trace()
+
         if profile != None and len(profile.first_name) == 0:
             return HttpResponseRedirect(reverse("acct_signup_complete"))
             

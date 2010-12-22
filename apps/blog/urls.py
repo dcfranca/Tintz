@@ -5,13 +5,13 @@ from blog.forms import *
 
 urlpatterns = patterns('',
     # blog post
-    url(r'^post/(?P<username>[-\w]+)/(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)/$', 'blog.views.post', name='blog_post'),
+    url(r'^post/(?P<username>[^/]+)/(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)/$', 'blog.views.post', name='blog_post'),
 
     # all blog posts
     url(r'^$', 'blog.views.blogs', name="blog_list_all"),
 
     # blog post for user
-    url(r'^posts/(?P<username>\w+)/$', 'blog.views.blogs', name='blog_list_user'),
+    url(r'^posts/(?P<username>[^/]+)/$', 'blog.views.blogs', name='blog_list_user'),
 
     # new blog post
     url(r'^new/$', 'blog.views.new', name='blog_new'),
