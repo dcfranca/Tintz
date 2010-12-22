@@ -14,7 +14,7 @@ from django.core.mail import EmailMessage
 
 from misc.utils import get_send_mail
 #from markdown import message
-#import settings
+import settings
 import user
 
 from threading import Thread

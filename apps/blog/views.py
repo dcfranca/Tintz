@@ -28,9 +28,8 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
     is_me = False
     user = None
 
-
     if username is not None:
-        user = get_object_or_404(User, username=username.lower())
+        user = get_object_or_404(User, username=username)
         blogs = blogs.filter(author=user)[0:10]
     else:
         blogs = blogs.filter(author=request.user)[0:10]
