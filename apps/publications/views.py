@@ -7,7 +7,6 @@ from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 
 from publications.models import Publication, PublicationScore, PublicationReportAbuse
 from profiles.views import calc_age
@@ -24,7 +23,7 @@ from haystack.query import SearchQuerySet
 
 import logging
 
-
+from account.utils import login_complete
 
 import os, datetime
 
@@ -86,7 +85,7 @@ def is_valid_format(filename, content_type):
 
 
 
-@login_required
+@login_complete
 def uploadpublication(request, form_class=PublicationUploadForm,
         template_name="publications/upload.html"):
     """
@@ -120,7 +119,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
         "other_user":request.user,
     }, context_instance=RequestContext(request))
 
-@login_required
+@login_complete
 def publications(request, username, template_name="publications/list_publications.html"):
     """"
     Show publications
@@ -173,7 +172,7 @@ def publications(request, username, template_name="publications/list_publication
         "is_follow":is_follow,
     }, context_instance=RequestContext(request))
 
-@login_required
+@login_complete
 def destroypublication(request, id):
     publication = get_object_or_404(Publication, pk=id)
 
@@ -189,7 +188,7 @@ def destroypublication(request, id):
     request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
-@login_required
+@login_complete
 def reportabuse(request, id, form_class=PublicationReportAbuseForm,
                 template_name="publications/report_abuse.html"):
     publication = get_object_or_404(Publication, id=id)
@@ -218,7 +217,7 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
     }, context_instance=RequestContext(request))        
 
 
-@login_required
+@login_complete
 def editpublication(request, id, form_class=PublicationEditForm,
         template_name="publications/editpublication.html"):
     publication = get_object_or_404(Publication, id=id)
@@ -424,7 +423,7 @@ def viewerpublication(request, username, id, template_name="publications/viewer.
         "other_user": publication.author,
     }, context_instance=RequestContext(request))
 
-@login_required
+@login_complete
 def searchprepare(request):
     """
     Prepare the search
@@ -435,7 +434,7 @@ def searchprepare(request):
     return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
 
 
-@login_required
+@login_complete
 def searchresults(request, template_name="publications/results.html", search_text=""):
     """
     Show the results of publications search

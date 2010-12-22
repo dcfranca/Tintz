@@ -27,6 +27,8 @@ from haystack.query import SearchQuerySet
 
 import logging
 
+from account.utils import login_complete
+
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
@@ -97,6 +99,8 @@ def profiles(request, template_name="profiles/profiles.html"):
         "title": "Perfis",
     }, context_instance=RequestContext(request))
 
+
+@login_complete
 def button_follow(request, other_user):
     follow = FollowAuthor()
     follow.UserFrom = request.user
@@ -105,7 +109,7 @@ def button_follow(request, other_user):
     request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
-
+@login_complete
 def button_unfollow(request, other_user):
     try:
         follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
@@ -115,7 +119,7 @@ def button_unfollow(request, other_user):
         pass
 
 
-@login_required
+@login_complete
 def profile(request, username, to_follow = None, template_name="profiles/profile.html"):
     other_user = get_object_or_404(User, username=username)
     publications = []
@@ -215,7 +219,7 @@ def calc_age(profile):
         profile.age = date.today().year - profile.birth_date.year
    
 
-@login_required
+@login_complete
 def searchresults(request, template_name="profiles/results.html", search_text=""):
     """
     Show the results of publications search

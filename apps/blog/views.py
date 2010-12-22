@@ -8,7 +8,6 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import htmlentitydefs, re
 import logging
@@ -18,11 +17,14 @@ from blog.forms import *
 from follow.models import FollowAuthor,Update
 from tintzsettings.models import TintzSettings
 
+from account.utils import login_complete
+
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
     notification = None
 
+@login_complete
 def blogs(request, username=None, template_name="blog/blogs.html"):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     is_me = False
@@ -60,6 +62,7 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
     }, context_instance=RequestContext(request))
 
 
+@login_complete
 def post(request, username, year, month, slug,
          template_name="blog/post.html"):
 
@@ -80,7 +83,7 @@ def post(request, username, year, month, slug,
         "other_user":post[0].author, 
     }, context_instance=RequestContext(request))
 
-@login_required
+@login_complete
 def destroy(request, id):
     post = Post.objects.get(pk=id)
     user = request.user
@@ -93,7 +96,7 @@ def destroy(request, id):
     request.user.message_set.create(message=_(u"Post excluido com sucesso'%s'") % title)
     return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
-@login_required
+@login_complete
 def new(request, form_class=BlogForm, template_name="blog/new.html"):
     if request.method == "POST":
         if request.POST["action"] == "create":
@@ -144,7 +147,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
         "is_follow":False,
     }, context_instance=RequestContext(request))
 
-@login_required
+@login_complete
 def edit(request, id, form_class=BlogForm, template_name="blog/edit.html"):
     post = get_object_or_404(Post, id=id)
 
