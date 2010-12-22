@@ -23,14 +23,19 @@
                     {% endfor %}
                     </ul>
                 </div>
+
+                <div class="message-form span-7 last">{% trans 'Usu&aacute;rio '  %}{{ username }}</div>
+                <div class="message-form span-7 last" >{% block trans %} Clique <a href='{% url acct_logout %}'>aqui</a> para logar com outro usu&aacute;rio {% endblock %}</div>
+ 
+ <img class="hline" src="{{ MEDIA_URL }}images/hline.png"> 
                 
-                <label for="{{form.first_name.auto_id}}" class="span-7 last login-label">{{form.first_name.label}}</label>
+                <label for="{{form.first_name.auto_id}}" class="span-7 last login-label">*{{form.first_name.label}}</label>
                 <div class="span-7 last">{{ form.first_name }}</div>
                 
-                <label for="{{form.last_name.auto_id}}" class="span-7 last login-label">{{form.last_name.label}}</label>
+                <label for="{{form.last_name.auto_id}}" class="span-7 last login-label">*{{form.last_name.label}}</label>
                 <div class="span-7 last">{{ form.last_name }}</div>
                 
-                <label for="{{form.birth_date.auto_id}}" class="span-7 last login-label">{{form.birth_date.label}}</label>
+                <label for="{{form.birth_date.auto_id}}" class="span-7 last login-label">*{{form.birth_date.label}}</label>
                 <div class="span-7 last">{{ form.birth_date }}</div>
                 
                 <div class="hline_bottom"><img src="{{ MEDIA_URL }}images/hline.png"></div>
