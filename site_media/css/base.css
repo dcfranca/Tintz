@@ -628,13 +628,14 @@ body {
 .comment-user {
     font-weight: bold;
     position: relative;
+    left: 10px;
 }
 
 .comment-body {
     position: relative;
     float: left;
     top: 18px;
-    left: -102px;
+    left: -20px;
 }
 
 .separator {
@@ -650,7 +651,7 @@ body {
     position: relative;
     float: left;
     top: 0px;
-    left: 400px;
+    left: 0px;
 }
 
 .publication-rate {
