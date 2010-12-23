@@ -15,6 +15,8 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
+import logging
+
 # Create your models here.
 class Publication(models.Model):
     """
@@ -57,23 +59,27 @@ class Publication(models.Model):
 
     def get_thumbnail64_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb64x64.png"])
+      fname = unicode(fname,'utf-8')
+      return "".join([ "publications/",self.author.__str__(),"/", fname,".thumb64x64.png"])
 
     def get_thumbnail128_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb128x128.png"])
+      fname = unicode(fname,'utf-8')
+      return "".join([ "publications/",self.author.__str__(),"/", fname,".thumb128x128.png"])
 
     def get_thumbnail150_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname,"_001_thumb150", self.images_ext])
+      fname = unicode(fname,'utf-8')
+      return "".join([ "publications/",self.author.__str__(),"/", fname,"_001_thumb150", self.images_ext])
 
     def get_thumbnail260_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname,".thumb256x256.png"])
+      return "".join([ "publications/",self.author.__str__(),"/", fname,".thumb256x256.png"])
 
     def get_basename(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      return "".join([ "publications/",self.author.__unicode__(),"/", fname] )
+      fname = unicode(fname,'utf-8')
+      return "".join([ "publications/",self.author.__str__(),"/", fname] )
 
     def not_rated(self, author):
       return PublicationRate.getobjects( who_vote = author )

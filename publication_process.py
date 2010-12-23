@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 
-import sys,os, shutil
+import sys,os, shutil, traceback
 from datetime import *
 sys.path.append("/home/danielfranca/workspace/")
 sys.path.append("/home/danielfranca/workspace/tintz/apps")
@@ -195,6 +195,10 @@ def convert2images(publication):
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
+    #import pdb; pdb.set_trace()
+
+    file_name = unicode(file_name,'utf-8')
+
     file_path = dirname+"/"+file_name
 
     ##########################################################
@@ -229,11 +233,9 @@ def convert2images(publication):
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext
-    publication.file_name   = remove_specialchars(file_name)+old_file_ext
+    #publication.file_name   = remove_specialchars(file_name)+old_file_ext
     publication.save()
     Update.objects.update_followers(1, publication)
-
-
 
 print 'Starting Process Publications'
 
@@ -246,4 +248,12 @@ if not publications:
 
 for publication in publications:
     print 'Generating for: %s ' % publication.title
-    convert2images(publication)
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+
+    try:
+       convert2images(publication)
+    except:
+       print 'Error converting to images - '+publication.title
+       traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
+
+    print '******END*******' 

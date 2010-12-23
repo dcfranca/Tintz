@@ -30,7 +30,7 @@
                 <td class="span-4 publication-profile">
                     {% ifequal publication.status 1 %}
                          <a href="{% url publication_details publication.author publication.id %}">
-                         <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
+                         <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
                     {% endifequal %}
                 </td>
             {% endfor %}
