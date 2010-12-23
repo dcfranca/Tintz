@@ -43,7 +43,7 @@
 
 	    </div>
 
-	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png"></a></div>
+	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png" onclick=></a></div>
 
 	    <div id="share" class="share span-1" onclick="show_share_box(false);"><div class="share-text">{% trans "Compartilhe" %}</div><img src="{{MEDIA_URL}}/images/share.png" onmouseover="show_share_box(true);"></div>
 
@@ -86,7 +86,7 @@
                 <td>
                 <div class="related-publication">
                     <a href="{% url publication_details related_publication.author related_publication.id %}">
-                    <img src="{{ MEDIA_URL }}{{ related_publication.get_thumbnail150_name }}" href="{% url publication_details related_publication.author related_publication.id %}" title="{{ related_publication.title }}"/></a>
+                    <img src="{{ MEDIA_URL }}{{ related_publication.get_thumbnail150_name }}" href="javascript:fullscreen('{% url publication_details related_publication.author related_publication.id %}')" title="{{ related_publication.title }}"/></a>
                 </div>
                 </td>
             {% endfor %}
@@ -162,6 +162,9 @@
           return false;
     }
 
+function fullscreen(el, opts) {
+  newwindow = window.open( urllink ,'newwin')
+}
     </script>
 
 {% endblock %}

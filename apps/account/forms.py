@@ -26,7 +26,7 @@ alnum_re = re.compile(r'^\w+$')
 
 class LoginForm(forms.Form):
 
-    username = forms.CharField(label=_(u"Usuário ou E-mail"), max_length=30, widget=forms.TextInput(),
+    username = forms.CharField(label=_(u"Usuário ou E-mail"), max_length=60, widget=forms.TextInput(),
                 error_messages = {'required': u'Campo Usuário é obrigatório.' } )
     password = forms.CharField(label=_(u"Senha"), widget=forms.PasswordInput(render_value=False),
                 error_messages = {'required': u'Campo Senha é obrigatório.' } )
@@ -70,7 +70,7 @@ class LoginForm(forms.Form):
 
 class SignupForm(forms.Form):
 
-    username  = forms.CharField(label=_(u"Usuário"), max_length=30, widget=forms.TextInput(), 
+    username  = forms.CharField(label=_(u"Usuário"), max_length=60, widget=forms.TextInput(), 
                                error_messages = {'required': u'Campo Usuário é obrigatório.' } )     
     email       = forms.EmailField(label=_(u"E-mail"), required=True, widget=forms.TextInput(), 
                                               error_messages = {'required': u'Campo Email é obrigatório.' } )
@@ -251,7 +251,7 @@ class AccountForm(UserForm):
 
 class AddEmailForm(UserForm):
 
-    email = forms.EmailField(label=_("Email"), required=True, widget=forms.TextInput(attrs={'size':'30'}))
+    email = forms.EmailField(label=_("Email"), required=True, widget=forms.TextInput(attrs={'size':'60'}))
 
     def clean_email(self):
         try:
@@ -306,7 +306,7 @@ class SetPasswordForm(UserForm):
 
 class ResetPasswordForm(forms.Form):
 
-    email = forms.EmailField(label=_("Email"), required=True, widget=forms.TextInput(attrs={'size':'30'}))
+    email = forms.EmailField(label=_("Email"), required=True, widget=forms.TextInput(attrs={'size':'60'}))
 
     def clean_email(self):
         if EmailAddress.objects.filter(email__iexact=self.cleaned_data["email"], verified=True).count() == 0:

@@ -29,7 +29,7 @@
 
                     <div class="update-pub-cover span-4">
                     <a href="{% url publication_details update.publication.author update.publication.id %}">
-                    <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+                    <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
                     </div>
                     <div class="update-pub-title span-10 last">
                     <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
