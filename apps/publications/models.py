@@ -16,6 +16,7 @@ else:
     notification = None
 
 import logging
+import pdb
 
 # Create your models here.
 class Publication(models.Model):
@@ -69,6 +70,7 @@ class Publication(models.Model):
 
     def get_thumbnail150_name(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      #pdb.set_trace()
       fname = unicode(fname,'utf-8')
       return "".join([ "publications/",self.author.__str__(),"/", fname,"_001_thumb150", self.images_ext])
 
@@ -78,6 +80,7 @@ class Publication(models.Model):
 
     def get_basename(self):
       fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      #pdb.set_trace()
       fname = unicode(fname,'utf-8')
       return "".join([ "publications/",self.author.__str__(),"/", fname] )
 

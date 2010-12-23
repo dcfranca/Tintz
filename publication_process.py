@@ -26,6 +26,7 @@ from publications.forms import PublicationUploadForm, PublicationEditForm
 from tagging.models import *
 from django.http import Http404
 from django.conf import settings
+import datetime
 
 #import warnings
 #warnings.simplefilter('ignore', DeprecationWarning)
@@ -46,6 +47,7 @@ def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False,
     #import pdb; pdb.set_trace()
 
     file_name = os.path.splitext(file_path)[0]
+    file_name = file_name.replace('-','_')
 
     try:
         thumb = Image.open(file_path)
@@ -170,20 +172,8 @@ def unrar_file_into_dir(file, dir, filename_noext):
 
 def remove_specialchars(file_name):
 
-    #import pdb; pdb.set_trace()
-
-    new_file_name = ''
-
-    for ch in file_name:
-        try:
-            if (ord(ch) >= 48 and ord(ch) <= 57) or (ord(ch) >= 65 and ord(ch) <= 90) or (ord(ch) >= 97 and ord(ch) <= 122) or (ch == '_'):
-               new_file_name += ch
-            else:
-               new_file_name += '_'
-        except:
-            new_file_name += '_'
-
-    return new_file_name
+    return file_name.replace('-','_') 
+    
 
 
 def convert2images(publication):
@@ -233,11 +223,11 @@ def convert2images(publication):
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext
-    #publication.file_name   = remove_specialchars(file_name)+old_file_ext
+    publication.file_name   = remove_specialchars(file_name)+old_file_ext
     publication.save()
     Update.objects.update_followers(1, publication)
 
-print 'Starting Process Publications'
+print 'Starting Process Publications - DateTime: '+datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%s')
 
 print 'Searching publication in Status 0'
 publications = Publication.objects.filter( status = 0  )
