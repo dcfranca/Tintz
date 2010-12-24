@@ -426,10 +426,25 @@ body {
 .list-pub-description {
     position: relative;
     top: 30px;
-    left: -10px;
+    left: -20px;
     min-height: 200px;
     text-align: left;
     font-size: 9pt;
+}
+
+.list-pub-rate {
+    position: relative;
+    top: 10px;
+    left: -2px;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.list-pub-views {
+    position: relative;
+    top: 30px;
+    left: 0px;
+    font-size: 8pt;
 }
 
 .list-pub-button {

@@ -49,7 +49,16 @@
 
             <div class="span-8 last list-pub-description">{{ publication.get_small_text|linebreaks }}</div>
 
-            <div class="list-pub-subtitle"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
+            <div class="list-pub-subtitle last"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
+
+            
+            <div class="list-pub-rate span-1 last">
+                {% if publication.rate %}
+                {% trans 'Nota ' %}{{ publication.rate|stringformat:".0f" }}/100
+                {% endif %}
+            </div>
+
+            <div class="list-pub-views span-2 last">{% trans "Visualiza&ccedil;&otilde;es " %}{{ publication.views }}</div>
 
         {% endfor %}
 
