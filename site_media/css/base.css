@@ -648,7 +648,7 @@ body {
 
 .delete-comment {
     position: relative;
-    float: left;
+    float: right;
     top: 0px;
     left: 0px;
 }
