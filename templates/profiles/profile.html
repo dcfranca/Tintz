@@ -55,6 +55,7 @@
     <a href="{% url following other_user %}"><div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url following other_user %}">Seguindo</a><div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_followings }}</div></div></div></a>
     <div class="preview-contacts">
         <table>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
             {% for following in followings %}
                 {% if forloop.counter0|divisibleby:"7" %}<tr>{% endif %}
                 <td class="span-1 follow-profile">
@@ -67,6 +68,7 @@
     <a href="{% url followers other_user %}"><div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_contacts.png"><a href="{% url followers other_user %}">Seguidores</a><div class="items-count"><img src="{{ MEDIA_URL }}images/items_count.png"/><div class="items-nr">{{ nr_followers }}</div></div></div></a>
     <div class="preview-contacts">
         <table>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
             {% for follower in followers %}
                 {% if forloop.counter0|divisibleby:"7" %}<tr>{% endif %}
                 <td class="follow-profile">
