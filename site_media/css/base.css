@@ -1076,6 +1076,7 @@ body {
     border: 1px;
     font-size: 9pt;
     font-weight: bold;
+    text-decoration: underline;
     cursor: pointer;
 }
 
