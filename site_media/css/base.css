@@ -397,6 +397,10 @@ body {
     left: 0px;
 }
 
+.list-pub-item {
+    min-height: 100px;
+    max-height: 100px;
+}
 
 .list-pub-title, .list-pub-title a, .list-pub-title a:visited {
     position: relative;
@@ -943,7 +947,7 @@ body {
 .preview-contacts {
     position: relative;
     left: -40px;
-    top: -5px;
+    top: -45px;
     min-width: 300px;
 }
 
