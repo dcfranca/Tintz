@@ -63,9 +63,9 @@ class Post(models.Model):
     get_absolute_url = models.permalink(get_absolute_url)
 
     def get_small_text(self):
-        if len(self.body) < 300:
+        if len(self.body) < 500:
             return self.body
-        return self.body[0:296]+"..."
+        return self.body[0:596]+"..."
 
 
     def save(self, force_insert=False, force_update=False):

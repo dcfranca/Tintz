@@ -360,6 +360,7 @@ body {
     position: relative;
     top: 20px;
     left: -20px;
+    min-height: 150px;
 }
 
 .list-posts-title, .list-posts-title a, .list-posts-title a:visited {
@@ -660,7 +661,7 @@ body {
 
 .separator {
     position: relative;
-    top: 15px;
+    top: 30px;
     left: -20px;
     background-color: #E0E0E0;
     height: 1px;
@@ -1031,7 +1032,6 @@ body {
     position: relative;
     top: 45px;
     left: -140px;
-    min-height: 240px;
 
 }
 
@@ -1048,7 +1048,7 @@ body {
 
 .update-pub-description {
     position: relative;
-    top: -130px;
+    top: -150px;
     max-width: 300px;
     left: 205px;
     text-align: left;
@@ -1057,7 +1057,7 @@ body {
 
 .update-item {
     position: relative;
-    max-height: 270px;
+    min-height: 250px;
 }
 
 .thumb-page-click {
@@ -1131,4 +1131,9 @@ body {
     left: 10px;
     font-size: 12pt;
     color: red;
+}
+
+.blog-post-item {
+    position: relative;
+    min-height: 300px;
 }
