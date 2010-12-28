@@ -11,6 +11,7 @@ from emailconfirmation.models import EmailAddress
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from tintzsettings.models import TintzSettings
 
 from misc.utils import get_send_mail
 #from markdown import message
@@ -32,6 +33,10 @@ class EmailHtml(Thread):
       self.email_to     = email_to
 
    def run(self):
+       try:
+          self.message_html = encode(self.message_html,'utf-8')
+       except:
+          pass
        msg = EmailMessage(self.subject, self.message_html, self.email_from, self.email_to)
        msg.content_subtype = 'html'
        msg.send()
@@ -58,8 +63,16 @@ class UpdateManager(models.Manager):
             message_html = render_to_string("follow/new_follower_message.html", {
                 "follower": user,
             })
-            email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email])
-            email_follower.start()
+            
+            tsettings = None
+            try:
+                tsettings = TintzSettings.objects.get( user = item_to_update )
+            except:
+                pass
+            
+            if tsettings and tsettings.email_follow:
+                email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email])
+                email_follower.start()
             return
 
         update.date_post = datetime.datetime.now()
@@ -79,7 +92,7 @@ class UpdateManager(models.Manager):
                 #Check if it's to send Email
                 follower_settings = None
                 try:
-                    follower_settings = TintzSettings.objects.get( user = follower )
+                    follower_settings = TintzSettings.objects.get( user = follower.UserFrom )
                 except:
                     continue
 

@@ -187,7 +187,7 @@ def convert2images(publication):
 
     #import pdb; pdb.set_trace()
 
-    file_name = unicode(file_name,'utf-8')
+    #file_name = unicode(file_name,'utf-8')
 
     file_path = dirname+"/"+file_name
 

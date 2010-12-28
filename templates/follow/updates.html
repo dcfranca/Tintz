@@ -27,7 +27,7 @@
                     <div class="update-avatar span-2"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{% avatar update.publication.author 70 %}</a></div>
                     <div class="update-name span-3 last"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a></div>
 
-                    <div class="update-pub-cover span-4">
+                    <div class="update-pub-cover span-4 last">
                     <a href="{% url publication_details update.publication.author update.publication.id %}">
                     <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
                     </div>

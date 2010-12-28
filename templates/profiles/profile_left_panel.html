@@ -7,10 +7,17 @@
 	    {% avatar other_user 260 %}
 	    <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
 	</div> 
-	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
-	<div class="about">{{ other_user.get_profile.about|linebreaks }}</div>
 
-    {% if is_me %}
+	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
+    {% if is_profile %}
+	<div class="about">{{ other_user.get_profile.about|linebreaks }}</div>
+    {% if other_user.get_profile.interests %}
+    <div class="about"><b>Interesses</b>{{ other_user.get_profile.interests|linebreaks }}</div>
+    {% endif %}
+    <div class="about"><b>{{ other_user.get_profile.location }} {{ other_user.get_profile.state }} {{ other_user.get_profile.country }}</b> </div>
+    {% endif %}
+
+    {% if is_me and is_profile %}
         <form method="POST" action="{% url profile_detail other_user %}">
            <input class="submit-edit" type="submit" value="Editar" title="{% trans "Editar" %}"/>
            <input type="hidden" name="action" value="edit" />
