@@ -12,8 +12,6 @@ class PublicationUploadForm(forms.ModelForm):
             error_messages = {'required': u'Campo Arquivo é obrigatório.' } )
     description = forms.CharField(label=u'Descrição', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024,
             error_messages = {'required': u'Campo Descrição é obrigatório.' } )
-    category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE,
-            error_messages = {'required': u'Campo Categoria é obrigatório.' } )
     rated       = forms.ChoiceField(label=u'Classificação', widget=forms.Select,  choices=Publication.RATED_CHOICE,
             error_messages = {'required': u'Campo Classificação é obrigatório.' } )
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE,
@@ -37,7 +35,6 @@ class PublicationEditForm(forms.ModelForm):
                   error_messages = {'required': u'Campo Título é obrigatório.' } )
     description = forms.CharField(label=u'Descrição', widget=forms.Textarea, max_length=1024)
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE)
-    category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE)
     rated       = forms.ChoiceField(label=u'Classificação', widget=forms.Select,  choices=Publication.RATED_CHOICE)
     is_public   = forms.BooleanField(label=u'Publico', required=False, initial=False)
     allow_comments  = forms.BooleanField(label=u'Permitir Comentários', required=False,  initial=True)

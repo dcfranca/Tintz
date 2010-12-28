@@ -11,7 +11,7 @@ class ProfileForm(forms.ModelForm):
     location = forms.CharField(label=u'Cidade',  required=False)
     state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
     country  = forms.CharField(label=u'País', required=False)
-    website  = forms.URLField(label=u'Website', required=False)
+    #website  = forms.URLField(label=u'Website', required=False)
 
     class Meta:
         model = Profile

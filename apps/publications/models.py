@@ -27,10 +27,6 @@ class Publication(models.Model):
 	            ('en',u'English'),
 		  )
 
-    CATEGORY_CHOICE = ( ('Quadrinhos', 'Quadrinhos'),
-                       ('Revista', 'Revista'),
-                       ('Tira', 'Tira'),
-                    )
 
     RATED_CHOICE = ((0, 'Livre'),
                     (12,  '12 anos'),
@@ -44,7 +40,7 @@ class Publication(models.Model):
     language    = models.CharField(_('language'), choices=LANG_CHOICE, max_length=20, null=False)
     nr_pages    = models.IntegerField(_('nr_pages'), null=False)
     date_added  = models.DateTimeField(_('date_added'))
-    category      = models.CharField(_('category'),  choices=CATEGORY_CHOICE,  max_length=30,  null=False)
+    #category      = models.CharField(_('category'),  choices=CATEGORY_CHOICE,  max_length=30,  null=False)
     rated           = models.IntegerField(_('rated'),  choices=RATED_CHOICE, null= False)
     tags = TagField(_('tags'), null=True)
     status = models.IntegerField(_('status')) #0 - Waiting to be converted, 1 - Converted
