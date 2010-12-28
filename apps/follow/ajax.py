@@ -73,7 +73,7 @@ def more_updates(request, last_update):
 
     dajax = Dajax()
     dajax.append('#list-updates','innerHTML', htmlOutput)
-    dajax.assign('#last_update','innerText', last_up+len(updates))
+    dajax.assign('#last_update','innerHTML', last_up+len(updates))
 
     return dajax.json()
 

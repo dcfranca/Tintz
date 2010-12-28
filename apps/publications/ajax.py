@@ -124,7 +124,7 @@ def change_page(request, image_file, publication_id, change):
 
     dajax = Dajax()
     dajax.assign('#page_publication','src', new_page_file)
-    dajax.assign('#page_number_text','innerText', new_page_text)
+    dajax.assign('#page_number_text','innerHTML', new_page_text)
 
     logging.debug("Change_Page - Fim")
 
@@ -154,7 +154,7 @@ def change_to_newpage(request, image_file, publication_id, new_page):
 
     dajax = Dajax()
     dajax.assign('#page_publication','src', new_page_file)
-    dajax.assign('#page_number_text','innerText', new_page_text)
+    dajax.assign('#page_number_text','innerHTML', new_page_text)
 
     logging.debug("Change_Page - Fim")
 
@@ -232,7 +232,7 @@ def more_publications(request, other_user_id, last_publication):
 
     dajax = Dajax()
     dajax.append('#list-publications','innerHTML', htmlOutput)
-    dajax.assign('#last_publication','innerText', last_pub+len(publications))
+    dajax.assign('#last_publication','innerHTML', last_pub+len(publications))
 
     return dajax.json()
 

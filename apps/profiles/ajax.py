@@ -49,7 +49,7 @@ def more_profiles(request, other_user_id, last_profile, type):
 
     dajax = Dajax()
     dajax.append('#list-profiles','innerHTML', htmlOutput)
-    dajax.assign('#last_profile','innerText', last_prof+len(users))
+    dajax.assign('#last_profile','innerHTML', last_prof+len(users))
 
     return dajax.json()
 
