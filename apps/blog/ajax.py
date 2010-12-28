@@ -65,7 +65,7 @@ def more_posts(request, other_user_id, last_post):
 
     dajax = Dajax()
     dajax.append('#list-posts','innerHTML', htmlOutput)
-    dajax.assign('#last_post','innerText', last_post+len(posts))
+    dajax.assign('#last_post','innerHTML', last_post+len(posts))
 
     return dajax.json()
 
