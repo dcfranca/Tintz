@@ -26,11 +26,10 @@ def more_updates(request, last_update):
             %s
         </div>
         </div>
-        <div class="update-separator span-13 last"></div>
         </td></tr>"""
 
     template_pub  = """<tr><td><div class="update-avatar span-2"><a href="%s" title="%s %s"><img src="%s" alt="%s" width="70" height="70" /></a></div>
-        <div class="update-name span-5 last"><a href="%s" title="%s %s">%s %s</a></div>
+        <div class="update-name span-3 last"><a href="%s" title="%s %s">%s %s</a></div>
         <div class="update-pub-cover span-4">
         <a href="%s">
         <img src="%s%s" href="%s" alt="%s"/></a>
@@ -39,7 +38,6 @@ def more_updates(request, last_update):
         <a href="%s">%s</a>
         </div>
         <div class="update-pub-description span-10 last ">%s</div>
-        <div class="update-separator span-13 last"></div>
         </td></tr>
         """
 
