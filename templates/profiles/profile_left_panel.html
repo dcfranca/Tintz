@@ -44,7 +44,7 @@
 {% endif %}
 
 <div class="tag_cloud">    
-  {% tag_cloud_for_model publications.Publication as publication_tags with steps=10 min_count=1 distribution=log %}</b>
+  {% tag_cloud_for_model publications.Publication as publication_tags with steps=5 min_count=1 distribution=log %}</b>
   {% for tag in publication_tags %}
   <a href="{% url search_results tag.name %}" ><font size="{{tag.font_size}}"> {{tag.name}}</font></a>
   {% endfor %}
