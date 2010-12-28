@@ -34,6 +34,7 @@
         <table id="list-posts" class="span-14">
         {% for post in blogs %}
         <tr><td>
+            <div class="blog-post-item">
             <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 <div class="list-posts-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
 
@@ -56,6 +57,7 @@
                   <div class="span-1 list-posts-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
               {% endif %}
             <div class="separator span-13 last"></div>
+            </div>
         </td></tr>
         {% endfor %}
         </table>
