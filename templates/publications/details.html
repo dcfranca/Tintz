@@ -80,6 +80,10 @@
             </div>
         </div>
 
+        {% if not is_me %}
+        <div class="report-abuse span-1 last"><a href="{% url report_abuse publication.id %}"><img src="{{ MEDIA_URL }}/images/stop.png" title="Denunciar abuso"/></a></div>
+        {% endif %}
+
         <div class="list_related-publications">
         <table>
             {%  for related_publication in related_publications %}
@@ -92,11 +96,6 @@
             {% endfor %}
         </table>
         </div>
-
-        {% if not is_me %}
-        <div class="report-abuse"><a href="{% url report_abuse publication.id %}">{% trans "Denunciar abuso" %}</a></div>
-        {% endif %}
-
 
 	    {% if publication.allow_comments %}
             <div class="comments">
@@ -111,7 +110,7 @@
 {% block extra_elements %}
 
     <script type="text/javascript">
-    window.onload=Dajaxice.publications.set_stars('Dajax.process',{'score':{{publication_score}} });
+    window.onload=Dajaxice.publispecially whcations.set_stars('Dajax.process',{'score':{{publication_score}} });
     </script>
 
     <!--script type="text/javascript">
