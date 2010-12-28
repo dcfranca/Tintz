@@ -313,9 +313,11 @@ body {
 }
 
 .about {
-    font-size: 10pt;
+    font-size: 8pt;
     text-align: justify;
     max-width: 260px;
+    top: -10px;
+    position: relative;
 }
 
 #avatar_replace a{
@@ -395,6 +397,10 @@ body {
     left: 0px;
 }
 
+.list-pub-item {
+    min-height: 100px;
+    max-height: 100px;
+}
 
 .list-pub-title, .list-pub-title a, .list-pub-title a:visited {
     position: relative;
@@ -426,10 +432,25 @@ body {
 .list-pub-description {
     position: relative;
     top: 30px;
-    left: -10px;
+    left: -20px;
     min-height: 200px;
     text-align: left;
     font-size: 9pt;
+}
+
+.list-pub-rate {
+    position: relative;
+    top: 10px;
+    left: -2px;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.list-pub-views {
+    position: relative;
+    top: 30px;
+    left: 0px;
+    font-size: 8pt;
 }
 
 .list-pub-button {
@@ -648,7 +669,7 @@ body {
 
 .delete-comment {
     position: relative;
-    float: left;
+    float: right;
     top: 0px;
     left: 0px;
 }
@@ -926,7 +947,7 @@ body {
 .preview-contacts {
     position: relative;
     left: -40px;
-    top: -5px;
+    top: -45px;
     min-width: 300px;
 }
 
@@ -1009,12 +1030,13 @@ body {
     position: relative;
     top: 40px;
     left: -140px;
+    min-height: 240px;
 
 }
 
 .update-pub-title, .update-pub-title a, .update-pub-title a:visited {
     position: relative;
-    top: -100px;
+    top: 20px;
     left: -70px;
     width: 200px;
     font-size: 11pt;
@@ -1025,16 +1047,16 @@ body {
 
 .update-pub-description {
     position: relative;
-    top: -90px;
+    top: -130px;
     max-width: 300px;
-    left: 220px;
+    left: 205px;
     text-align: left;
     font-size: 9pt;
 }
 
 .update-item {
     position: relative;
-    min-height: 240px;
+    max-height: 270px;
 }
 
 .thumb-page-click {
@@ -1075,6 +1097,7 @@ body {
     border: 1px;
     font-size: 9pt;
     font-weight: bold;
+    text-decoration: underline;
     cursor: pointer;
 }
 
