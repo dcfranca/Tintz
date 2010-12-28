@@ -1119,7 +1119,8 @@ body {
 .report-abuse, .report-abuse a, .report-abuse a:visited{
     position: relative;
     left: -20px;
-    top: 37px;
+    top: 15px;
+    float: left;
     color: red;
     font-size: 9pt;
 }
