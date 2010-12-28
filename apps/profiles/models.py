@@ -75,7 +75,7 @@ class Profile(models.Model):
     location = models.CharField(_('location'), max_length=40, null=True, blank=True)
     state    = models.CharField(_('state'), choices=STATE_CHOICE,  max_length=40, null=True, blank=True)
     country  = models.CharField(_('country'), max_length=40, null=True, blank=True)
-    website = models.URLField(_('website'), null=True, blank=True)
+    #website = models.URLField(_('website'), null=True, blank=True)
     account_type = models.ForeignKey(AccountType, verbose_name=('account type'), null=True)
     
     def __unicode__(self):
