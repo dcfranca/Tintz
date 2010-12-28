@@ -194,11 +194,12 @@ def more_publications(request, other_user_id, last_publication):
     if is_me:
         template += """<div class="span-1 list-pub-button"><a href="%s" ><img src="%simages/publication_edit.png" title="Editar Publica&ccedil;&atilde;o"></img></a></div>
                        <div class="span-1 list-pub-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Publica&ccedil;&atilde;o"></img></a></div>"""
-
+    #import pdb; pdb.set_trace()
 
     if is_me == True:
         publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[last_pub:last_pub+more_num]
     else:
+        request.user.get_profile().calc_age()
         publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[last_pub:last_pub+more_num]
 
     htmlOutput = ""
@@ -207,9 +208,9 @@ def more_publications(request, other_user_id, last_publication):
 
         str_pages = str(publication.nr_pages)
         if publication.nr_pages > 1:
-            str_pages += 'P&aacute;ginas'
+            str_pages += ' P&aacute;ginas'
         else:
-            str_pages += 'P&aacute;gina'
+            str_pages += ' P&aacute;gina'
 
         link_details = ''
         if publication.status != 0:
@@ -225,7 +226,7 @@ def more_publications(request, other_user_id, last_publication):
             htmlOutput += template % ( link_details, media_url, pub_image, link_details, publication.title,
             link_details, publication.title, publication.get_small_text(), str_pages, link_edit, media_url, link_destroy, link_destroy ,media_url )
         else:
-            htmlOutput += template % ( link_details, media_url, publication.get_thumbnail150_name(), link_details, publication.title,
+            htmlOutput += template % ( link_details, media_url, pub_image, link_details, publication.title,
             link_details, publication.title, publication.get_small_text(), str_pages,  )
 
 

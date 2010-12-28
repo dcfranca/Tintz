@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-import datetime
+from datetime import *
 
 from timezones.fields import TimeZoneField
 
@@ -89,6 +89,12 @@ class Profile(models.Model):
         if len(self.about) < 200:
             return self.about
         return self.about[0:197]+"..."
+
+    def calc_age(self):
+        if self.birth_date.month > date.today().month or ( self.birth_date.month == date.today().month and self.birth_date.day > date.today().day ):
+            self.age = date.today().year - self.birth_date.year - 1
+        else:
+            self.age = date.today().year - self.birth_date.year
     
     class Meta:
         verbose_name = _('profile')
