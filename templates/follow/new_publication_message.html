@@ -9,21 +9,21 @@
 <body>
     Ola, {{ update.user.get_profile.first_name }} {{ update.user.get_profile.last_name }}
     <br>
-    {{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }} publicou
-    <br>
+    <a href="tintz.com.br{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}"><img src="tintz.com.br{%  avatar_url update.publication.author 70 %}" alt="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}" width="70" height="70" /></a>
 
-    <a href="http://127.0.0.1:8000{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}"><img src="http://127.0.0.1:8000{%  avatar_url update.publication.author 70 %}" alt="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}" width="70" height="70" /></a>
-    <a href="http://127.0.0.1:8000{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a>
+    <a href="tintz.com.br{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a> publicou
     <br>
 
     <br>
-    <a href="http://127.0.0.1:8000{% url publication_details update.publication.author update.publication.id %}">
+
+    <br>
+    <a href="tintz.com.br{% url publication_details update.publication.author update.publication.id %}">
     <br>
 
-    <img src="http://127.0.0.1:8000/site_media/{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+    <img src="tintz.com.br/site_media/{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
     <br>
 
-    <a href="http://127.0.0.1:8000{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
+    <a href="tintz.com.br{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
     <br>
     {{ update.publication.get_small_text }}
 </body>
