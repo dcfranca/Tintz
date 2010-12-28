@@ -33,6 +33,8 @@ class PublicationUploadForm(forms.ModelForm):
 
 class PublicationEditForm(forms.ModelForm):
 
+    title       = forms.CharField(label=u'Título', max_length=300,
+                  error_messages = {'required': u'Campo Título é obrigatório.' } )
     description = forms.CharField(label=u'Descrição', widget=forms.Textarea, max_length=1024)
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE)
     category    = forms.ChoiceField(label=u'Categoria', widget=forms.Select,  choices=Publication.CATEGORY_CHOICE)
@@ -44,7 +46,7 @@ class PublicationEditForm(forms.ModelForm):
 
     class Meta:
         model = Publication
-        exclude = ('title','file_name','author','date_added', 'nr_pages', 'rate', 'status', 'views','images_ext')
+        exclude = ('file_name','author','date_added', 'nr_pages', 'rate', 'status', 'views','images_ext')
 
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
