@@ -1124,3 +1124,11 @@ body {
     color: red;
     font-size: 9pt;
 }
+
+#id-typed-chars {
+    position: relative;
+    top: -50px;
+    left: 10px;
+    font-size: 12pt;
+    color: red;
+}

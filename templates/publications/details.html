@@ -155,10 +155,15 @@
 
     document.onkeyup = handleArrowKeys;
     document.getElementById('form-bt-comment').onclick=click_comment;
+    document.getElementById('id_comment').onkeyup=calc_numchars;
 
     function click_comment() {
-       if ( document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length == 0 || document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length > 255 )
+       if ( document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length == 0 || document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length > 300 )
           return false;
+    }
+
+    function calc_numchars() {               
+        document.getElementById('id-typed-chars').innerHTML = 300 - document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length;
     }
 
 function fullscreen(el, opts) {
