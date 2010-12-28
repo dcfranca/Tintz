@@ -992,7 +992,7 @@ body {
 
 .update-name, .update-name a, .update-name a:visited {
     position: relative;
-    top: 7px;
+    top: 5px;
     left: -15px;
     color: red;
     text-decoration: none;
@@ -1028,7 +1028,7 @@ body {
 
 .update-pub-cover {
     position: relative;
-    top: 40px;
+    top: 45px;
     left: -140px;
     min-height: 240px;
 
