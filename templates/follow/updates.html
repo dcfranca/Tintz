@@ -11,8 +11,7 @@
 
     <div class="show_updates span-14">
         {% if updates %}
-            <table id="list-updates">
-            <tr><td>
+            <class id="list-updates">
             {% for update in updates %}
                 <div class="update-item span-14">
                 {% ifequal update.type "2" %}
@@ -39,9 +38,8 @@
                 </div>
                 
             {% endfor %}
-            </td></tr>
 
-            </table>
+            </div>
 
             <div id="last_update" style="display: none">10</div>
 

@@ -17,7 +17,7 @@ def more_updates(request, last_update):
     more_num = 10
     last_up = int(last_update)
 
-    template_post = """<tr><td><div class="update-item span-14">
+    template_post = """<div class="update-item span-14"><div class="update-item span-14">
         <div class="update-avatar span-2"><a href="%s" title="%s %s"><img src="%s" alt="%s" width="70" height="70" /></a></div>
         <div class="update-name span-5 last"><a href="%s" title="%s %s">%s %s</a></div>
 
@@ -26,9 +26,9 @@ def more_updates(request, last_update):
             %s
         </div>
         </div>
-        </td></tr>"""
+        </div>"""
 
-    template_pub  = """<tr><td><div class="update-avatar span-2"><a href="%s" title="%s %s"><img src="%s" alt="%s" width="70" height="70" /></a></div>
+    template_pub  = """<div class="update-item span-14"><div class="update-avatar span-2"><a href="%s" title="%s %s"><img src="%s" alt="%s" width="70" height="70" /></a></div>
         <div class="update-name span-3 last"><a href="%s" title="%s %s">%s %s</a></div>
         <div class="update-pub-cover span-4">
         <a href="%s">
@@ -38,7 +38,7 @@ def more_updates(request, last_update):
         <a href="%s">%s</a>
         </div>
         <div class="update-pub-description span-10 last ">%s</div>
-        </td></tr>
+        </div>
         """
 
     updates = Update.objects.filter( user = request.user ).order_by('-date_post')[last_up:last_up+more_num]
