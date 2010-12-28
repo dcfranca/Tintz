@@ -45,7 +45,6 @@ FULL_VIEW   = 700
 SIDE_THUMB  = 64
 
 def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False, cur_datetime = None):
-    #import pdb; pdb.set_trace()
 
     file_name = os.path.splitext(file_path)[0]
     file_name = file_name.replace('-','_')
@@ -73,17 +72,17 @@ def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False,
 
 def from_pdf_file(publication, dirname, file_name, cur_datetime):
 
-    #cur_datetime = datetime.datetime.now()
-
     file_name = remove_specialchars(file_name)
 
-    command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-    command = command+"\""+dirname+"/"+file_name+"_"+cur_datetime+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
-    print "RUN: "+command
+    try:
+        command = unicode("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile=",'utf-8')
+        command = command+"\""+dirname+"/"+file_name+"_"+cur_datetime+"_"+"%03d.jpg\" \""+unicode(publication.file_name.path,'utf-8')+"\""
 
-    os.system(command)
+        print "RUN: "+command
+        os.system(command.encode('utf-8'))
 
-    #pdb.set_trace()
+    except Excetion, e:
+        raise e
 
     #create_thumbnail(dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"001.jpg",".jpg", eh_pdf=True, cur_datetime=str(cur_datetime))
     create_thumbnail(dirname+"/"+file_name+"_"+cur_datetime+"_001.jpg",".jpg", eh_pdf=True, cur_datetime=cur_datetime)
@@ -141,6 +140,7 @@ def unzip_file_into_dir(file, dir, filename):
 def unrar_file_into_dir(file, dir, filename_noext):
 
     print file
+    pdb.set_trace()
     rar_file = UnRAR2.RarFile(file)
     rar_file.extract()
     files_coll = []
@@ -185,9 +185,12 @@ def unrar_file_into_dir(file, dir, filename_noext):
 
 def remove_specialchars(file_name):
 
-    return file_name.replace('-','_') 
-    
+    try:    
+        new_file_name = unicode( file_name.replace('-','_'), 'utf-8')
+    except:
+        return file_name.replace('-','_')
 
+    return new_file_name
 
 def convert2images(publication):
     file_name, file_ext = os.path.splitext(os.path.basename(publication.file_name.path))
@@ -198,11 +201,13 @@ def convert2images(publication):
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
-    #import pdb; pdb.set_trace()
 
     #file_name = unicode(file_name,'utf-8')
 
-    file_path = dirname+"/"+file_name
+    try:    
+        file_path = unicode(dirname,'utf-8')+"/"+unicode(file_name,'utf-8')
+    except:
+        pass
 
     ##########################################################
     ### Generating images from PDF
@@ -213,32 +218,31 @@ def convert2images(publication):
     cur_datetime = ""
 
     if mimetypes.guess_type( publication.file_name.path )[0] == 'application/pdf':
-        print "Arquivo PDF"
+        print "PDF File: "+publication.file_name.path
         try:
-           #pdb.set_trace()
            cur_datetime = remove_specialchars( str( datetime.datetime.now() ) )
            file_name = remove_specialchars(file_name)
            pages, file_ext = from_pdf_file(publication, dirname, file_name, cur_datetime)
            file_name = file_name + "_" + cur_datetime
         except Exception, e:
-           print 'Error converting from PDF'
+           print 'Error converting from PDF: '
            raise e
     elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
-        print "Arquivo CBR"
+        print "CBR File: "+publication.file_name.path
         try:
            pages, file_ext = unrar_file_into_dir( publication.file_name.path, dirname, file_name )
         except Exception, e:
-           print 'Error converting from CBR'
+           print 'Error converting from CBR: '
            raise e
     elif publication.file_name.path.endswith('.zip') or publication.file_name.path.endswith('.cbz'):
-        print "Arquivo CBZ"
+        print "CBZ File: "+publication.file_name.path
         try:
            pages, file_ext = unzip_file_into_dir( publication.file_name.path, dirname, file_name )
         except Exception, e:
-           print 'Error converting from ZIP'
+           print 'Error converting from ZIP: '
            raise e
     else:
-        print "Arquivo PNG/GIF/Image"
+        print "PNG/GIF/Image File: "+publication.file_name.path
         img = Image.open( publication.file_name.path )
         img_strip = ''.join([file_path, '_001',file_ext])
         img.save(img_strip)
@@ -247,9 +251,9 @@ def convert2images(publication):
         create_thumbnail(img_strip, file_ext, SIDE_THUMB, 128)
         pages = 1
 
-    print "Numero de paginas: "+str(pages)
+    print "Number of pages: "+str(pages)
 
-    print "Extensao: "+file_ext
+    print "Extension: "+file_ext
 
     publication.status = 1
     publication.nr_pages = pages
@@ -273,6 +277,8 @@ if not publications:
     print 'No publications found'
     quit()
 
+print '******START*******' 
+
 for publication in publications:
     print '\n\nGenerating for: %s ' % publication.title
     exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -283,4 +289,4 @@ for publication in publications:
        print 'Error converting to images - '+publication.title
        traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
 
-    print '******END*******' 
+print '******END*******' 
