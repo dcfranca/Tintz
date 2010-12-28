@@ -1,3 +1,5 @@
+#coding: utf-8
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -98,7 +100,7 @@ class UpdateManager(models.Manager):
 
                 if follower_settings != None:
                     if type == 1 and follower_settings.email_publication:
-                        subject = _("Tintz - Nova Publica&ccedil;&atilde;o")
+                        subject = unicode("Tintz - Nova Publicação",'utf-8')
                         message_html = render_to_string("follow/new_publication_message.html", {
                             "update": update,
                         })

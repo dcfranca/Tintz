@@ -77,10 +77,21 @@ def post(request, username, year, month, slug,
     if post[0].author == request.user:
         is_me = True
 
+    is_follow = False
+    try:
+        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=post[0].author )
+        if follow:
+            is_follow = True
+        else:
+            is_follow = False
+    except FollowAuthor.DoesNotExist:
+        pass
+
     return render_to_response(template_name, {
         "post": post[0],
         "is_me": is_me, 
         "other_user":post[0].author, 
+        "is_follow": is_follow,
     }, context_instance=RequestContext(request))
 
 @login_complete

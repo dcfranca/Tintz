@@ -34,6 +34,7 @@ import datetime
 import os, datetime, mimetypes
 import pdb
 import glob
+import datetime
 
 from PIL import Image
 import UnRAR2
@@ -53,8 +54,8 @@ def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False,
         thumb = Image.open(file_path)
         if thumb.mode != "RGB":
            thumb = thumb.convert("RGB")
-    except IOError:
-        return
+    except IOError, e:
+        raise e
 
     if eh_pdf:
         ind = file_name.find(cur_datetime)
@@ -70,30 +71,34 @@ def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False,
     thumb.thumbnail((width,height),Image.ANTIALIAS)
     thumb.save(''.join([file_name, '_thumb','%03d' % (widht_display), file_ext]))
 
-def from_pdf_file(publication, dirname, file_name):
+def from_pdf_file(publication, dirname, file_name, cur_datetime):
 
-
-    import datetime
-
-    cur_datetime = datetime.datetime.now()
+    #cur_datetime = datetime.datetime.now()
 
     file_name = remove_specialchars(file_name)
 
     command = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -r150 -dTextAlphaBits=4 -sOutputFile="
-    command = command+"\""+dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
+    command = command+"\""+dirname+"/"+file_name+"_"+cur_datetime+"_"+"%03d.jpg\" \""+publication.file_name.path+"\""
     print "RUN: "+command
 
     os.system(command)
 
-    create_thumbnail(dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"001.jpg",".jpg", eh_pdf=True, cur_datetime=str(cur_datetime))
+    #pdb.set_trace()
 
-    listfiles = glob.glob( dirname+"/"+file_name+"_"+str(cur_datetime)+"_*.jpg" )
+    #create_thumbnail(dirname+"/"+file_name+"_"+str(cur_datetime)+"_"+"001.jpg",".jpg", eh_pdf=True, cur_datetime=str(cur_datetime))
+    create_thumbnail(dirname+"/"+file_name+"_"+cur_datetime+"_001.jpg",".jpg", eh_pdf=True, cur_datetime=cur_datetime)
+
+    listfiles = glob.glob( dirname+"/"+file_name+"_"+cur_datetime+"_*.jpg" )
 
     pag = 0
 
     for filename in listfiles:
-        create_thumbnail(filename,".jpg", FULL_VIEW, 1400, eh_pdf=True, cur_datetime=str(cur_datetime))
-        create_thumbnail(filename,".jpg", SIDE_THUMB, 128, eh_pdf=True, cur_datetime=str(cur_datetime))
+        try:
+            create_thumbnail(filename,".jpg", FULL_VIEW, 1400, eh_pdf=True, cur_datetime=cur_datetime)
+            create_thumbnail(filename,".jpg", SIDE_THUMB, 128, eh_pdf=True, cur_datetime=cur_datetime)
+        except IOError, e:
+            print 'Error creating thumbnail'
+            raise e
         pag += 1
 
     return pag, ".jpg"
@@ -124,8 +129,12 @@ def unzip_file_into_dir(file, dir, filename):
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
 
-        create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
-        create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+        try:       
+            create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
+            create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+        except IOError, e:
+            print 'Error creating thumbnail'
+            raise e
 
     return pag, file_ext
 
@@ -165,8 +174,12 @@ def unrar_file_into_dir(file, dir, filename_noext):
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
 
-        create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
-        create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+        try:        
+            create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
+            create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
+        except IOError, e:
+            print 'Error creating thumbnail'
+            raise e
 
     return pag, file_ext
 
@@ -197,15 +210,33 @@ def convert2images(publication):
 
     pages = 0
 
+    cur_datetime = ""
+
     if mimetypes.guess_type( publication.file_name.path )[0] == 'application/pdf':
         print "Arquivo PDF"
-        pages, file_ext = from_pdf_file(publication, dirname, file_name)
+        try:
+           #pdb.set_trace()
+           cur_datetime = remove_specialchars( str( datetime.datetime.now() ) )
+           file_name = remove_specialchars(file_name)
+           pages, file_ext = from_pdf_file(publication, dirname, file_name, cur_datetime)
+           file_name = file_name + "_" + cur_datetime
+        except Exception, e:
+           print 'Error converting from PDF'
+           raise e
     elif publication.file_name.path.endswith('.rar') or publication.file_name.path.endswith('.cbr'):
         print "Arquivo CBR"
-        pages, file_ext = unrar_file_into_dir( publication.file_name.path, dirname, file_name )
+        try:
+           pages, file_ext = unrar_file_into_dir( publication.file_name.path, dirname, file_name )
+        except Exception, e:
+           print 'Error converting from CBR'
+           raise e
     elif publication.file_name.path.endswith('.zip') or publication.file_name.path.endswith('.cbz'):
         print "Arquivo CBZ"
-        pages, file_ext = unzip_file_into_dir( publication.file_name.path, dirname, file_name )
+        try:
+           pages, file_ext = unzip_file_into_dir( publication.file_name.path, dirname, file_name )
+        except Exception, e:
+           print 'Error converting from ZIP'
+           raise e
     else:
         print "Arquivo PNG/GIF/Image"
         img = Image.open( publication.file_name.path )
@@ -223,6 +254,12 @@ def convert2images(publication):
     publication.status = 1
     publication.nr_pages = pages
     publication.images_ext = file_ext
+
+    if old_file_ext == '.pdf':
+        ind = file_name.find(cur_datetime)
+        if ind > 0:
+            file_name = file_name[0:ind-1]+file_name[ind+len(cur_datetime):len(file_name)]
+
     publication.file_name   = remove_specialchars(file_name)+old_file_ext
     publication.save()
     Update.objects.update_followers(1, publication)
@@ -237,7 +274,7 @@ if not publications:
     quit()
 
 for publication in publications:
-    print 'Generating for: %s ' % publication.title
+    print '\n\nGenerating for: %s ' % publication.title
     exc_type, exc_value, exc_traceback = sys.exc_info()
 
     try:
