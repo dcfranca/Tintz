@@ -43,7 +43,7 @@
 
 	    </div>
 
-	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="{% url publication_viewer user publication.id %}" target="_blank"><img src="{{MEDIA_URL}}/images/fullscreen.png" onclick=></a></div>
+	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="javascript:openWindow('{% url publication_viewer user publication.id %}');" ><img src="{{MEDIA_URL}}/images/fullscreen.png" onclick=></a></div>
 
 	    <div id="share" class="share span-1" onclick="show_share_box(false);"><div class="share-text">{% trans "Compartilhe" %}</div><img src="{{MEDIA_URL}}/images/share.png" onmouseover="show_share_box(true);"></div>
 
@@ -164,6 +164,11 @@
 
     function calc_numchars() {               
         document.getElementById('id-typed-chars').innerHTML = 300 - document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length;
+    }
+
+    function openWindow(url)
+    {
+      openedWindow = window.open(url);
     }
 
 function fullscreen(el, opts) {
