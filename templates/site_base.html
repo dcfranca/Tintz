@@ -14,6 +14,27 @@
 <div id="main-body">
     <div class="container">
 
+    <script type="text/javascript">
+    clicked_search = false;
+    function submitform()
+    {
+        clicked_search = true;
+        document.forms["formsearch"].submit();
+    }
+
+    function cleartext()
+    {
+        document.getElementById("id_search").value = "";
+    }
+
+    function settext()
+    {
+        if ( !clicked_search )        
+            document.getElementById("id_search").value = "Buscar";
+        clicked_search = false;
+    }
+    </script>
+
 	{% if user.is_authenticated %}
 	    <hr/>
 	    <div class="span-10" id="tintz_logo">
@@ -30,7 +51,7 @@
 		    <area shape="rect" coords="225,13,314,31" href="{% url tintz_settings %}" alt="" title=""    />
 
             <form id="formsearch" class="form-search span-3" method="POST" action="{% url search_prepare %}">
-                <input type="text" name="search_text" value="Buscar"/>
+                <input type="text" id="id_search" onfocus="javascript:cleartext();" onload="javascript:settext();" name="search_text" value="Buscar"/>
                 <area shape="rect" coords="450,10,480,35" href="javascript: submitform();" alt="" title="Buscar"    />
             </form>
 
@@ -66,12 +87,7 @@
 {% endblock %}
 
 {% block extra_elements %}
-    <script type="text/javascript">
-    function submitform()
-    {
-      document.forms["formsearch"].submit();
-    }
-    </script>
+
 {% endblock %}
 
 {% block footer %}
