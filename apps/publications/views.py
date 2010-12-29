@@ -184,7 +184,14 @@ def destroypublication(request, id):
         request.user.message_set.create(message=u"Você não possui permissão para excluir essa publicação")
         return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
-    publication.delete()
+    try:    
+        publication.delete()
+    except IOError:
+        pass
+    except:
+        request.user.message_set.create(message=u"Erro ao tentar excluir a publicação")
+        return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
+
     request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
