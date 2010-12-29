@@ -3,10 +3,17 @@
 {% load tagging_tags %}
 
 {% if other_user.id %}
-	<div id="profile_avatar" onmouseover="document.getElementById('avatar_replace').style.visibility='visible'" onmouseout="document.getElementById('avatar_replace').style.visibility='hidden'">
-	    {% avatar other_user 260 %}
-	    <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
-	</div> 
+    {% if is_me %}
+	    <div id="profile_avatar" onmouseover="document.getElementById('avatar_replace').style.visibility='visible'" onmouseout="document.getElementById('avatar_replace').style.visibility='hidden'">
+	        {% avatar other_user 260 %}
+	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
+	    </div> 
+    {% else %}
+	    <div id="profile_avatar">
+	        {% avatar other_user 260 %}
+	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
+	    </div> 
+    {% endif %}
 
 	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
     {% if is_profile %}

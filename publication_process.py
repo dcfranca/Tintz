@@ -140,7 +140,6 @@ def unzip_file_into_dir(file, dir, filename):
 def unrar_file_into_dir(file, dir, filename_noext):
 
     print file
-    pdb.set_trace()
     rar_file = UnRAR2.RarFile(file)
     rar_file.extract()
     files_coll = []
