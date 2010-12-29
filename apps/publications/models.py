@@ -35,7 +35,7 @@ class Publication(models.Model):
 
     title = models.CharField(_('name'), max_length=200, null=False)
     author = models.ForeignKey(User, related_name="added_publications", default="", null=False)
-    file_name = models.FileField(_('file_name'), upload_to=get_profile_path, null=False)
+    file_name = models.FileField(_('file_name'), max_length=255, upload_to=get_profile_path, null=False)
     description = models.TextField(_('description'), null=False)
     language    = models.CharField(_('language'), choices=LANG_CHOICE, max_length=20, null=False)
     nr_pages    = models.IntegerField(_('nr_pages'), null=False)
