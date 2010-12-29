@@ -8,8 +8,46 @@ import dajax
 import logging
 from django.contrib.auth.models import User
 from avatar.templatetags.avatar_tags import *
+from profiles.views import *
 
 from django.core.urlresolvers import reverse
+
+"""
+
+def getFollowings(request, other_user):
+    #Finding followings            
+    followings = FollowAuthor.objects.filter( UserFrom = other_user )
+    followinUsers = []
+    for  follow in followings:
+        followinUsers.append( follow.UserTo )
+    return followinUsers
+
+def getUpdates(request,followingUsers):
+    updates = []
+    
+    for following in followingUsers:
+        publications = getPublications(request,following, False)
+        for publication in publications:
+            up = Update()
+            up.type = '1'
+            up.publication = publication
+            up.date_post = publication.date_added
+            updates.append(up)
+
+        posts = getPosts(request,following)        
+        for post in posts:
+            up = Update()
+            up.type = '2'
+            up.post = post
+            up.date_post = post.publish
+            updates.append(up)        
+
+        #Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
+
+    #import pdb; pdb.set_trace()
+    return sorted(updates, key=lambda update: update.date_post, reverse=True)[0:10]
+
+"""
 
 def more_updates(request, last_update):
 
@@ -41,7 +79,9 @@ def more_updates(request, last_update):
         </div>
         """
 
-    updates = Update.objects.filter( user = request.user ).order_by('-date_post')[last_up:last_up+more_num]
+    followings = getFollowings(request, request.user)
+
+    updates = getUpdates(request, followings) #Update.objects.filter( user = request.user ).order_by('-date_post')[last_up:last_up+more_num]
 
     htmlOutput = ""
 
