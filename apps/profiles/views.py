@@ -40,6 +40,7 @@ def getPublications(request, other_user, is_me):
         if is_me == True:
             publications = Publication.objects.filter( author = other_user ).order_by('-date_added')
         else:
+            calc_age(request.user.get_profile())
             publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')
     except Publication.DoesNotExist:
         pass
@@ -60,6 +61,36 @@ def getFollowings(request, other_user):
         followinUsers.append( follow.UserTo )
     return followinUsers
 
+def getPosts(request, other_user):
+    blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
+    return blogs.filter(author=other_user)    
+
+def getUpdates(request,followingUsers):
+    updates = []
+    
+    for following in followingUsers:
+        publications = getPublications(request,following, False)
+        for publication in publications:
+            if publication.status == 1:
+                up = Update()
+                up.type = '1'
+                up.publication = publication
+                up.date_post = publication.date_added
+                updates.append(up)
+
+        posts = getPosts(request,following)        
+        for post in posts:
+            up = Update()
+            up.type = '2'
+            up.post = post
+            up.date_post = post.publish
+            updates.append(up)        
+
+        #Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
+
+    #import pdb; pdb.set_trace()
+    return sorted(updates, key=lambda update: update.date_post, reverse=True)[0:10]
+
 @login_complete
 def home(request, template_name="homepage.html"):
     
@@ -72,10 +103,11 @@ def home(request, template_name="homepage.html"):
 
     if request.user.is_authenticated():
         logging.debug("home - Usuario logado")    
-        updates = Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
-        publications = getPublications(request, request.user, True)
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
+
+        updates = getUpdates(request,followingUsers)  
+        publications = getPublications(request, request.user, True)
     else:
         logging.debug("Home - Usario nao logado")
         return HttpResponseRedirect(reverse('acct_login'))
@@ -149,8 +181,8 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
     #Finding followers
     followerUsers = getFollowers(request,other_user)
 
-    blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
-    posts = blogs.filter(author=other_user)
+    posts = getPosts(request, other_user) # Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
+    #posts = blogs.filter(author=other_user)
 
     is_edit = False
 
