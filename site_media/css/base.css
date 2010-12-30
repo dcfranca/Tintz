@@ -318,6 +318,7 @@ body {
     max-width: 260px;
     top: -10px;
     position: relative;
+    word-wrap: break-word;
 }
 
 #avatar_replace a{
@@ -657,6 +658,7 @@ body {
     float: left;
     top: 18px;
     left: -20px;
+    word-wrap: break-word;
 }
 
 .separator {

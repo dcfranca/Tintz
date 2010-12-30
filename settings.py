@@ -11,8 +11,6 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # tells Pinax to use the default theme
 PINAX_THEME = 'default'
 
-# Sphinx 0.9.8
-
 #SMTP Server #TODO: change email
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -140,7 +138,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "announcements.context_processors.site_wide_announcements",
     "account.context_processors.account",
     "messages.context_processors.inbox",
-    "tintz.context_processors.combined_inbox_count",
+    #"tintz.context_processors.combined_inbox_count",
 )
 
 COMBINED_INBOX_COUNT_SOURCES = (
