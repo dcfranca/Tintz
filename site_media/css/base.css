@@ -1033,14 +1033,15 @@ body {
 .update-pub-cover {
     position: relative;
     top: 45px;
-    left: -140px;
-
+    margin-left: -140px;
+    float: left;
+    min-height: 255px;
 }
 
 .update-pub-title, .update-pub-title a, .update-pub-title a:visited {
     position: relative;
     top: 20px;
-    left: -70px;
+    margin-left: 5px;
     width: 200px;
     font-size: 11pt;
     text-decoration: none;
@@ -1050,11 +1051,12 @@ body {
 
 .update-pub-description {
     position: relative;
-    top: -100px;
+    top: 40px;
     max-width: 300px;
-    left: 205px;
+    margin-left: 10px;
     text-align: left;
     font-size: 9pt;
+    word-wrap: break-word;
 }
 
 .update-item {
