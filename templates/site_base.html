@@ -33,6 +33,19 @@
             document.getElementById("id_search").value = "Buscar";
         clicked_search = false;
     }
+
+    function enable_public() 
+    {
+        if ( document.getElementById("id_rated").value == "0" )
+        {
+            document.getElementById("id_is_public").disabled = false;
+        }
+        else
+        {
+            document.getElementById("id_is_public").value = false;
+            document.getElementById("id_is_public").disabled = true;
+        }
+    }
     </script>
 
 	{% if user.is_authenticated %}

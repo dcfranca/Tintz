@@ -19,7 +19,7 @@ class PublicationUploadForm(forms.ModelForm):
     is_public   = forms.BooleanField(label=u'Publico', required=False)
     allow_comments  = forms.BooleanField(label=u'Permitir Comentários', required=False,  initial=True)
     
-    rated.widget.attrs["onchange"]="enable_public()" 
+    rated.widget.attrs["onchange"]="javascript:enable_public();" 
 
     class Meta:
         model = Publication
@@ -39,7 +39,7 @@ class PublicationEditForm(forms.ModelForm):
     is_public   = forms.BooleanField(label=u'Publico', required=False, initial=False)
     allow_comments  = forms.BooleanField(label=u'Permitir Comentários', required=False,  initial=True)
     
-    rated.widget.attrs["onchange"]="enable_public()" 
+    rated.widget.attrs["onchange"]="javascript:enable_public();" 
 
     class Meta:
         model = Publication
