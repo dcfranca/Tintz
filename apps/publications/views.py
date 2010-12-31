@@ -295,6 +295,8 @@ def detailspublication(request, id, username, template_name="publications/detail
         is_me = False
     is_voted = False
 
+    #import pdb; pdb.set_trace()
+
     if is_me == False:
         calc_age(request.user.get_profile())
         if mypublication.rated > request.user.get_profile().age:
