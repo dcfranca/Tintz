@@ -81,7 +81,7 @@ def more_updates(request, last_update):
 
     followings = getFollowings(request, request.user)
 
-    updates = getUpdates(request, followings) #Update.objects.filter( user = request.user ).order_by('-date_post')[last_up:last_up+more_num]
+    updates = getUpdates(request, followings)[last_up:last_up+more_num]
 
     htmlOutput = ""
 

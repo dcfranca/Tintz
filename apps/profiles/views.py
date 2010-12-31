@@ -89,7 +89,7 @@ def getUpdates(request,followingUsers):
         #Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
 
     #import pdb; pdb.set_trace()
-    return sorted(updates, key=lambda update: update.date_post, reverse=True)[0:10]
+    return sorted(updates, key=lambda update: update.date_post, reverse=True)
 
 @login_complete
 def home(request, template_name="homepage.html"):
@@ -102,11 +102,12 @@ def home(request, template_name="homepage.html"):
     logging.debug("Home - Enter")
 
     if request.user.is_authenticated():
-        logging.debug("home - Usuario logado")    
+        logging.debug("home - Usuario logado") 
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = getUpdates(request,followingUsers)  
+        updates = getUpdates(request,followingUsers)[:10]
+            
         publications = getPublications(request, request.user, True)
     else:
         logging.debug("Home - Usario nao logado")
