@@ -38,10 +38,10 @@ def getPublications(request, other_user, is_me):
     publications = []
     try:
         if is_me == True:
-            publications = Publication.objects.filter( author = other_user ).order_by('-date_added')
+            publications = Publication.objects.filter( author = other_user, status=1 ).order_by('-date_added')
         else:
             calc_age(request.user.get_profile())
-            publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')
+            publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age, status=1 ).order_by('-date_added')
     except Publication.DoesNotExist:
         pass
     return publications
