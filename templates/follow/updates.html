@@ -33,7 +33,8 @@
                     <div class="update-pub-title span-10 last">
                     <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
                     </div>
-                    <div class="update-pub-description span-10 last">{{ update.publication.get_small_text }}</div>
+                    <div class="update-pub-description span-10 last"><p>{{ update.publication.get_small_text }}</div>
+                    
                 {% endifequal %}
                 </div>
                 
