@@ -1140,4 +1140,5 @@ body {
 .blog-post-item {
     position: relative;
     min-height: 300px;
+    top: 10px;
 }
