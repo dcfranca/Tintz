@@ -37,6 +37,8 @@
                     </ul>
                 </div>
                 
+                <div class="message-form span-13 last push-5">{% trans "Formatos suportados: cbr, cbz, rar, zip, jpg, gif, png, pdf" %}</div>
+
                 <label for="{{form.title.auto_id}}" class="span-3 tintz-label">{{form.title.label}}:</label>
                 <div class="span-10 last">{{ form.title }}</div>
 
@@ -69,60 +71,5 @@
         </form>
 </div>
 {% endblock %}
-
-
-{% comment %}
-
-{% extends "publications/base.html" %}
-
-{% load i18n %}
-{% load humanize %}
-{% load pagination_tags %}
-{% load tagging_tags %}
-{% load threadedcommentstags %}
-
-{% block head_title %}{% blocktrans %}Enviar Publicação{% endblocktrans %}{% endblock %}
-
-{% block center_panel %}
-
-  <div class="tintz-title">Enviar Publicação</div>
-
-   <body onload="FilterRates({{ other_user.get_profile.age }})"></body>
-   <div class="tintz-title">{% trans "Enviar Publica&ccedil;&atilde;o" %}</div>
-    <div id="basic-form">
-        <fieldset>            
-            <div class="warning">{% trans "Apenas os seguintes formatos são aceitos: (PDF, JPG, PNG, GIF)" %}</div>
-            <form enctype="multipart/form-data"  action="upload" method="POST" id="publication_form">
-                <table>
-                <tr><td colspan="2">{{ publication_form.non_field_errors }}</td></tr>
-                {% for field in publication_form %}
-                    {% if field.errors %}
-                        <tr><td>{{ field.errors }}</td></tr>
-        		    {% endif %}
-                    <tr>
-		            <td width="100px" valign="top" align="right">{{ field.label_tag }}</td><td>{{ field }}</td></tr>
-            	    {% if field.help_text %}
-		               <tr><td colspan="2"><span>{{ field.help_text }}</span></td></tr>
-                    {% endif %}
-                {% endfor %}
-                <tr><td width="150px"></td><td><input type="hidden" name="action" value="upload" /><input type="submit" value="Enviar" class="button" /></td></tr>
-                </table>
-            </form>
-        </fieldset>
-    </div>
-
-{% endblock %}
-
-{% block extra_body_base %}
-    <script type="text/javascript">
-
-    </script>
-
-
-{% endblock %}
-
-
-{% endcomment %}
-
 
 

@@ -81,7 +81,7 @@
         </div>
 
         {% if not is_me %}
-        <div class="report-abuse span-1 last"><a href="{% url report_abuse publication.id %}"><img src="{{ MEDIA_URL }}/images/stop.png" title="Denunciar abuso"/></a></div>
+        <div class="report-abuse span-1 last"><a href="{% url report_abuse publication.id %}"><img src="{{ MEDIA_URL }}/images/abuse.png" alt="Denunciar abuso" title="Denunciar abuso"/></a></div>
         {% endif %}
 
         <div class="list_related-publications">
