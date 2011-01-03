@@ -155,7 +155,7 @@
 
     document.onkeyup = handleArrowKeys;
     document.getElementById('form-bt-comment').onclick=click_comment;
-    document.getElementById('id_comment').onkeyup=calc_numchars;
+    document.getElementById('id_comment').onkeydown=calc_numchars;
 
     function click_comment() {
        if ( document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length == 0 || document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length > 300 )
