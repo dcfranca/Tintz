@@ -52,7 +52,7 @@ body {
 
 .tag_cloud, .tag_cloud a, .tag_cloud a:visited {
     position: relative;
-    top: 20px;
+    margin-top: 200px;
     width: 260px;
     text-decoration: none;
     color: blue;
