@@ -47,7 +47,7 @@ SIDE_THUMB  = 64
 def create_thumbnail(file_path, file_ext, width=150, height=200, eh_pdf = False, cur_datetime = None):
 
     file_name = os.path.splitext(file_path)[0]
-    file_name = file_name.replace('-','_')
+    file_name = remove_specialchars(file_name)
 
     try:
         thumb = Image.open(file_path)
@@ -185,9 +185,9 @@ def unrar_file_into_dir(file, dir, filename_noext):
 def remove_specialchars(file_name):
 
     try:    
-        new_file_name = unicode( file_name.replace('-','_'), 'utf-8')
+        new_file_name = unicode( file_name.replace('-','_').replace('#','_'), 'utf-8')
     except:
-        return file_name.replace('-','_')
+        return file_name.replace('-','_').replace('#','_')
 
     return new_file_name
 
