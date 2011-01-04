@@ -58,7 +58,7 @@
             <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
             {% for following in followings %}
                 {% if forloop.counter0|divisibleby:"7" %}<tr>{% endif %}
-                <td class="span-1 follow-profile">
+                <td class="follow-profile">
                     <a href="{% url profile_detail following.username %}" title="{{ following.get_profile.first_name }} {{ following.get_profile.last_name }}">{% avatar following 30 %}</a>
                 </td>
             {% endfor %}

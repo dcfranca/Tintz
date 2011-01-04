@@ -974,7 +974,8 @@ body {
 }
 
 .profiles-item {
-    min-height: 115px;
+    min-height: 130px;
+    word-wrap: break-word;
 
 }
 
