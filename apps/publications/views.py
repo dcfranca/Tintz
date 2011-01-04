@@ -440,7 +440,10 @@ def searchprepare(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
 
-    return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
+    if len(search_text) > 0:
+       return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
+    else:
+       return HttpResponseRedirect(reverse('search_results',args=(" ")))
 
 
 @login_complete
