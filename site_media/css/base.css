@@ -1143,3 +1143,8 @@ body {
     min-height: 300px;
     top: 10px;
 }
+
+.bt-email {
+    position: relative;
+    margin-left: 10px;
+}

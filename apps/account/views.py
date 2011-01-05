@@ -111,6 +111,8 @@ def forgot_password(request, form_class=ForgotPasswordForm,
     if success_url is None:
         success_url = get_default_redirect(request)
 
+    #import pdb; pdb.set_trace()
+
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
