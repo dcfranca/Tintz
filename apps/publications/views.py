@@ -81,17 +81,6 @@ def is_valid_format(filename, content_type):
     logging.debug('VALID FORMAT = TRUE')
     return True
 
-<<<<<<< HEAD
-
-
-
-
-=======
-
-
-
-
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
 @login_complete
 def uploadpublication(request, form_class=PublicationUploadForm,
         template_name="publications/upload.html"):
@@ -447,18 +436,11 @@ def searchprepare(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
 
-<<<<<<< HEAD
-    return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
-
-
-=======
     if len(search_text) > 0:
        return HttpResponseRedirect(reverse('search_results',args=(search_text.encode('utf-8'),)))
     else:
        return HttpResponseRedirect(reverse('search_results',args=(" ")))
 
-
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
 @login_complete
 def searchresults(request, template_name="publications/results.html", search_text=""):
     """

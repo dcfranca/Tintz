@@ -187,10 +187,7 @@ def edit(request, id, form_class=BlogForm, template_name="blog/edit.html"):
         "form": blog_form,
         "post": post,
         "other_user": request.user,
-<<<<<<< HEAD
-=======
 	    "is_me": True,
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
     }, context_instance=RequestContext(request))
 
 def slugfy(text, separator):
