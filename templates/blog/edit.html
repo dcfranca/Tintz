@@ -7,11 +7,7 @@
 {% load tagging_tags %}
 {% load threadedcommentstags %}
 
-<<<<<<< HEAD
-{% block head_title %}{% trans "Tintz - Editar Perfil" %}{% endblock %}
-=======
 {% block head_title %}{% trans "Tintz - Editar Post" %}{% endblock %}
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
 
 {% block extra_body %}
     {% if user.is_authenticated %}
@@ -26,20 +22,11 @@
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
 </div>
-<<<<<<< HEAD
-<div class="span-13 last">
-    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Configura&ccedil;&otilde;es</div>
-
-        <form enctype="multipart/form-data" class="standard-form" method="POST" action="">
-            <fieldset class="standard-fieldset">
-=======
 <div class="span-14 last">
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Editar Post</div>
 
         <form enctype="multipart/form-data" class="standard-form" method="POST" action="">
             <fieldset class="standard-fieldset">
-
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
                 <div class="span-12 errorlist pull-1">
                     <ul>
                     {% for field, errors in form.errors.items %}
@@ -50,28 +37,6 @@
                     </ul>
                 </div>
 
-<<<<<<< HEAD
-                <label for="{{form.title.auto_id}}" class="span-7 last login-label">{{form.title.label}}</label>
-                <div class="span-7 last">{{ form.title }}</div>
-
-                <label for="{{form.body.auto_id}}" class="span-7 last login-label">{{form.body.label}}</label>
-                <div class="span-7 last">{{ form.body }}</div>
-
-                <label for="{{form.allow_comments.auto_id}}" class="span-7 last login-label">{{form.allow_comments.label}}</label>
-                <div class="span-7 last">{{ form.allow_comments }}</div>
-
-                <label for="{{form.tags.auto_id}}" class="span-7 last login-label">{{form.tags.label}}</label>
-                <div class="span-7 last">{{ form.tags }}</div>
-
-
-                <div class="span-10 pull-8 last">
-		    <input type="hidden" name="action" value="update" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
-                </div>
-
-
-            </fieldset>
-        </form>
-=======
                 <label for="{{form.title.auto_id}}" class="span-3 tintz-label">{{form.title.label}}:</label>
                 <div class="span-10 last">{{ form.title }}</div>
 
@@ -90,7 +55,6 @@
 
             </fieldset>
         </form>
-
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
+    </div>
 </div>
 {% endblock %}
