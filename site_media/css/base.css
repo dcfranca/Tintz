@@ -6,7 +6,7 @@ body {
     background: #f4e30c;
     min-height: 600px;
     min-width: 100%;
-}
+}he
 
 #viewer-body {
     background: black;
@@ -52,11 +52,7 @@ body {
 
 .tag_cloud, .tag_cloud a, .tag_cloud a:visited {
     position: relative;
-<<<<<<< HEAD
-    top: 20px;
-=======
     margin-top: 200px;
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
     width: 260px;
     text-decoration: none;
     color: blue;
@@ -96,11 +92,7 @@ body {
     background: #232323;
     color: white;
     font-weight: bold;
-<<<<<<< HEAD
-    font-size: 14px;
-=======
     font-size: 9pt;
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
     height: 23px;
     width: 300px;
     -moz-border-radius: 3px; /* Firefox */
@@ -982,13 +974,8 @@ body {
 }
 
 .profiles-item {
-<<<<<<< HEAD
-    min-height: 115px;
-=======
     min-height: 130px;
     word-wrap: break-word;
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
-
 }
 
 .publication-views {
@@ -1155,11 +1142,9 @@ body {
     min-height: 300px;
     top: 10px;
 }
-<<<<<<< HEAD
-=======
 
 .bt-email {
     position: relative;
     margin-left: 10px;
 }
->>>>>>> a76d1cf094886100596ee2b7cd454a281aae508f
+
