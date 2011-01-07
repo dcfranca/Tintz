@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QObject>
 #include <QProcess>
+#include <QDir>
 #include "fileformat.h"
 
 namespace tintz {
@@ -26,6 +27,8 @@ namespace tintz {
 
         QString Program(){ return program; }
         void RunCommand( FILETYPE type );
+
+        void CreateThumbnailsForDir( QDir dirName );
 
         void PrepareRar();
         void PrepareZip();

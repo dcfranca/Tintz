@@ -12,7 +12,10 @@ namespace tintz
         QFileInfo fileInfo(fileName);
         QString baseName = fileInfo.baseName();
         QString dirName  = fileInfo.absoluteDir().absolutePath();
-        tmpDir = dirName + QDir::separator() + baseName + QDateTime::currentDateTime().toString();
+        tmpDir = dirName + QDir::separator() + baseName + "_" + QDateTime::currentDateTime().toString();
+
+        if ( !QDir(tmpDir).exists() )
+            QDir().mkdir( tmpDir );
 
         program.clear();
 
@@ -48,12 +51,30 @@ namespace tintz
 
     void ComicImages::Finished()
     {
-        std::cout << "Processamento efetuado com sucesso: " << std::endl;
-        //TODO: Implement
+        std::cout << "Processamento externo efetuado com sucesso: " << std::endl;
+
+        CreateThumbnailsForDir( QDir( tmpDir ) );
+
         if ( process )
         {
             delete process;
             process = NULL;
+        }
+    }
+
+    void ComicImages::CreateThumbnailsForDir( QDir dirName )
+    {
+        QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name );
+
+        QString fileName;
+        foreach( fileName, listFiles )
+        {
+            QString fullPath = dirName.absolutePath() + QDir::separator() + fileName;
+            if ( QFileInfo(fullPath).isDir() )
+                CreateThumbnailsForDir( QDir( fullPath ) );
+            else
+                std::cout << "[" << fileName.toStdString() << "]" << std::endl;
+                //TODO gerar thumbnails
         }
     }
 

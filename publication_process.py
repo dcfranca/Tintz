@@ -206,7 +206,7 @@ def convert2images(publication):
     try:    
         file_path = unicode(dirname,'utf-8')+"/"+unicode(file_name,'utf-8')
     except:
-    	file_path = dirname+"/"+file_name
+    	file_path = dirname+"/"+unicode(file_name,'utf-8')
         pass
 
     ##########################################################
