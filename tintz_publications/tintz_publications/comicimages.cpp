@@ -3,6 +3,8 @@
 #include <QDateTime>
 #include <iostream>
 #include <QDir>
+#include <Qt/qimagereader.h>
+#include <Qt/qimage.h>
 
 namespace tintz
 {
@@ -65,6 +67,7 @@ namespace tintz
     void ComicImages::CreateThumbnailsForDir( QDir dirName )
     {
         QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name );
+        bool firstPage = true;
 
         QString fileName;
         foreach( fileName, listFiles )
@@ -72,10 +75,67 @@ namespace tintz
             QString fullPath = dirName.absolutePath() + QDir::separator() + fileName;
             if ( QFileInfo(fullPath).isDir() )
                 CreateThumbnailsForDir( QDir( fullPath ) );
-            else
+            else if ( IsImage(fileName) )
+            {
                 std::cout << "[" << fileName.toStdString() << "]" << std::endl;
-                //TODO gerar thumbnails
+
+                /**Create thumbnails - Gerar thumbnails**/
+
+                //Full Viewer
+                CreateThumbnailForImage( fullPath, 700, 1400 );
+
+                //Side Thumbnails
+                CreateThumbnailForImage( fullPath, 64, 128 );
+
+                //Cover of the comic
+                if ( firstPage )
+                {
+                    CreateThumbnailForImage( fullPath, 150, 200 );
+                    firstPage = false;
+                }
+            }
         }
+    }
+
+    void ComicImages::CreateThumbnailForImage(QString fileName, int width, int height)
+    {
+        QImageReader img_reader(fileName);
+        int img_width = img_reader.size().width();
+        int img_height = img_reader.size().height();
+
+        if ( img_width > img_height )
+        {
+            img_height = static_cast<double>( width )/ img_width * img_height;
+            img_width = width;
+        }
+        else if ( img_height > img_width )
+        {
+            img_height = static_cast<double>( height )/ img_height * img_width;
+            img_height = height;
+        }
+        else
+        {
+            img_width = width;
+            img_height = height;
+        }
+
+        QFileInfo inf(fileName);
+
+        img_reader.setScaledSize(QSize(img_width, img_height));
+        QImage thumb = img_reader.read();
+        QString newFileName = inf.absoluteDir().absolutePath() + QDir::separator() + inf.baseName() + "_" + QString().sprintf( "%03d", width ) + "." + inf.suffix();
+        thumb.save( newFileName, "JPG" );
+    }
+
+    bool ComicImages::IsImage(QString fileName)
+    {
+        return ( fileName.endsWith(".jpg", Qt::CaseInsensitive) || fileName.endsWith(".png", Qt::CaseInsensitive) ||
+             fileName.endsWith(".gif", Qt::CaseInsensitive));
+    }
+
+    QString ComicImages::RemoveSpecialChars(QString str)
+    {
+        return str.replace("-","_").replace("#","_");
     }
 
     void ComicImages::Error(QProcess::ProcessError error)

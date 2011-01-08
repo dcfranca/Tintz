@@ -6,7 +6,7 @@
 
 QT       += core
 
-QT       -= gui
+QT       += gui
 
 TARGET = tintz_publications
 CONFIG   += console
