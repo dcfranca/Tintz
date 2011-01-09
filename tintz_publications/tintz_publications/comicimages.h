@@ -33,6 +33,7 @@ namespace tintz {
         QString RemoveSpecialChars(QString str);
         bool IsImage( QString fileName );
 
+        void PrepareImage();
         void PrepareRar();
         void PrepareZip();
         void PreparePdf();

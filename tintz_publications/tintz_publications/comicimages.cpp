@@ -21,12 +21,27 @@ namespace tintz
 
         program.clear();
 
-        if ( type == TYPE_RAR )
+        switch( type )
+        {
+        case TYPE_RAR:
             PrepareRar();
-        else if ( type == TYPE_ZIP )
+            break;
+        case TYPE_ZIP:
             PrepareZip();
-        else if ( type == TYPE_PDF )
+            break;
+        case TYPE_PDF:
             PreparePdf();
+            break;
+        case TYPE_IMG:
+            PrepareImage();
+            break;
+        case TYPE_ERROR:
+            std::cout << "Erro ao tentar descobrir tipo do arquivo" << std::endl;
+            break;
+        case TYPE_UNKNOWN:
+            std::cout << "Formato de arquivo invalido" << std::endl;
+            break;
+        }
 
         if ( program.length() )
         {
@@ -144,6 +159,28 @@ namespace tintz
             delete process;
             process = NULL;
         }
+    }
+
+    void ComicImages::PrepareImage()
+    {
+        QFileInfo fileInfo(fileName);
+        QString baseName = fileInfo.baseName();
+        QString dirName  = fileInfo.absoluteDir().absolutePath();
+        tmpDir = dirName + QDir::separator() + baseName + "_" + QDateTime::currentDateTime().toString();
+
+        if ( !QDir(tmpDir).exists() )
+            QDir().mkdir( tmpDir );
+
+        QString fullPath = tmpDir + QDir::separator() + fileName;
+
+        //fileName = RemoveSpecialChars( fileName );
+
+        //Full Viewer
+        CreateThumbnailForImage( fullPath, 700, 1400, 1 );
+        //Side Thumbnails
+        CreateThumbnailForImage( fullPath, 64, 128, 1 );
+
+        CreateThumbnailForImage( fullPath, 150, 200, 1 );
     }
 
     void ComicImages::PrepareRar()
