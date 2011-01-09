@@ -75,7 +75,7 @@ namespace tintz
 
         fileName = RemoveSpecialChars( fileName );
 
-        CreateThumbnailsForDir( QDir( tmpDir ) );
+        CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
 
         if ( process )
         {
@@ -86,7 +86,7 @@ namespace tintz
 
     void ComicImages::CreateThumbnailsForDir( QDir dirName )
     {
-        QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name );
+        QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name|QDir::LocaleAware );
         bool firstPage = true;
 
         QString fileName;
@@ -95,7 +95,7 @@ namespace tintz
         {
             QString fullPath = dirName.absolutePath() + QDir::separator() + fileName;
             if ( QFileInfo(fullPath).isDir() )
-                CreateThumbnailsForDir( QDir( fullPath ) );
+                CreateThumbnailsForDir( QDir( fullPath.toUtf8() ) );
             else if ( IsImage(fileName) )
             {
                 std::cout << "[" << fileName.toStdString() << "]" << std::endl;
@@ -198,6 +198,8 @@ namespace tintz
 
     void ComicImages::PrepareZip()
     {
+        parameters.push_back( "-q" );
+        parameters.push_back( "-o" );
         parameters.push_back( fileName );
         parameters.push_back( "-d" );
         parameters.push_back( tmpDir );

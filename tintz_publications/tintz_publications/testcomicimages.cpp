@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <Qt/QtTest>
 
 #include "testcomicimages.h"
@@ -13,6 +15,7 @@ TestComicImages::TestComicImages(QObject *parent) :
 
 void TestComicImages::TestRun()
 {
+
     QFile* fpFileNames = new QFile("../tintz_publications/filenames.txt");
 
     fpFileNames->open(QIODevice::ReadOnly|QIODevice::Text);
@@ -21,7 +24,7 @@ void TestComicImages::TestRun()
 
     while( !fpFileNames->atEnd() )
     {
-        QString line( fpFileNames->readLine( ) );
+        QString line( QString::fromUtf8( fpFileNames->readLine( ) ) );
 
         if ( line.startsWith( "#" ) )
             continue;
