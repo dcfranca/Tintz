@@ -32,7 +32,10 @@ namespace tintz
         {
 
             if ( process )
+            {
                 delete process;
+                process = NULL;
+            }
 
             process = new QProcess();
 
@@ -55,6 +58,8 @@ namespace tintz
     {
         std::cout << "Processamento externo efetuado com sucesso: " << std::endl;
 
+        fileName = RemoveSpecialChars( fileName );
+
         CreateThumbnailsForDir( QDir( tmpDir ) );
 
         if ( process )
@@ -70,6 +75,7 @@ namespace tintz
         bool firstPage = true;
 
         QString fileName;
+        int pageNo = 0;
         foreach( fileName, listFiles )
         {
             QString fullPath = dirName.absolutePath() + QDir::separator() + fileName;
@@ -81,50 +87,42 @@ namespace tintz
 
                 /**Create thumbnails - Gerar thumbnails**/
 
+                pageNo++;
+
                 //Full Viewer
-                CreateThumbnailForImage( fullPath, 700, 1400 );
+                CreateThumbnailForImage( fullPath, 700, 1400, pageNo );
 
                 //Side Thumbnails
-                CreateThumbnailForImage( fullPath, 64, 128 );
+                CreateThumbnailForImage( fullPath, 64, 128, pageNo );
 
                 //Cover of the comic
                 if ( firstPage )
                 {
-                    CreateThumbnailForImage( fullPath, 150, 200 );
+                    CreateThumbnailForImage( fullPath, 150, 200, pageNo );
                     firstPage = false;
                 }
             }
         }
     }
 
-    void ComicImages::CreateThumbnailForImage(QString fileName, int width, int height)
+    void ComicImages::CreateThumbnailForImage(QString fileName, int width, int height, int pageNo)
     {
         QImageReader img_reader(fileName);
         int img_width = img_reader.size().width();
         int img_height = img_reader.size().height();
 
-        if ( img_width > img_height )
-        {
-            img_height = static_cast<double>( width )/ img_width * img_height;
-            img_width = width;
-        }
-        else if ( img_height > img_width )
-        {
-            img_height = static_cast<double>( height )/ img_height * img_width;
-            img_height = height;
-        }
-        else
-        {
-            img_width = width;
-            img_height = height;
-        }
+        int widthDisplay = width;
 
-        QFileInfo inf(fileName);
+        if ( img_width < width )
+            width = img_width;
+        height = ( width*img_height )/img_width;
 
-        img_reader.setScaledSize(QSize(img_width, img_height));
+        QFileInfo inf(this->fileName);
+
+        img_reader.setScaledSize(QSize(width, height));
         QImage thumb = img_reader.read();
-        QString newFileName = inf.absoluteDir().absolutePath() + QDir::separator() + inf.baseName() + "_" + QString().sprintf( "%03d", width ) + "." + inf.suffix();
-        thumb.save( newFileName, "JPG" );
+        QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo) + ".png";
+        thumb.save( newFileName, "PNG" );
     }
 
     bool ComicImages::IsImage(QString fileName)
@@ -172,7 +170,17 @@ namespace tintz
 
     void ComicImages::PreparePdf()
     {
-        //TODO: Implement
+        parameters.push_back( "-q" );
+        parameters.push_back( "-dSAFER" );
+        parameters.push_back( "-dBATCH" );
+        parameters.push_back( "-dNOPAUSE" );
+        parameters.push_back( "-sDEVICE=jpeg" );
+        parameters.push_back( "-r150" );
+        parameters.push_back( "-dTextAlphaBits=4" );
+        parameters.push_back( "-sOutputFile="+tmpDir+QDir::separator()+QFileInfo( fileName ).baseName()+"_%03d.jpg" );
+        parameters.push_back( fileName );
+
+        program = "/usr/bin/gs";
     }
 
 }

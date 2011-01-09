@@ -22,6 +22,10 @@ void TestComicImages::TestRun()
     while( !fpFileNames->atEnd() )
     {
         QString line( fpFileNames->readLine( ) );
+
+        if ( line.startsWith( "#" ) )
+            continue;
+
         QString fileName = line.left( line.size()-2 );
 
         FILETYPE realType = FileFormat::GetFileTypeFromData( fileName );

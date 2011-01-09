@@ -29,7 +29,7 @@ namespace tintz {
         void RunCommand( FILETYPE type );
 
         void CreateThumbnailsForDir( QDir dirName );
-        void CreateThumbnailForImage( QString fileName, int width=150, int height=200 );
+        void CreateThumbnailForImage( QString fileName, int width=150, int height=200, int pageNo = 1 );
         QString RemoveSpecialChars(QString str);
         bool IsImage( QString fileName );
 
