@@ -39,7 +39,7 @@ namespace tintz {
         void PreparePdf();
 
     public slots:
-        void Started();
+        void ReadStandardOutput();
         void Finished();
         void Error(QProcess::ProcessError error);
     };

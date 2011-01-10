@@ -54,19 +54,15 @@ namespace tintz
 
             process = new QProcess();
 
-            connect( process, SIGNAL( started() ), this, SLOT(Started()) );
+            //Change to use 7z, not Rar or ZIP
             connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished()) );
+            connect( process, SIGNAL( readyReadStandardOutput() ), this, SLOT(ReadStandardOutput()) );
             connect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT(Error(QProcess::ProcessError)) );
 
             process->start( program, parameters );
             process->waitForFinished();
         }
 
-    }
-
-    void ComicImages::Started()
-    {
-        std::cout << "Processamento iniciado com sucesso: " << std::endl;
     }
 
     void ComicImages::Finished()
@@ -82,6 +78,28 @@ namespace tintz
             delete process;
             process = NULL;
         }
+    }
+
+    void ComicImages::ReadStandardOutput()
+    {
+        QByteArray out = process->readAllStandardOutput();
+
+        if ( out.size() == 0 )
+            return;
+
+        out = out.split(EOF)[0];
+
+        QImage img;
+        img.fromData(out);
+
+        if (img.isNull())
+            return;
+
+        QFileInfo inf(this->fileName);
+
+        QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_" + "001.png";
+        img.save( newFileName, "PNG" );
+
     }
 
     void ComicImages::CreateThumbnailsForDir( QDir dirName )
@@ -198,11 +216,13 @@ namespace tintz
 
     void ComicImages::PrepareZip()
     {
-        parameters.push_back( "-q" );
-        parameters.push_back( "-o" );
+        //parameters.push_back( "-q" );
+        //parameters.push_back( "-o" );
+        parameters.push_back( "-p" );
+        parameters.push_back( "-C" );
         parameters.push_back( fileName );
-        parameters.push_back( "-d" );
-        parameters.push_back( tmpDir );
+        //parameters.push_back( "-d" );
+        //parameters.push_back( tmpDir );
 
         program = "/usr/bin/unzip";
     }
