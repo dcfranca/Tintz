@@ -3,8 +3,9 @@
 #include <QDateTime>
 #include <iostream>
 #include <QDir>
-#include <Qt/qimagereader.h>
-#include <Qt/qimage.h>
+#include <QImage>
+
+#define EXTENSIONS << "*.jpg" << "*.jpeg" << "*.png" << "*.gif" << "*.tiff" << "*.tif" << "*.bmp"
 
 namespace tintz
 {
@@ -24,10 +25,8 @@ namespace tintz
         switch( type )
         {
         case TYPE_RAR:
-            PrepareRar();
-            break;
         case TYPE_ZIP:
-            PrepareZip();
+            Prepare7zSizes();
             break;
         case TYPE_PDF:
             PreparePdf();
@@ -46,15 +45,8 @@ namespace tintz
         if ( program.length() )
         {
 
-            if ( process )
-            {
-                delete process;
-                process = NULL;
-            }
-
             process = new QProcess();
 
-            //Change to use 7z, not Rar or ZIP
             connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished()) );
             connect( process, SIGNAL( readyReadStandardOutput() ), this, SLOT(ReadStandardOutput()) );
             connect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT(Error(QProcess::ProcessError)) );
@@ -69,9 +61,15 @@ namespace tintz
     {
         std::cout << "Processamento externo efetuado com sucesso: " << std::endl;
 
-        fileName = RemoveSpecialChars( fileName );
-
-        CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
+        if ( program.compare("/usr/bin/7z") == 0 )
+        {
+            LoadSizes();
+        }
+        else
+        {
+            fileName = RemoveSpecialChars( fileName );    
+            CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
+        }
 
         if ( process )
         {
@@ -80,9 +78,91 @@ namespace tintz
         }
     }
 
+    /*********************************
+      Load file sizes according to 
+      7z infos
+      *******************************/
+    void ComicImages::LoadSizes()
+    {
+        QRegExp reg("[0-9]{4}-[0-9]{2}-[0-9]{2}[ ]+[0-9]{2}:[0-9]{2}:[0-9]{2}[ ]+.{5}[ ]+([0-9]+)[ ]+([0-9]+)[ ]+(.+)");
+
+        QByteArray out = process->readAllStandardOutput();
+        QList<QByteArray> lines = out.split('\n');
+        QByteArray line;
+        
+        pages.clear();
+        
+        foreach(line,lines)
+        {
+                if(reg.indexIn(QString(line))!=-1)
+                {       
+                    Page pg;
+                    pg.fileSize = reg.cap(1).toInt();
+                    pg.fileName = reg.cap(3).trimmed();
+                    
+                    pages.push_back( pg );
+                }
+        }
+        if(pages.size()==0)
+            return;
+
+        //sort?        
+        
+        //qSort( pages.begin(), pages.end() );
+        
+        process7z = new QProcess();
+        
+        Prepare7zRun();        
+        
+        connect(process7z,SIGNAL(error(QProcess::ProcessError)),this,SLOT(Error(QProcess::ProcessError)));
+        connect(process7z,SIGNAL(readyReadStandardOutput()),this,SLOT(LoadImages()));
+        connect(process7z,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(LoadFinished(void)));
+        process7z->start(program,parameters);
+        
+        process7z->waitForFinished();
+    }
+    
+    /*******************************************
+      Load Images from STDOUT
+      *****************************************/
+    void ComicImages::LoadImages()
+    {
+        QByteArray out = process7z->readAllStandardOutput();
+        int ind = 0;        
+        while(out.size()>0)
+        {
+            int offset = pages[ind].fileSize;
+            QByteArray bytesImage = out.left( offset );
+            QImage img;
+            img.fromData( bytesImage );
+            
+            QFileInfo inf( fileName );
+            QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_" + "001.png";
+            
+            if ( img.isNull() )
+                std::cout << "Imagem invalida para o arquivo: " << pages[ind].fileName.toStdString() << std::endl;
+            else if ( !img.save( newFileName, "PNG" ) )
+                std::cout << "Erro ao salvar imagem: " << pages[ind].fileName.toStdString() << std::endl;
+            
+            out.remove( 0, pages[ind++].fileSize );
+        }           
+
+    }
+    
+    void ComicImages::LoadFinished()
+    {
+        std::cout << "Processamento finalizado com sucesso" << std::endl;
+        
+        if (process7z)
+        {
+            delete process7z;
+            process7z = NULL;
+        }        
+    }
+
     void ComicImages::ReadStandardOutput()
     {
-        QByteArray out = process->readAllStandardOutput();
+        /*QByteArray out = process->readAllStandardOutput();
 
         if ( out.size() == 0 )
             return;
@@ -98,10 +178,13 @@ namespace tintz
         QFileInfo inf(this->fileName);
 
         QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_" + "001.png";
-        img.save( newFileName, "PNG" );
+        img.save( newFileName, "PNG" );*/
 
     }
 
+    /*********************************************************
+      Creating thumbnails for images in dirname, recursive
+      *******************************************************/
     void ComicImages::CreateThumbnailsForDir( QDir dirName )
     {
         QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name|QDir::LocaleAware );
@@ -138,22 +221,31 @@ namespace tintz
         }
     }
 
+    /*********************************************************************************************
+      Create thumbnail for image fileName or QImage
+      ********************************************************************************************/
     void ComicImages::CreateThumbnailForImage(QString fileName, int width, int height, int pageNo)
     {
-        QImageReader img_reader(fileName);
-        int img_width = img_reader.size().width();
-        int img_height = img_reader.size().height();
+        QImageReader imgReader(fileName);
+        
+        CreateThumbnailForImage(&imgReader, width, height, pageNo);
+    }
+
+    void ComicImages::CreateThumbnailForImage(QImageReader* imgReader, int width, int height, int pageNo)
+    {
+        int imgWidth = imgReader->size().width();
+        int imgHeight = imgReader->size().height();
 
         int widthDisplay = width;
 
-        if ( img_width < width )
-            width = img_width;
-        height = ( width*img_height )/img_width;
+        if ( imgWidth < width )
+            width = imgWidth;
+        height = ( width*imgHeight )/imgWidth;
 
         QFileInfo inf(this->fileName);
 
-        img_reader.setScaledSize(QSize(width, height));
-        QImage thumb = img_reader.read();
+        imgReader->setScaledSize(QSize(width, height));
+        QImage thumb = imgReader->read();
         QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo) + ".png";
         thumb.save( newFileName, "PNG" );
     }
@@ -203,6 +295,7 @@ namespace tintz
 
     void ComicImages::PrepareRar()
     {
+        parameters.clear();
         parameters.push_back( "e" ); //Extraia - Extract
         parameters.push_back( "-c-" ); //Nao mostre comentários - Disable comments show
         parameters.push_back( "-y" ); //Sim para tudo - Yes for all
@@ -216,6 +309,7 @@ namespace tintz
 
     void ComicImages::PrepareZip()
     {
+        parameters.clear();
         //parameters.push_back( "-q" );
         //parameters.push_back( "-o" );
         parameters.push_back( "-p" );
@@ -229,6 +323,7 @@ namespace tintz
 
     void ComicImages::PreparePdf()
     {
+        parameters.clear();
         parameters.push_back( "-q" );
         parameters.push_back( "-dSAFER" );
         parameters.push_back( "-dBATCH" );
@@ -242,4 +337,17 @@ namespace tintz
         program = "/usr/bin/gs";
     }
 
+    void ComicImages::Prepare7zSizes()
+    {
+        parameters.clear();
+        parameters << "l" << "-ssc-" << "-r" << fileName EXTENSIONS;        
+        program = "/usr/bin/7z";
+    }
+
+    void ComicImages::Prepare7zRun()
+    {
+        parameters.clear();
+        parameters << "e" << "-ssc-" << "-so"  << "-r" << fileName EXTENSIONS;
+        program = "/usr/bin/7z";
+    }
 }
