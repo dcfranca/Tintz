@@ -71,7 +71,7 @@ namespace tintz {
 
         if ( !fp->open( QFile::ReadOnly ) )
         {
-            std::cout << "\nErro ao abrir o arquivo: " << fileName.toStdString() << std::endl;
+            std::cerr << "\nErro ao abrir o arquivo: " << fileName.toStdString() << std::endl;
             return TYPE_ERROR;
         }
 

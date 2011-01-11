@@ -26,7 +26,7 @@ namespace tintz
         {
         case TYPE_RAR:
         case TYPE_ZIP:
-            Prepare7zSizes();
+            Prepare7z();
             break;
         case TYPE_PDF:
             PreparePdf();
@@ -35,7 +35,7 @@ namespace tintz
             PrepareImage();
             break;
         case TYPE_ERROR:
-            std::cout << "Erro ao tentar descobrir tipo do arquivo" << std::endl;
+            std::cerr << "Erro ao tentar descobrir tipo do arquivo" << std::endl;
             break;
         case TYPE_UNKNOWN:
             std::cout << "Formato de arquivo invalido" << std::endl;
@@ -48,7 +48,7 @@ namespace tintz
             process = new QProcess();
 
             connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished()) );
-            connect( process, SIGNAL( readyReadStandardOutput() ), this, SLOT(ReadStandardOutput()) );
+            //connect( process, SIGNAL( readyReadStandardOutput() ), this, SLOT(ReadStandardOutput()) );
             connect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT(Error(QProcess::ProcessError)) );
 
             process->start( program, parameters );
@@ -61,15 +61,8 @@ namespace tintz
     {
         std::cout << "Processamento externo efetuado com sucesso: " << std::endl;
 
-        if ( program.compare("/usr/bin/7z") == 0 )
-        {
-            LoadSizes();
-        }
-        else
-        {
-            fileName = RemoveSpecialChars( fileName );    
-            CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
-        }
+        fileName = RemoveSpecialChars( fileName );    
+        CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
 
         if ( process )
         {
@@ -112,7 +105,7 @@ namespace tintz
         
         process7z = new QProcess();
         
-        Prepare7zRun();        
+        Prepare7z();        
         
         connect(process7z,SIGNAL(error(QProcess::ProcessError)),this,SLOT(Error(QProcess::ProcessError)));
         connect(process7z,SIGNAL(readyReadStandardOutput()),this,SLOT(LoadImages()));
@@ -140,9 +133,9 @@ namespace tintz
             QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_" + "001.png";
             
             if ( img.isNull() )
-                std::cout << "Imagem invalida para o arquivo: " << pages[ind].fileName.toStdString() << std::endl;
+                std::cerr << "Imagem invalida para o arquivo: " << pages[ind].fileName.toStdString() << std::endl;
             else if ( !img.save( newFileName, "PNG" ) )
-                std::cout << "Erro ao salvar imagem: " << pages[ind].fileName.toStdString() << std::endl;
+                std::cerr << "Erro ao salvar imagem: " << pages[ind].fileName.toStdString() << std::endl;
             
             out.remove( 0, pages[ind++].fileSize );
         }           
@@ -263,7 +256,7 @@ namespace tintz
 
     void ComicImages::Error(QProcess::ProcessError error)
     {
-        std::cout << "Erro ao processar imagens: " << error << std::endl;
+        std::cerr << "Erro ao processar imagens: " << error << std::endl;
         if ( process )
         {
             delete process;
@@ -277,7 +270,7 @@ namespace tintz
         QString baseName = fileInfo.baseName();
         QString dirName  = fileInfo.absoluteDir().absolutePath();
         tmpDir = dirName + QDir::separator() + baseName + "_" + QDateTime::currentDateTime().toString();
-
+     
         if ( !QDir(tmpDir).exists() )
             QDir().mkdir( tmpDir );
 
@@ -344,10 +337,13 @@ namespace tintz
         program = "/usr/bin/7z";
     }
 
-    void ComicImages::Prepare7zRun()
+    void ComicImages::Prepare7z()
     {
         parameters.clear();
-        parameters << "e" << "-ssc-" << "-so"  << "-r" << fileName EXTENSIONS;
+        parameters.push_back( "e" );
+        parameters.push_back( "-ssc-" );
+        parameters.push_back( "-o"+tmpDir );
+        parameters << fileName EXTENSIONS;
         program = "/usr/bin/7z";
     }
 }

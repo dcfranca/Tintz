@@ -54,7 +54,7 @@ namespace tintz {
         void PrepareRar();
         void PrepareZip();
         void Prepare7zSizes();
-        void Prepare7zRun();
+        void Prepare7z();
         void PreparePdf();
         
 

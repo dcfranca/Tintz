@@ -1,29 +1,23 @@
-#/home/danielfranca/Comics/Quadrinhos/051.pdfP
+/home/danielfranca/Comics/Quadrinhos/051.pdfP
 /home/danielfranca/Comics/Quadrinhos/Marvel_Zombies_01_de_05.cbzZ
-#/home/danielfranca/Comics/Quadrinhos/All_American_Comics__1939_023.cbrR
+/home/danielfranca/Comics/Quadrinhos/All_American_Comics__1939_023.cbrR
 /home/danielfranca/Comics/Quadrinhos/Marvel_Zombies_03_de_05.cbzZ
-#/home/danielfranca/Comics/Quadrinhos/Bart_Simpson_056__2010___noads___HFB-CPS_.cbrR
-#/home/danielfranca/Comics/Quadrinhos/quadrinhos1_40.jpgI
-#/home/danielfranca/Comics/Quadrinhos/quadrinhos2-c1.jpgI
-#/home/danielfranca/Comics/Quadrinhos/quadrinhos.jpgI
-#/home/danielfranca/Comics/Quadrinhos/fallen son 01 - wolverine.rarZ
-#/home/danielfranca/Comics/Quadrinhos/Quarteto_Fantastico.pdfP
-#/home/danielfranca/Comics/Quadrinhos/fallen son 02 - vingadores.cbrZ
-#/home/danielfranca/Comics/Quadrinhos/fallen son 03 - capitão ameriça.cbrZ
-#/home/danielfranca/Comics/Quadrinhos/Star_Wars_-_Blood_Ties_03__2010___GreenGiant-DCP_.cbrR
-#/home/danielfranca/Comics/Quadrinhos/fallen son 04 - homem-aranha.cbrZ
-#/home/danielfranca/Comics/Quadrinhos/Super-Homem.pdfP
-#/home/danielfranca/Comics/Quadrinhos/fallen son 05 - homem de ferro.cbrZ
-#/home/danielfranca/Comics/Quadrinhos/Terra-#03de#04-DARKSEIDCLUB.cbrR
-#/home/danielfranca/Comics/Quadrinhos/Fear_Agent_30__2010___Minutemen-DTs_.cbzZ
-#/home/danielfranca/Comics/Quadrinhos/Guerra-do-Caos.pdfP
-#/home/danielfranca/Comics/Quadrinhos/Velocity_01__Jun_.cbrR
-#/home/danielfranca/Comics/Quadrinhos/HOMEM_ARANHA_-_MAXIMUM_CARNAGE_2.cbrR
-#/home/danielfranca/Comics/Quadrinhos/Vingadores.pdfP
-#/home/danielfranca/Comics/Quadrinhos/Homem_Aranha.pdfP
-#/home/danielfranca/Comics/Quadrinhos/wolverine.cbrZ
-#/home/danielfranca/Comics/Quadrinhos/Homem_de_Ferro.pdfP
-#/home/danielfranca/Comics/Quadrinhos/wolverine.pdfP
-#/home/danielfranca/Comics/Quadrinhos/Lanterna Verde-v4-60-2010.pdfP
-#/home/danielfranca/Comics/Quadrinhos/X-Men.V3.01.HQBR.16JUL10.pdfP
-#/home/danielfranca/Comics/Quadrinhos/Maldicao.dos.Mutantes.Prologo.-.A.Morte.do.Dracula.-.One-Shot.(2010).xmen-blog.cbrR
+/home/danielfranca/Comics/Quadrinhos/Bart_Simpson_056__2010___noads___HFB-CPS_.cbrR
+/home/danielfranca/Comics/Quadrinhos/fallen son 01 - wolverine.cbzZ
+/home/danielfranca/Comics/Quadrinhos/Quarteto_Fantastico.pdfP
+/home/danielfranca/Comics/Quadrinhos/fallen son 02 - vingadores.cbzZ
+/home/danielfranca/Comics/Quadrinhos/fallen son 03 - capitão ameriça.cbzZ
+/home/danielfranca/Comics/Quadrinhos/fallen son 04 - homem-aranha.cbzZ
+/home/danielfranca/Comics/Quadrinhos/Super-Homem.pdfP
+/home/danielfranca/Comics/Quadrinhos/fallen son 05 - homem de ferro.cbzZ
+/home/danielfranca/Comics/Quadrinhos/Terra-#03de#04-DARKSEIDCLUB.cbrR
+/home/danielfranca/Comics/Quadrinhos/Fear_Agent_30__2010___Minutemen-DTs_.cbzZ
+/home/danielfranca/Comics/Quadrinhos/Guerra-do-Caos.pdfP
+/home/danielfranca/Comics/Quadrinhos/Velocity_01__Jun_.cbrR
+/home/danielfranca/Comics/Quadrinhos/HOMEM_ARANHA_-_MAXIMUM_CARNAGE_2.cbrR
+/home/danielfranca/Comics/Quadrinhos/Vingadores.pdfP
+/home/danielfranca/Comics/Quadrinhos/Homem_Aranha.pdfP
+/home/danielfranca/Comics/Quadrinhos/Homem_de_Ferro.pdfP
+/home/danielfranca/Comics/Quadrinhos/wolverine.pdfP
+/home/danielfranca/Comics/Quadrinhos/Lanterna Verde-v4-60-2010.pdfP
+/home/danielfranca/Comics/Quadrinhos/X-Men.V3.01.HQBR.16JUL10.pdfP
