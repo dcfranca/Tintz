@@ -28,4 +28,5 @@ HEADERS += \
     testcomicimages.h
 
 OTHER_FILES += \
-    filenames.txt
+    filenames.txt \
+    temp.txt

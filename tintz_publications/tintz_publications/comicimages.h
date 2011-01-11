@@ -51,19 +51,11 @@ namespace tintz {
         bool IsImage( QString fileName );
 
         void PrepareImage();
-        void PrepareRar();
-        void PrepareZip();
-        void Prepare7zSizes();
         void Prepare7z();
         void PreparePdf();
-        
 
     public slots:
-        void ReadStandardOutput();
-        void LoadImages();
         void Finished();
-        void LoadSizes();
-        void LoadFinished();
         void Error(QProcess::ProcessError error);
     };
 
