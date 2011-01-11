@@ -1,16 +1,21 @@
-#include <QtCore/QCoreApplication>
-#include <QMimeData>
+//Qt Headers
 #include <QFile>
 #include <Qt/QtTest>
-#include <iostream>
-#include "fileformat.h"
+#include <QString>
+
+//Test headers
 #include "testguesstype.h"
 #include "testcomicimages.h"
-#include "comicimages.h"
+
+//C/C++ standard headers
 #include <iostream>
-#include <wchar.h>
-#include <QString>
-#include <fileformat.h>
+#include <cwchar>
+
+//Tintz headers
+#include "fileformat.h"
+#include "comicimages.h"
+
+//Python interface header
 #include <python2.6/Python.h>
 
 using namespace tintz;
