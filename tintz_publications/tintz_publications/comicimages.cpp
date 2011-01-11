@@ -8,7 +8,7 @@
 namespace tintz
 {
 
-    void ComicImages::RunCommand(FILETYPE type)
+    bool ComicImages::RunCommand(FILETYPE type)
     {
         QFileInfo fileInfo(fileName);
         QString baseName = fileInfo.baseName();
@@ -34,10 +34,10 @@ namespace tintz
             break;
         case TYPE_ERROR:
             std::cerr << "Erro ao tentar descobrir tipo do arquivo" << std::endl;
-            break;
+            return false;
         case TYPE_UNKNOWN:
             std::cout << "Formato de arquivo invalido" << std::endl;
-            break;
+            return false;
         }
 
         if ( program.length() )
@@ -50,6 +50,8 @@ namespace tintz
             process->start( program, parameters );
             process->waitForFinished();
         }
+        
+        return true;
 
     }
 

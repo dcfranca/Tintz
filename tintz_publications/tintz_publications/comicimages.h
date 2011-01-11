@@ -42,7 +42,7 @@ namespace tintz {
         virtual ~ComicImages(){}
 
         QString Program(){ return program; }
-        void RunCommand( FILETYPE type );
+        bool RunCommand( FILETYPE type );
 
         void CreateThumbnailsForDir( QDir dirName );
         void CreateThumbnailForImage( QString fileName, int width=150, int height=200, int pageNo = 1 );

@@ -8,12 +8,11 @@ QT       += core
 
 QT       += gui
 
-TARGET = tintz_publications
-CONFIG   += console
-CONFIG   += qtestlib
-CONFIG   -= app_bundle
+TARGET = tintz
+TEMPLATE = lib
+DEFINES += TINTZ_LIBRARY
 
-TEMPLATE = app
+CONFIG   += qtestlib
 
 SOURCES += main.cpp \
     fileformat.cpp \
