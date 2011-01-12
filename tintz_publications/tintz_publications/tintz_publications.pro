@@ -10,6 +10,7 @@ QT       += gui
 
 TARGET = tintz
 TEMPLATE = lib
+#TEMPLATE = app
 DEFINES += TINTZ_LIBRARY
 
 CONFIG   += qtestlib

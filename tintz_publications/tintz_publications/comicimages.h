@@ -55,7 +55,8 @@ namespace tintz {
         void PreparePdf();
 
     public slots:
-        void Finished();
+        void Started();
+        void Finished(int exitCode, QProcess::ExitStatus exitStatus);
         void Error(QProcess::ProcessError error);
     };
 

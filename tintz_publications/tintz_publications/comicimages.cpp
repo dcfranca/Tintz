@@ -4,6 +4,8 @@
 #include <iostream>
 #include <QDir>
 #include <QImage>
+#include <QWaitCondition>
+#include <QMutex>
 
 namespace tintz
 {
@@ -42,31 +44,35 @@ namespace tintz
 
         if ( program.length() )
         {
+            if ( process )
+                delete process;
+            
             process = new QProcess();
 
-            connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished()) );
+            connect( process, SIGNAL( started() ), this, SLOT(Started()) );
+            connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished(int, QProcess::ExitStatus)) );
             connect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT(Error(QProcess::ProcessError)) );
-
+            
             process->start( program, parameters );
-            process->waitForFinished();
+            process->waitForFinished(100000);
+        }
+        
+        if ( process )
+        {
+            delete process;
+            process = NULL;
         }
         
         return true;
 
     }
 
-    void ComicImages::Finished()
+    void ComicImages::Finished(int exitCode, QProcess::ExitStatus exitStatus)
     {
-        std::cout << "Processamento externo efetuado com sucesso: " << std::endl;
+        std::cout << "Processamento externo com retorno:" << exitCode << std::endl;
 
-        fileName = RemoveSpecialChars( fileName );    
-        CreateThumbnailsForDir( QDir( tmpDir.toUtf8() ) );
-
-        if ( process )
-        {
-            delete process;
-            process = NULL;
-        }
+        fileName = RemoveSpecialChars( fileName );
+        CreateThumbnailsForDir( QDir( tmpDir ) );
     }
 
     /*********************************************************
@@ -76,6 +82,8 @@ namespace tintz
     {
         QStringList listFiles = dirName.entryList( QDir::NoDotAndDotDot|QDir::Dirs|QDir::Files, QDir::Name|QDir::LocaleAware );
         bool firstPage = true;
+        
+        std::cout << "Thumbnails para Dir: [" <<  dirName.absolutePath().toStdString() << "]" << std::endl;
 
         QString fileName;
         int pageNo = 0;
@@ -105,7 +113,12 @@ namespace tintz
                     firstPage = false;
                 }
             }
+            
+            QFile::remove( fileName );
         }
+        
+        if (!pageNo)
+            std::cerr << "Nenhuma imagem encontrada!" << std::endl;
     }
 
     /*********************************************************************************************
@@ -133,8 +146,8 @@ namespace tintz
 
         imgReader->setScaledSize(QSize(width, height));
         QImage thumb = imgReader->read();
-        QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo) + ".png";
-        thumb.save( newFileName, "PNG" );
+        QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo) + ".jpg";
+        thumb.save( newFileName, "JPG" );
     }
 
     bool ComicImages::IsImage(QString fileName)
@@ -156,6 +169,18 @@ namespace tintz
             delete process;
             process = NULL;
         }
+    }
+    
+    void ComicImages::Started()
+    {
+        std::cout << "Processo externo iniciado com sucesso " << std::endl;
+        /*std::cout << program.toStdString() << " ";
+        QString parameter;
+        foreach( parameter, parameters )
+        {
+            std::cout << parameter.toStdString() << " ";
+        }
+        std::cout << std::endl;*/
     }
 
     void ComicImages::PrepareImage()
