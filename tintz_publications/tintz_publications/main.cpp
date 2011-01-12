@@ -43,7 +43,7 @@ static PyObject* TintzConvertToImages(PyObject *self, PyObject *args)
 }
 
 static PyMethodDef TintzMethods[] = {
-    {"TintzConvertToImages",  TintzConvertToImages, METH_VARARGS,
+    {"ConvertToImages",  TintzConvertToImages, METH_VARARGS,
      "Convert comic files to images."},
     {NULL, NULL, 0, NULL}        
 };

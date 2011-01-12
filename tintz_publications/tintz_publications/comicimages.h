@@ -47,7 +47,7 @@ namespace tintz {
         void CreateThumbnailsForDir( QDir dirName );
         void CreateThumbnailForImage( QString fileName, int width=150, int height=200, int pageNo = 1 );
         void CreateThumbnailForImage( QImageReader* imgReader, int width, int height, int pageNo);
-        QString RemoveSpecialChars(QString str);
+        void RemoveSpecialChars(QString& str);
         bool IsImage( QString fileName );
 
         void PrepareImage();
@@ -55,8 +55,7 @@ namespace tintz {
         void PreparePdf();
 
     public slots:
-        void Started();
-        void Finished(int exitCode, QProcess::ExitStatus exitStatus);
+        void Finished(int exitCode);
         void Error(QProcess::ProcessError error);
     };
 

@@ -16,6 +16,7 @@ namespace tintz
         QString baseName = fileInfo.baseName();
         QString dirName  = fileInfo.absoluteDir().absolutePath();
         tmpDir = dirName + QDir::separator() + baseName + "_" + QDateTime::currentDateTime().toString();
+        RemoveSpecialChars(tmpDir);
 
         if ( !QDir(tmpDir).exists() )
             QDir().mkdir( tmpDir );
@@ -49,8 +50,7 @@ namespace tintz
             
             process = new QProcess();
 
-            connect( process, SIGNAL( started() ), this, SLOT(Started()) );
-            connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished(int, QProcess::ExitStatus)) );
+            connect( process, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT(Finished(int)) );
             connect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT(Error(QProcess::ProcessError)) );
             
             process->start( program, parameters );
@@ -67,11 +67,11 @@ namespace tintz
 
     }
 
-    void ComicImages::Finished(int exitCode, QProcess::ExitStatus exitStatus)
+    void ComicImages::Finished(int exitCode)
     {
         std::cout << "Processamento externo com retorno:" << exitCode << std::endl;
 
-        fileName = RemoveSpecialChars( fileName );
+        RemoveSpecialChars( fileName );
         CreateThumbnailsForDir( QDir( tmpDir ) );
     }
 
@@ -94,7 +94,7 @@ namespace tintz
                 CreateThumbnailsForDir( QDir( fullPath.toUtf8() ) );
             else if ( IsImage(fileName) )
             {
-                std::cout << "[" << fileName.toStdString() << "]" << std::endl;
+                //std::cout << "[" << fileName.toStdString() << "]" << std::endl;
 
                 /**Create thumbnails - Gerar thumbnails**/
 
@@ -117,8 +117,10 @@ namespace tintz
             QFile::remove( fileName );
         }
         
-        if (!pageNo)
-            std::cerr << "Nenhuma imagem encontrada!" << std::endl;
+        if (pageNo)
+            std::cerr << pageNo << " imagens encontradas para " << this->fileName.toStdString() << std::endl;
+        else
+            std::cerr << "Nenhuma imagem encontrada no diretório [" << dirName.absolutePath().toStdString() << "]" << std::endl;
     }
 
     /*********************************************************************************************
@@ -156,9 +158,9 @@ namespace tintz
              fileName.endsWith(".gif", Qt::CaseInsensitive));
     }
 
-    QString ComicImages::RemoveSpecialChars(QString str)
+    void ComicImages::RemoveSpecialChars(QString& str)
     {
-        return str.replace("-","_").replace("#","_");
+        str.replace("-","_").replace("#","_");
     }
 
     void ComicImages::Error(QProcess::ProcessError error)
@@ -171,18 +173,6 @@ namespace tintz
         }
     }
     
-    void ComicImages::Started()
-    {
-        std::cout << "Processo externo iniciado com sucesso " << std::endl;
-        /*std::cout << program.toStdString() << " ";
-        QString parameter;
-        foreach( parameter, parameters )
-        {
-            std::cout << parameter.toStdString() << " ";
-        }
-        std::cout << std::endl;*/
-    }
-
     void ComicImages::PrepareImage()
     {
         QFileInfo fileInfo(fileName);
