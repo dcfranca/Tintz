@@ -17,35 +17,7 @@ else:
 
 import logging
 import pdb
-import libtintz
-from threading import Thread
 
-class ConvertToImages(Thread):
-
-   def __init__ (self,id_publication):
-      Thread.__init__(self)
-      try:
-         self.publication = Publication.objects.get( pk=id_publication )
-      except:
-         self.publication = None
-         pass 
-
-   def run(self):
-       if self.publication == None:
-          return
-
-       logging.debug("******************Convertendo Arquivos para Imagens Arquivo: "+self.publication.file_name.path)
-       if libtintz.ConvertToImages(self.publication.file_name.path):
-           logging.debug("Executado com sucesso, alterando status para 1")           
-           self.publication.status = 1
-           #self.publication.publication.nr_pages = pages
-           #self.publication.publication.images_ext = file_ext
-           #publication.file_name = remove_specialchars(file_name)+old_file_ext
-           self.publication.save()
-       else:
-           logging.debug("Erro ao executar, alterando status para -1")
-           self.publication.status = -1
-           self.publication.save()
 
 # Create your models here.
 class Publication(models.Model):

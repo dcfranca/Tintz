@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from publications.models import Publication, PublicationScore, PublicationReportAbuse, ConvertToImages
+from publications.models import Publication, PublicationScore, PublicationReportAbuse
 from profiles.views import calc_age
 from follow.models import FollowAuthor
 
@@ -41,6 +41,35 @@ SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
 
 search_text = ''
 
+import libtintz
+from threading import Thread
+
+class ConvertToImages(Thread):
+
+  id_publication = None
+
+  def __init__ (self,id_publication):
+      Thread.__init__(self)
+      self.id_publication = id_publication
+
+  def run(self):
+       try:
+         publication = Publication.objects.get( pk=id_publication )
+       except:
+         publication = None
+         logging.debug("******************Publicacao nao encontrada")
+         return
+
+       logging.debug("******************Convertendo Arquivos para Imagens Arquivo: "+publication.file_name.path)
+
+       if libtintz.ConvertToImages(publication.file_name.path):
+           logging.debug("Executado com sucesso, alterando status para 1")           
+           publication.status = 1           
+           publication.save()
+       else:
+           logging.debug("Erro ao executar, alterando status para -1")
+           publication.status = -1
+           publication.save()
 
 def getPublications(request, other_user, is_me):
     publications = []
