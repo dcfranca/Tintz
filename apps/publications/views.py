@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from publications.models import Publication, PublicationScore, PublicationReportAbuse
+from publications.models import Publication, PublicationScore, PublicationReportAbuse, ConvertToImages
 from profiles.views import calc_age
 from follow.models import FollowAuthor
 
@@ -90,6 +90,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     publication      = Publication()
     publication.author = request.user
     publication_form = form_class()
+    #import pdb; pdb.set_trace()
     
     if request.method == 'POST':
         if request.POST.get("action") == "upload":
@@ -97,12 +98,15 @@ def uploadpublication(request, form_class=PublicationUploadForm,
             if publication_form.is_valid():
                 if not is_valid_format(request.FILES['file_name'].name, request.FILES['file_name'].content_type):
                     request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
-                else:
+                else:                    
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
                     publication.status = 0
                     publication.nr_pages = 0
                     publication.save()
+                    
+                    conv = ConvertToImages(publication.id)
+                    conv.start()
 
                     request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
                     return HttpResponseRedirect(reverse('publications', args=(publication.author,)))

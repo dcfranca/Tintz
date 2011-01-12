@@ -35,11 +35,8 @@ static PyObject* TintzConvertToImages(PyObject *self, PyObject *args)
     FILETYPE realType = FileFormat::GetFileTypeFromData( qFileName );
 
     ComicImages comic( qFileName );
-
-    if ( !comic.RunCommand(realType) )
-        return Py_BuildValue("i", 0);
     
-    return Py_BuildValue("i", 1);
+    return Py_BuildValue("i", comic.RunCommand(realType));
 }
 
 static PyMethodDef TintzMethods[] = {

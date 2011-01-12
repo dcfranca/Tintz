@@ -1,4 +1,5 @@
 #include "comicimages.h"
+
 #include <QFileInfo>
 #include <QDateTime>
 #include <iostream>
@@ -11,7 +12,7 @@ namespace tintz
 {
 
     bool ComicImages::RunCommand(FILETYPE type)
-    {
+    {        
         QFileInfo fileInfo(fileName);
         QString baseName = fileInfo.baseName();
         QString dirName  = fileInfo.absoluteDir().absolutePath();
