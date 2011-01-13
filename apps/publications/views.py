@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, get_host
 from django.template import RequestContext
-from django.db.models import Q
+#from django.db.models import Q
 from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -14,9 +14,7 @@ from follow.models import FollowAuthor
 
 from publications.forms import PublicationUploadForm, PublicationEditForm, PublicationReportAbuseForm
 from tagging.models import *
-from django.http import Http404
 from django.conf import settings
-from django.test.client import Client
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from profiles.models import Profile
 from haystack.query import SearchQuerySet
@@ -26,13 +24,6 @@ import logging
 from account.utils import login_complete
 
 import os, datetime
-
-from django.core.context_processors import request
-
-if "notification" in settings.INSTALLED_APPS:
-    from notification import models as notification
-else:
-    notification = None
 
 # Create your views here.
 SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
@@ -46,30 +37,25 @@ from threading import Thread
 
 class ConvertToImages(Thread):
 
-  id_publication = None
+    id_publication = None
 
-  def __init__ (self,id_publication):
-      Thread.__init__(self)
-      self.id_publication = id_publication
+   def __init__ (self,publication):
+       Thread.__init__(self)
+       self.publication = publication
 
-  def run(self):
-       try:
-         publication = Publication.objects.get( pk=id_publication )
-       except:
-         publication = None
-         logging.debug("******************Publicacao nao encontrada")
-         return
+   def run(self):
+       import pdb; pdb.set_trace()
 
-       logging.debug("******************Convertendo Arquivos para Imagens Arquivo: "+publication.file_name.path)
+       logging.debug("******************Convertendo Arquivos para Imagens Arquivo: "+self.publication.file_name.path)
 
-       if libtintz.ConvertToImages(publication.file_name.path):
+       if libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8")):
            logging.debug("Executado com sucesso, alterando status para 1")           
-           publication.status = 1           
-           publication.save()
+           self.publication.status = 1           
+           self.publication.save(force_update=True)
        else:
            logging.debug("Erro ao executar, alterando status para -1")
-           publication.status = -1
-           publication.save()
+           self.publication.status = -1
+           self.publication.save(force_update=True)
 
 def getPublications(request, other_user, is_me):
     publications = []
@@ -93,7 +79,7 @@ def getFollowers(request, other_user):
 
 def getFollowings(request, other_user):
     #Finding followings
-    followings = FollowAuthor.objects.filter( UserFrom = other_user )
+    followings = FollowAuthor.objects.filter(UserFrom = other_user)
     followinUsers = []
     for  follow in followings:
         followinUsers.append( follow.UserTo )
@@ -126,15 +112,17 @@ def uploadpublication(request, form_class=PublicationUploadForm,
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
             if publication_form.is_valid():
                 if not is_valid_format(request.FILES['file_name'].name, request.FILES['file_name'].content_type):
-                    request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
+                    request.user.message_set.create(message=u"Tipo de arquivo inv?lido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
                 else:                    
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
                     publication.status = 0
                     publication.nr_pages = 0
                     publication.save()
-                    
-                    conv = ConvertToImages(publication.id)
+
+                    import pdb; pdb.set_trace()
+
+                    conv = ConvertToImages(publication)
                     conv.start()
 
                     request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
@@ -195,7 +183,7 @@ def publications(request, username, template_name="publications/list_publication
     return render_to_response(template_name, {
         "publications": publications, "username": username,
         "other_user": other_user, "is_me": is_me,
-        "title": u"Minhas Publicações",
+        "title": u"Minhas Publica??es",
         "followers":followerUsers,
         "followings":followingUsers,
         "is_follow":is_follow,
@@ -210,7 +198,7 @@ def destroypublication(request, id):
 
     title = publication.title
     if publication.author != request.user:
-        request.user.message_set.create(message=u"Você não possui permissão para excluir essa publicação")
+        request.user.message_set.create(message=u"Voc? n?o possui permiss?o para excluir essa publica??o")
         return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
     try:    
@@ -218,10 +206,10 @@ def destroypublication(request, id):
     except IOError:
         pass
     except:
-        request.user.message_set.create(message=u"Erro ao tentar excluir a publicação")
+        request.user.message_set.create(message=u"Erro ao tentar excluir a publica??o")
         return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
-    request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
+    request.user.message_set.create(message=_(u"Publica??o excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
 
 @login_complete
@@ -230,7 +218,7 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
     publication = get_object_or_404(Publication, id=id)
 
     if publication.author == request.user:
-        request.user.message_set.create(message=u"Voce não pode denunciar sua própria publicão")
+        request.user.message_set.create(message=u"Voce n?o pode denunciar sua pr?pria public?o")
         return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
 
     report_abuse_form = form_class(request.user, instance=publication)
@@ -243,7 +231,7 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
             report_abuse.reporter = request.user
             report_abuse.publication = publication
             report_abuse.save()
-            request.user.message_set.create(message=_(u"Publicação denunciada com sucesso.'%s'") % publication.title)
+            request.user.message_set.create(message=_(u"Publica??o denunciada com sucesso.'%s'") % publication.title)
             return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
 
     return render_to_response(template_name, {
@@ -269,7 +257,7 @@ def editpublication(request, id, form_class=PublicationEditForm,
             if publication_form.is_valid():
                 publicationobj = publication_form.save(commit=False)
                 publicationobj.save()
-                request.user.message_set.create(message=_(u"Publicação atualizada com sucesso '%s'") % publication.title)
+                request.user.message_set.create(message=_(u"Publica??o atualizada com sucesso '%s'") % publication.title)
 
                 return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
         else:
