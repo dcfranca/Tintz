@@ -52,7 +52,7 @@ class UpdateManager(models.Manager):
     #Update followers timeline
     def update_followers(self, type, item_to_update, user=None):
 
-        """        
+                
         update = Update()
 
         if type == 1:
@@ -61,7 +61,7 @@ class UpdateManager(models.Manager):
         elif type == 2:
             update.post = item_to_update
             update.type = 2
-        """
+        
         if type == 0:
             subject = _("Tintz - Novo Seguidor")
             message_html = render_to_string("follow/new_follower_message.html", {
@@ -79,7 +79,7 @@ class UpdateManager(models.Manager):
                 email_follower.start()
             return
 
-        #update.date_post = datetime.datetime.now()
+        update.date_post = datetime.datetime.now()
 
         try:
             followers = FollowAuthor.objects.filter( UserTo = item_to_update.author )
@@ -88,9 +88,9 @@ class UpdateManager(models.Manager):
 
         if followers:
             for follower in followers:
-                #if type != 0:
-                    #update.id = None
-                    #update.user = follower.UserFrom
+                if type != 0:
+                    update.id = None
+                    update.user = follower.UserFrom
                     #update.save()
 
                 #Check if it's to send Email

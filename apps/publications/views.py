@@ -8,133 +8,148 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from publications.models import Publication, PublicationScore, PublicationReportAbuse
+from publications.models import Publication
+from publications.models import PublicationScore
+from publications.models import PublicationReportAbuse
 from profiles.views import calc_age
 from follow.models import FollowAuthor
 
-from publications.forms import PublicationUploadForm, PublicationEditForm, PublicationReportAbuseForm
-from tagging.models import *
+from publications.forms import PublicationUploadForm
+from publications.forms import PublicationEditForm, PublicationReportAbuseForm
+from tagging.models import TaggedItem
 from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from profiles.models import Profile
 from haystack.query import SearchQuerySet
 
+from django.db import transaction
+
+import os
+import datetime
+
 import logging
 
 from account.utils import login_complete
 
-import os, datetime
 
 # Create your views here.
 SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
     os.path.join(settings.PROJECT_ROOT, 'site_media'))
-
 
 search_text = ''
 
 import libtintz
 from threading import Thread
 
+
 class ConvertToImages(Thread):
 
-    id_publication = None
+    publication = None
 
-   def __init__ (self,publication):
-       Thread.__init__(self)
-       self.publication = publication
+    def __init__(self, publication):
+        Thread.__init__(self)
+        self.publication = publication
 
-   def run(self):
-       import pdb; pdb.set_trace()
+    def run(self):
 
-       logging.debug("******************Convertendo Arquivos para Imagens Arquivo: "+self.publication.file_name.path)
+        logging.debug("*Arquivo: "+self.publication.file_name.path)
 
-       if libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8")):
-           logging.debug("Executado com sucesso, alterando status para 1")           
-           self.publication.status = 1           
-           self.publication.save(force_update=True)
-       else:
-           logging.debug("Erro ao executar, alterando status para -1")
-           self.publication.status = -1
-           self.publication.save(force_update=True)
+        try:
+            if libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8")):
+                logging.debug("Executado com sucesso, alterando status para 1")
+                self.publication.status = 1
+                self.publication.save(force_update=True)
+            else:
+                logging.debug("Erro ao executar, alterando status para -1")
+                self.publication.status = -1
+                self.publication.save(force_update=True)
+        except:
+            logging.debug("Erro ao tentar salvar publicação: "+self.publication.title)
+            
 
 def getPublications(request, other_user, is_me):
     publications = []
     try:
         if is_me == True:
-            publications = Publication.objects.filter( author = other_user )
+            publications = Publication.objects.filter(author = other_user)
         else:
-            publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age )
+            publications = Publication.objects.filter(author = other_user, rated__lte=request.user.get_profile().age)
     except Publication.DoesNotExist:
         pass
     return publications[:4]
- 
+
+
 def getFollowers(request, other_user):
-    followers = FollowAuthor.objects.filter( UserTo = other_user )
+    followers = FollowAuthor.objects.filter(UserTo = other_user)
     followerUsers = []
 
     for follow in followers:
-        
-        followerUsers.append( follow.UserFrom )
+        followerUsers.append(follow.UserFrom)
     return followerUsers
+
 
 def getFollowings(request, other_user):
     #Finding followings
     followings = FollowAuthor.objects.filter(UserFrom = other_user)
     followinUsers = []
-    for  follow in followings:
-        followinUsers.append( follow.UserTo )
+    for follow in followings:
+        followinUsers.append(follow.UserTo)
     return followinUsers
+
 
 def is_valid_format(filename, content_type):
     logging.debug('IS_VALID_FORMAT: '+filename)
     if content_type != 'application/pdf' and content_type != 'image/jpeg' and \
     content_type != 'image/png' and content_type != 'image/gif' and \
-    not filename.endswith('.zip') and not filename.endswith('.cbz') and not filename.endswith('.rar') and not filename.endswith('.cbr'):
-	logging.debug('VALID FORMAT = FALSE')
+    not filename.endswith('.zip') and \
+    not filename.endswith('.cbz') and \
+    not filename.endswith('.rar') and \
+    not filename.endswith('.cbr'):
+        logging.debug('VALID FORMAT = FALSE')
         return False
-    
+
     logging.debug('VALID FORMAT = TRUE')
     return True
 
+
 @login_complete
+@transaction.autocommit
 def uploadpublication(request, form_class=PublicationUploadForm,
         template_name="publications/upload.html"):
     """
     upload form for publications
     """
-    publication      = Publication()
+    publication = Publication()
     publication.author = request.user
     publication_form = form_class()
-    #import pdb; pdb.set_trace()
-    
+
     if request.method == 'POST':
         if request.POST.get("action") == "upload":
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
             if publication_form.is_valid():
                 if not is_valid_format(request.FILES['file_name'].name, request.FILES['file_name'].content_type):
                     request.user.message_set.create(message=u"Tipo de arquivo inv?lido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
-                else:                    
+                else:
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
                     publication.status = 0
                     publication.nr_pages = 0
                     publication.save()
 
-                    import pdb; pdb.set_trace()
-
                     conv = ConvertToImages(publication)
                     conv.start()
 
                     request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
-                    return HttpResponseRedirect(reverse('publications', args=(publication.author,)))
+                    return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
     calc_age(request.user.get_profile())
-    
+
     return render_to_response(template_name, {
         "form": publication_form,
         "is_me": True,
-        "other_user":request.user,
+        "other_user": request.user,
     }, context_instance=RequestContext(request))
+
 
 @login_complete
 def publications(request, username, template_name="publications/list_publications.html"):
@@ -147,11 +162,11 @@ def publications(request, username, template_name="publications/list_publication
     calc_age(request.user.get_profile())
 
     followingUsers = []
-    followerUsers  = []
+    followerUsers = []
 
     is_follow = False
     try:
-        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=other_user )
+        follow = FollowAuthor.objects.get(UserFrom=request.user, UserTo=other_user)
         if follow:
             is_follow = True
         else:
@@ -174,9 +189,9 @@ def publications(request, username, template_name="publications/list_publication
     logging.debug("Publications - Step 2")
 
     if is_me == True:
-        publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[0:6]
+        publications = Publication.objects.filter(author = other_user).order_by('-date_added')[0:6]
     else:
-        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[0:6]
+        publications = Publication.objects.filter(author = other_user, rated__lte=request.user.get_profile().age).order_by('-date_added')[0:6]
 
     logging.debug("Publications - Leave")
 
@@ -184,10 +199,11 @@ def publications(request, username, template_name="publications/list_publication
         "publications": publications, "username": username,
         "other_user": other_user, "is_me": is_me,
         "title": u"Minhas Publica??es",
-        "followers":followerUsers,
-        "followings":followingUsers,
-        "is_follow":is_follow,
+        "followers": followerUsers,
+        "followings": followingUsers,
+        "is_follow": is_follow,
     }, context_instance=RequestContext(request))
+
 
 @login_complete
 def destroypublication(request, id):
@@ -199,18 +215,19 @@ def destroypublication(request, id):
     title = publication.title
     if publication.author != request.user:
         request.user.message_set.create(message=u"Voc? n?o possui permiss?o para excluir essa publica??o")
-        return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
+        return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
-    try:    
+    try:
         publication.delete()
     except IOError:
         pass
     except:
         request.user.message_set.create(message=u"Erro ao tentar excluir a publica??o")
-        return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
+        return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
     request.user.message_set.create(message=_(u"Publica??o excluida com sucesso.'%s'") % title)
-    return HttpResponseRedirect(reverse('publications',args=(publication.author,)))
+    return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
+
 
 @login_complete
 def reportabuse(request, id, form_class=PublicationReportAbuseForm,
@@ -219,7 +236,7 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
 
     if publication.author == request.user:
         request.user.message_set.create(message=u"Voce n?o pode denunciar sua pr?pria public?o")
-        return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
+        return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id, )))
 
     report_abuse_form = form_class(request.user, instance=publication)
 
@@ -232,13 +249,13 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
             report_abuse.publication = publication
             report_abuse.save()
             request.user.message_set.create(message=_(u"Publica??o denunciada com sucesso.'%s'") % publication.title)
-            return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
+            return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id, )))
 
     return render_to_response(template_name, {
         "form": report_abuse_form,
         "other_user": publication.author,
         "publication": publication,
-    }, context_instance=RequestContext(request))        
+    }, context_instance=RequestContext(request))
 
 
 @login_complete
@@ -251,7 +268,7 @@ def editpublication(request, id, form_class=PublicationEditForm,
     if request.method == "POST":
         if publication.author != request.user:
             request.user.message_set.create(message="Voce n&atilde;o tem permiss&atilde;o para editar")
-            return HttpResponseRedirect(reverse('publication_details', args=(publication.id,)))
+            return HttpResponseRedirect(reverse('publication_details', args=(publication.id, )))
         if request.POST["action"] == "update":
             publication_form = form_class(request.user, request.POST, instance=publication)
             if publication_form.is_valid():
@@ -494,5 +511,3 @@ def searchresults(request, template_name="publications/results.html", search_tex
         "is_me": True,
         "find_prof": find_prof,
     }, context_instance=RequestContext(request))
-
-
