@@ -12,18 +12,6 @@
 
 namespace tintz {
     
-    struct Page {
-        QString fileName;
-        long fileSize;
-        int pageNo;
-        
-        bool operator <( const Page& other ) const
-        {
-            return this->pageNo < other.pageNo;
-        }
-        
-    };
-
     class ComicImages : public QObject
     {
         Q_OBJECT
@@ -34,11 +22,12 @@ namespace tintz {
         QProcess* process;
         QProcess* process7z;
         QStringList parameters;
+        QString fullPathFileName;
         
-        QList<Page> pages;
-
+        int nrPages;
+        
     public:
-        ComicImages(QString fileName){this->fileName = fileName;  process = NULL;}
+        ComicImages(QString fileName){this->fileName = fileName; this->nrPages = 0; fullPathFileName.clear();  process = NULL;}
         virtual ~ComicImages(){}
 
         QString Program(){ return program; }
@@ -53,6 +42,9 @@ namespace tintz {
         void PrepareImage();
         void Prepare7z();
         void PreparePdf();
+        
+        int NrPages(){return nrPages;}
+        QString FullPathFileName(){return fullPathFileName;}
 
     public slots:
         void Finished(int exitCode);

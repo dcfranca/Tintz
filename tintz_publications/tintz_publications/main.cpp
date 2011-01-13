@@ -36,7 +36,11 @@ static PyObject* TintzConvertToImages(PyObject *self, PyObject *args)
 
     ComicImages comic( qFileName );
     
-    return Py_BuildValue("i", comic.RunCommand(realType));
+    int ret = comic.RunCommand(realType);
+    int nrPages = comic.NrPages();
+    char* newFileName = comic.FullPathFileName().toAscii().data();
+    
+    return Py_BuildValue("iis", ret, nrPages, newFileName );
 }
 
 static PyMethodDef TintzMethods[] = {

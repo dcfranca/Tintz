@@ -118,6 +118,8 @@ namespace tintz
             QFile::remove( fileName );
         }
         
+        nrPages = pageNo;
+        
         if (pageNo)
             std::cerr << pageNo << " imagens encontradas para " << this->fileName.toStdString() << std::endl;
         else
@@ -149,7 +151,13 @@ namespace tintz
 
         imgReader->setScaledSize(QSize(width, height));
         QImage thumb = imgReader->read();
-        QString newFileName = tmpDir + QDir::separator() + inf.baseName() + "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo) + ".jpg";
+        QString newFileName = tmpDir + QDir::separator() + inf.baseName();// + 
+        
+        if ( !fullPathFileName.length() )
+            fullPathFileName = QDir(tmpDir).dirName() + QDir::separator()  + inf.baseName();
+        
+        newFileName += "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo)+".jpg";
+        
         thumb.save( newFileName, "JPG" );
     }
 
@@ -194,6 +202,8 @@ namespace tintz
         CreateThumbnailForImage( fileName, 64, 128, 1 );
 
         CreateThumbnailForImage( fileName, 150, 200, 1 );
+        
+        nrPages = 1;
     }
 
     void ComicImages::PreparePdf()

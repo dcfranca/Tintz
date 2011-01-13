@@ -24,7 +24,7 @@ class Publication(models.Model):
     """
     A publication (Comic, charge, magazine, etc)
     """
-    LANG_CHOICE = ( ('pt_BR',u'Português'),
+    LANG_CHOICE = ( ('pt_BR',u'Portugu?s'),
 	            ('en',u'English'),
 		  )
 
@@ -56,7 +56,8 @@ class Publication(models.Model):
         verbose_name_plural = _('publications')
 
     def get_thumbnail150_name(self):
-      fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      #fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      fname = self.file_name.path
       try:
          fname = unicode(fname,'utf-8')
       except TypeError:
@@ -64,12 +65,13 @@ class Publication(models.Model):
       return "".join([ "publications/",self.author.__str__(),"/", fname,"_001_thumb150", self.images_ext])
 
     def get_basename(self):
-      fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      #fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
+      fname = self.file_name.path
       try:
-         fname = unicode(fname,'utf-8')
+        fname = unicode(fname,'utf-8')
       except TypeError:
-         pass
-      return "".join([ "publications/",self.author.__str__(),"/", fname] )
+        pass
+      return "".join([ "publications/",self.author.__str__(),"/", fname])
 
     def not_rated(self, author):
       return PublicationRate.getobjects( who_vote = author )

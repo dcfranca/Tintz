@@ -54,18 +54,19 @@ class ConvertToImages(Thread):
 
         logging.debug("*Arquivo: "+self.publication.file_name.path)
 
-        try:
-            if libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8")):
-                logging.debug("Executado com sucesso, alterando status para 1")
-                self.publication.status = 1
-                self.publication.save(force_update=True)
-            else:
-                logging.debug("Erro ao executar, alterando status para -1")
-                self.publication.status = -1
-                self.publication.save(force_update=True)
-        except:
-            logging.debug("Erro ao tentar salvar publicação: "+self.publication.title)
-            
+        ret, pages, new_file_name = libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8"))
+        if ret:
+            logging.debug("Executado com sucesso, alterando status para 1")
+            self.publication.status = 1
+            self.publication.nr_pages = pages
+            self.publication.file_name = new_file_name
+            self.publication.images_ext = ".jpg"
+            logging.debug("Novo nome do arquivo: "+new_file_name)
+            self.publication.save(force_update=True)
+        else:
+            logging.debug("Erro ao executar, alterando status para -1")
+            self.publication.status = -1                
+            self.publication.save(force_update=True)
 
 def getPublications(request, other_user, is_me):
     publications = []
