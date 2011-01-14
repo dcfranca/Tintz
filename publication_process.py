@@ -282,7 +282,7 @@ if not publications:
 print '******START*******' 
 
 for publication in publications:
-    print '\n\nGenerating for: %s ' % publication.title
+    print '\n\nGenerating for: %s ' % publication.file_name.path
     exc_type, exc_value, exc_traceback = sys.exc_info()
     
     #try:    
