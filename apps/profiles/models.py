@@ -86,6 +86,8 @@ class Profile(models.Model):
     get_absolute_url = models.permalink(get_absolute_url)
 
     def get_small_about(self):
+        if not self.about:
+            return ""
         if len(self.about) < 200:
             return self.about
         return self.about[0:197]+"..."
