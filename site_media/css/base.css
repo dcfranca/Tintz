@@ -761,7 +761,7 @@ body {
 .page_number-full {
     position: relative;
     color: black;
-    max-width: 85px;
+    width: 85px;
     left: 25px;
     top: 8px;
 }
@@ -1025,6 +1025,7 @@ body {
     min-height: 70px;
     text-align: left;
     font-size: 9pt;
+    margin: 0 0 20px 0;        
 }
 
 .update-separator {
@@ -1067,7 +1068,6 @@ body {
 
 .update-item {
     position: relative;
-    min-height: 250px;
 }
 
 .thumb-page-click {
