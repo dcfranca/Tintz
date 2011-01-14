@@ -5,12 +5,12 @@
 {% if other_user.id %}
     {% if is_me %}
 	    <div id="profile_avatar" onmouseover="document.getElementById('avatar_replace').style.visibility='visible'" onmouseout="document.getElementById('avatar_replace').style.visibility='hidden'">
-	        {% avatar other_user 260 %}
+	        <a href="{% url profile_detail other_user %}">{% avatar other_user 260 %}</a>
 	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
 	    </div> 
     {% else %}
 	    <div id="profile_avatar">
-	        {% avatar other_user 260 %}
+	        <a href="{% url profile_detail other_user %}">{% avatar other_user 260 %}</a>
 	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
 	    </div> 
     {% endif %}
