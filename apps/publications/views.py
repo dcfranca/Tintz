@@ -65,7 +65,7 @@ class ConvertToImages(Thread):
             self.publication.save(force_update=True)
         else:
             logging.debug("Erro ao executar, alterando status para -1")
-            self.publication.status = -1                
+            self.publication.status = -1
             self.publication.save(force_update=True)
 
 def getPublications(request, other_user, is_me):

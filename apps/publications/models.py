@@ -57,16 +57,19 @@ class Publication(models.Model):
 
     def get_thumbnail150_name(self):
       #fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      fname = self.file_name.path
+      fname = self.file_name.__str__().strip()
       try:
          fname = unicode(fname,'utf-8')
       except TypeError:
          pass
-      return "".join([ "publications/",self.author.__str__(),"/", fname,"_001_thumb150", self.images_ext])
+      return "".join([ "publications/",self.author.__str__(),"/", fname,"_001_thumb130.jpg"])
 
     def get_basename(self):
       #fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
-      fname = self.file_name.path
+      fname = self.file_name.__str__().strip()
+      import logging
+      logging.debug("----FILE NAME: "+fname)
+      #fname = self.file_name.path
       try:
         fname = unicode(fname,'utf-8')
       except TypeError:

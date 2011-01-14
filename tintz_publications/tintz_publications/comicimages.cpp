@@ -110,7 +110,7 @@ namespace tintz
                 //Cover of the comic
                 if ( firstPage )
                 {
-                    CreateThumbnailForImage( fullPath, 150, 200, pageNo );
+                    CreateThumbnailForImage( fullPath, 130, 130, pageNo );
                     firstPage = false;
                 }
             }
@@ -156,7 +156,7 @@ namespace tintz
         if ( !fullPathFileName.length() )
             fullPathFileName = QDir(tmpDir).dirName() + QDir::separator()  + inf.baseName();
         
-        newFileName += "_thumb" + QString().sprintf( "%03d", widthDisplay ) + "_" + QString().sprintf("%03d", pageNo)+".jpg";
+        newFileName += "_" + QString().sprintf("%03d", pageNo)+"_thumb" + QString().sprintf( "%03d", widthDisplay )+".jpg";
         
         thumb.save( newFileName, "JPG" );
     }
@@ -201,7 +201,7 @@ namespace tintz
         //Side Thumbnails
         CreateThumbnailForImage( fileName, 64, 128, 1 );
 
-        CreateThumbnailForImage( fileName, 150, 200, 1 );
+        CreateThumbnailForImage( fileName, 130, 130, 1 );
         
         nrPages = 1;
     }
