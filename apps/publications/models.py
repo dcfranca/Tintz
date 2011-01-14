@@ -68,7 +68,6 @@ class Publication(models.Model):
       #fname,fext = os.path.splitext(os.path.basename(self.file_name.path))
       fname = self.file_name.__str__().strip()
       import logging
-      logging.debug("----FILE NAME: "+fname)
       #fname = self.file_name.path
       try:
         fname = unicode(fname,'utf-8')

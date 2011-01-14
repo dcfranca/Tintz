@@ -38,36 +38,6 @@ SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
 
 search_text = ''
 
-import libtintz
-from threading import Thread
-
-
-class ConvertToImages(Thread):
-
-    publication = None
-
-    def __init__(self, publication):
-        Thread.__init__(self)
-        self.publication = publication
-
-    def run(self):
-
-        logging.debug("*Arquivo: "+self.publication.file_name.path)
-
-        ret, pages, new_file_name = libtintz.ConvertToImages(self.publication.file_name.path.encode("utf-8"))
-        if ret:
-            logging.debug("Executado com sucesso, alterando status para 1")
-            self.publication.status = 1
-            self.publication.nr_pages = pages
-            self.publication.file_name = new_file_name
-            self.publication.images_ext = ".jpg"
-            logging.debug("Novo nome do arquivo: "+new_file_name)
-            self.publication.save(force_update=True)
-        else:
-            logging.debug("Erro ao executar, alterando status para -1")
-            self.publication.status = -1
-            self.publication.save(force_update=True)
-
 def getPublications(request, other_user, is_me):
     publications = []
     try:
@@ -114,7 +84,6 @@ def is_valid_format(filename, content_type):
 
 
 @login_complete
-@transaction.autocommit
 def uploadpublication(request, form_class=PublicationUploadForm,
         template_name="publications/upload.html"):
     """
@@ -136,9 +105,6 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                     publication.status = 0
                     publication.nr_pages = 0
                     publication.save()
-
-                    conv = ConvertToImages(publication)
-                    conv.start()
 
                     request.user.message_set.create(message=_("Publicacao feita com sucesso '%s'") % publication.title)
                     return HttpResponseRedirect(reverse('publications', args=(publication.author, )))

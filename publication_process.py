@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 
-import sys,os, shutil, traceback
+import sys,os, shutil, traceback, libtintz
 from datetime import *
 sys.path.append("/home/danielfranca/workspace/")
 sys.path.append("/home/danielfranca/workspace/tintz/apps")
@@ -268,6 +268,8 @@ def convert2images(publication):
     publication.save()
     Update.objects.update_followers(1, publication)
 
+
+
 print 'Starting Process Publications - DateTime: '+datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%s')
 
 print 'Searching publication in Status 0'
@@ -282,11 +284,26 @@ print '******START*******'
 for publication in publications:
     print '\n\nGenerating for: %s ' % publication.title
     exc_type, exc_value, exc_traceback = sys.exc_info()
+    
+    #try:    
+    #    file_path = unicode(publication.file_name.path,'utf-8')
+    #except:
+    # 	file_path = unicode(publication.file_name.path,'utf-8')
+    #    pass    
 
-    try:
-       convert2images(publication)
-    except:
-       print 'Error converting to images - '+publication.title
-       traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
+    #try:
+    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path)
+    if ret:
+        publication.status = 1
+        publication.nr_pages = pages
+        publication.file_name = new_file_name
+        publication.images_ext = ".jpg"
+        publication.save()
+        print "Changing status to 1"
+    else:
+        print "Error Converting to images"            
+    #except:
+    #   print 'Error converting to images - '+publication.title
+    #   traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
 
 print '******END*******' 
