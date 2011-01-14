@@ -28,17 +28,20 @@ def more_posts(request, other_user_id, last_post):
         is_me = False
 
 
-    template =  """<tr><td><a class="span-5 list-posts-title" href="%s">%s</a>
-                <div class="list-posts-subtitle last">%s</div>
-                <div class="span-10 list-posts-description last">
+    template =  """<div class="blog-post-item"><a class="span-5 list-posts-title" href="%s">%s</a>
+                <div class="list-posts-subtitle last">%s</div>"""
+    if is_me:
+        template += """<div class="span-2 list-posts-buttons">
+                    <div class="span-1 list-posts-button"><a href="%s" ><img src="%simages/publication_edit.png" title="Editar Post"></img></a></div>
+                    <div class="span-1 list-posts-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Post"></img></a></div>
+                    </div>"""
+
+    template += """<div class="span-10 list-posts-description last">
                         %s
                 </div>"""
 
-    if is_me:
-        template += """<div class="span-1 list-posts-button"><a href="%s" ><img src="%simages/publication_edit.png" title="Editar Post"></img></a></div>
-                  <div class="span-1 list-posts-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Post"></img></a></div>"""
 
-    template += """<div class="separator span-13 last"></div></td></tr>"""
+    template += """<div class="separator span-13 last"></div></div>"""
 
     posts = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
 
@@ -58,8 +61,8 @@ def more_posts(request, other_user_id, last_post):
         link_destroy = reverse('blog_edit', args=(post.id,))
 
         if is_me:
-            htmlOutput += template % ( post_url, post.title, date_posted, post_text,
-            link_edit, media_url, link_destroy, link_destroy ,media_url )
+            htmlOutput += template % ( post_url, post.title, date_posted,
+            link_edit, media_url, link_destroy, link_destroy ,media_url, post_text )
         else:
             htmlOutput += template % ( post_url, post.title, date_posted, post_text )
 

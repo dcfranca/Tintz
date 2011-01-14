@@ -31,36 +31,37 @@
         <div class="choose"><a href="{% url blog_new %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post</a></div>
         <div class="separator span-13 last"></div>
     {% endif %}
-        <table id="list-posts" class="span-14">
+        <div id="list-posts" class="span-14">
         {% for post in blogs %}
-        <tr><td>
             <div class="blog-post-item">
             <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 <div class="list-posts-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
-
-                <div class="span-10 list-posts-description last">
-                {% with post.tease|truncatewords:"50" as body %}
-                    {% if post.markup %}
-                        {% switch post.markup %}
-                            {% case 'rst' %}{{ body|restructuredtext|safe }}{% endcase %}
-                            {% case 'mrk' %}{{ body|force_escape|markdown }}{% endcase %}
-                            {% case 'txl' %}{{ body|force_escape|textile }}{% endcase %}
-                        {% endswitch %}
-                    {% else %}
-                        {{ post.get_small_text|force_escape|linebreaks|safe }}
-                    {% endif %}
-                {% endwith %}
-                </div>
-
+              
               {% if is_me %}
+                <div class="span-2 list-posts-buttons">
                   <div class="span-1 list-posts-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
                   <div class="span-1 list-posts-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
-              {% endif %}
+                </div>
+              {% endif %}            
+            
+            <div class="span-10 list-posts-description last">
+            {% with post.tease|truncatewords:"50" as body %}
+                {% if post.markup %}
+                    {% switch post.markup %}
+                        {% case 'rst' %}{{ body|restructuredtext|safe }}{% endcase %}
+                        {% case 'mrk' %}{{ body|force_escape|markdown }}{% endcase %}
+                        {% case 'txl' %}{{ body|force_escape|textile }}{% endcase %}
+                    {% endswitch %}
+                {% else %}
+                    {{ post.get_small_text|force_escape|linebreaks|safe }}
+                {% endif %}
+            {% endwith %}
+            </div>
+                        
             <div class="separator span-13 last"></div>
             </div>
-        </td></tr>
         {% endfor %}
-        </table>
+        </div>
     <div id="last_post" style="display: none">10</div>
 
     <div class="more span-10 last" onclick="Dajaxice.blog.more_posts('Dajax.process',{ 'other_user_id': {{ other_user.id }}, 'last_post':document.getElementById('last_post').innerHTML })">{% trans "Postagens anteriores" %} >></div>
