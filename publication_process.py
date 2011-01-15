@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 import sys,os, shutil, traceback, libtintz
 from datetime import *
@@ -26,21 +26,18 @@ from publications.forms import PublicationUploadForm, PublicationEditForm
 from tagging.models import *
 from django.http import Http404
 from django.conf import settings
-import datetime
 
 #import warnings
 #warnings.simplefilter('ignore', DeprecationWarning)
 
-import os, datetime, mimetypes
+import os
 import pdb
-import glob
 import datetime
 
-from PIL import Image
-import UnRAR2
 import sys, zipfile, os, os.path
-from operator import itemgetter, attrgetter
+#from operator import itemgetter, attrgetter
 
+"""
 FULL_VIEW   = 700
 SIDE_THUMB  = 64
 
@@ -128,7 +125,7 @@ def unzip_file_into_dir(file, dir, filename):
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
 
-        try:       
+        try:
             create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
             create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
         except IOError, e:
@@ -173,7 +170,7 @@ def unrar_file_into_dir(file, dir, filename_noext):
         if pag == 1:
             create_thumbnail(dir+"/"+new_file_name, file_ext)
 
-        try:        
+        try:
             create_thumbnail(dir+"/"+new_file_name, file_ext, FULL_VIEW, 1400)
             create_thumbnail(dir+"/"+new_file_name, file_ext, SIDE_THUMB, 128)
         except IOError, e:
@@ -184,7 +181,7 @@ def unrar_file_into_dir(file, dir, filename_noext):
 
 def remove_specialchars(file_name):
 
-    try:    
+    try:
         new_file_name = unicode( file_name.replace('-','_').replace('#','_'), 'utf-8')
     except:
         return file_name.replace('-','_').replace('#','_')
@@ -203,7 +200,7 @@ def convert2images(publication):
 
     #file_name = unicode(file_name,'utf-8')
 
-    try:    
+    try:
         file_path = unicode(dirname,'utf-8')+"/"+unicode(file_name,'utf-8')
     except:
     	file_path = dirname+"/"+unicode(file_name,'utf-8')
@@ -268,7 +265,7 @@ def convert2images(publication):
     publication.save()
     Update.objects.update_followers(1, publication)
 
-
+"""
 
 print 'Starting Process Publications - DateTime: '+datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%s')
 
@@ -279,31 +276,41 @@ if not publications:
     print 'No publications found'
     quit()
 
-print '******START*******' 
+print '******START*******'
 
 for publication in publications:
     print '\n\nGenerating for: %s ' % publication.file_name.path
     exc_type, exc_value, exc_traceback = sys.exc_info()
-    
-    #try:    
-    #    file_path = unicode(publication.file_name.path,'utf-8')
-    #except:
-    # 	file_path = unicode(publication.file_name.path,'utf-8')
-    #    pass    
 
-    #try:
-    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path)
+    #fp = open(publication.file_name.path.strip(),"r")
+
+    #if fp:
+    #    print "Arquivo aberto em Python com sucesso"
+    #else:
+    #    print "Erro ao abrir arquivo em Python"
+
+    import locale
+    language, output_encoding = locale.getdefaultlocale()
+    print 'DEFAULT ENCODING: '+output_encoding
+
+    try:
+        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
+    except UnicodeEncodeError:
+        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
+
+
     if ret:
         publication.status = 1
         publication.nr_pages = pages
         publication.file_name = new_file_name
         publication.images_ext = ".jpg"
         publication.save()
+        Update.objects.update_followers(1, publication)
         print "Changing status to 1"
     else:
-        print "Error Converting to images"            
+        print "Error Converting to images"
     #except:
     #   print 'Error converting to images - '+publication.title
     #   traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
 
-print '******END*******' 
+print '******END*******'

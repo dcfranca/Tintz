@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, get_host
 from django.template import RequestContext
@@ -70,9 +70,9 @@ def getFollowings(request, other_user):
 
 def is_valid_format(filename, content_type):
     logging.debug('IS_VALID_FORMAT: '+filename)
-    
+
     filename = filename.lower()
-    
+
     if content_type != 'application/pdf' and content_type != 'image/jpeg' and \
     content_type != 'image/png' and content_type != 'image/gif' and \
     not filename.endswith('.zip') and \
@@ -113,7 +113,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
                     publication.nr_pages = 0
                     publication.save()
 
-                    request.user.message_set.create(message=_(u"Publicação feita com sucesso '%s'") % publication.title)
+                    request.user.message_set.create(message=_(u"PublicaÃ§Ã£o feita com sucesso '%s'") % publication.title)
                     return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
     calc_age(request.user.get_profile())
