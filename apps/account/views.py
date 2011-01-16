@@ -14,9 +14,7 @@ from django.contrib.auth.views import logout as django_logout
 
 from account.utils import get_default_redirect
 from account.models import OtherServiceInfo
-from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, \
-    ChangePasswordForm, SetPasswordForm, ResetPasswordForm, \
-    ChangeTimezoneForm, ChangeLanguageForm, TwitterForm, ForgotPasswordForm
+from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, ForgotPasswordForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
 
@@ -29,20 +27,20 @@ from account.utils import login_complete
 
 def login(request, form_class=LoginForm,
         template_name="account/login.html", success_url=None):
-    
+
     if success_url is None:
         success_url = get_default_redirect(request)
-        
+
     if request.user.is_authenticated():
         return HttpResponseRedirect(success_url)
-        
+
     if request.method == "POST":
         form = form_class(request.POST)
         if form.login(request):
             return HttpResponseRedirect(success_url)
     else:
         form = form_class()
-    
+
     return render_to_response(template_name, {
         "form": form,
         "is_me": True,
@@ -57,15 +55,15 @@ def logout(request):
 
 def signup(request, form_class=SignupForm,
         template_name="account/signup.html", success_url=None):
-    
+
     #import pdb; pdb.set_trace()
 
     if success_url is None:
         success_url = get_default_redirect(request)
-        
+
     if request.user.is_authenticated():
         return HttpResponseRedirect(success_url)
-        
+
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
@@ -75,7 +73,7 @@ def signup(request, form_class=SignupForm,
             return  HttpResponseRedirect('/about/confirm_email')
     else:
         form = form_class()
-    
+
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
@@ -139,7 +137,7 @@ def pay_account(request):
         if retorno == True:
             try:
                 pass
-                
+
                 # Cadastra os dados recebidos no banco de dados.
                 # Utilize o request.POST.get('nomedocampo') para obter os valores
             except:
@@ -167,7 +165,7 @@ def email(request, form_class=AddEmailForm,
                 add_email_form = form_class() # @@@
         else:
             add_email_form = form_class()
-            if request.POST["action"] == "send":                                
+            if request.POST["action"] == "send":
                 email = request.POST["email"]
                 send_email_confirmation(request,  email)
             elif request.POST["action"] == "remove":
@@ -191,7 +189,7 @@ def email(request, form_class=AddEmailForm,
                 email_address.set_as_primary()
     else:
         add_email_form = form_class()
-    
+
     logging.debug("Email - Leave")
     return render_to_response(template_name, {
         "add_email_form": add_email_form,
@@ -208,10 +206,10 @@ def send_email_confirmation(user,  email):
         )
         #request.user.message_set.create(
         #    message=u"Confirmacao de email enviada para %s" % email)
-        
+
         EmailConfirmation.objects.send_confirmation(email_address)
 
         logging.debug('Email - Sent to: %s' % email_address)
     except EmailAddress.DoesNotExist:
         pass
-        
+
