@@ -123,6 +123,7 @@ body {
     float: right;
     right: 50px;
     padding-top: 60px;
+    margin-bottom: 100px;
 }
 
 .login-img {
@@ -296,7 +297,7 @@ body {
     padding-left: 10px;
     background: #f4e30c;
     text-align: right;
-    width: 100%;
+    #width: 100%;
     color: gray;
 }
 
@@ -1025,7 +1026,7 @@ body {
     min-height: 70px;
     text-align: left;
     font-size: 9pt;
-    margin: 0 0 20px 0;        
+    margin: 0 0 20px 0;
 }
 
 .update-separator {

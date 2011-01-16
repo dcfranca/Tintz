@@ -236,7 +236,6 @@ class AddEmailForm(UserForm):
         #self.user.message_set.create(message=ugettext(u"Confirma��o enviada para %(email)s") % {'email': self.cleaned_data["email"]})
         return EmailAddress.objects.add_email(self.user, self.cleaned_data["email"])
 
-
 class ChangePasswordForm(UserForm):
     oldpassword = forms.CharField(label=_("Senha Atual"), widget=forms.PasswordInput(render_value=False))
     password1 = forms.CharField(label=_("Nova Senha"), widget=forms.PasswordInput(render_value=False))
