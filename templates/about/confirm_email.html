@@ -10,21 +10,21 @@
     <div class="login-img">
         <img src="{{ MEDIA_URL }}images/tintz_login.png">
     </div>
-    
+
     <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
 
     <div class="span-6" id="whats_tintz">
         <p>{% trans "&Eacute; necess&aacute;rio confirmar o email para ativar sua conta" %}
     </div>
-    
+
     <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
-    
+
     <ul class="span-4 last login-links">
-    <li><a href="">{% trans "Perdeu sua senha?" %}</a></li>
+    <li><a href="{% url acct_forgot_password %}">{% trans "Perdeu sua senha?" %}</a></li>
     <li><a href="{% url acct_login %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
     <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
-    </ul> 
-</div>  
+    </ul>
+</div>
 {% endblock %}
 
 {% block extra_body %}
