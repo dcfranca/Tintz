@@ -236,3 +236,72 @@ class AddEmailForm(UserForm):
         #self.user.message_set.create(message=ugettext(u"Confirma��o enviada para %(email)s") % {'email': self.cleaned_data["email"]})
         return EmailAddress.objects.add_email(self.user, self.cleaned_data["email"])
 
+
+class ChangePasswordForm(UserForm):
+    oldpassword = forms.CharField(label=_("Senha Atual"), widget=forms.PasswordInput(render_value=False))
+    password1 = forms.CharField(label=_("Nova Senha"), widget=forms.PasswordInput(render_value=False))
+    password2 = forms.CharField(label=_("Redigite Nova Senha"), widget=forms.PasswordInput(render_value=False))
+    def clean_oldpassword(self):
+        if not self.user.check_password(self.cleaned_data.get("oldpassword")):
+            raise forms.ValidationError(_("Please type your current password."))
+
+        return self.cleaned_data["oldpassword"]
+
+
+    def clean_password2(self):
+        if "password1" in self.cleaned_data and "password2" in self.cleaned_data:
+            if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
+                raise forms.ValidationError(_(u"Senhas n�o conferem."))
+
+        return self.cleaned_data["password2"]
+
+    def save(self):
+        self.user.set_password(self.cleaned_data['password1'])
+        self.user.save()
+        #self.user.message_set.create(message=ugettext(u"Senha alterada com sucesso."))
+
+
+
+class SetPasswordForm(UserForm):
+
+    password1 = forms.CharField(label=_("Senha"), widget=forms.PasswordInput(render_value=False))
+    password2 = forms.CharField(label=_("Redigite a Senha"), widget=forms.PasswordInput(render_value=False))
+
+    def clean_password2(self):
+        if "password1" in self.cleaned_data and "password2" in self.cleaned_data:
+            if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
+                raise forms.ValidationError(_(u"Senhas não conferem."))
+
+        return self.cleaned_data["password2"]
+
+    def save(self):
+        self.user.set_password(self.cleaned_data["password1"])
+        self.user.save()
+        #self.user.message_set.create(message=ugettext(u"Senhada criada com sucesso."))
+
+
+class ResetPasswordForm(forms.Form):
+
+    email = forms.EmailField(label=_("Email"), required=True, widget=forms.TextInput(attrs={'size':'60'}))
+
+    def clean_email(self):
+        if EmailAddress.objects.filter(email__iexact=self.cleaned_data["email"], verified=True).count() == 0:
+            raise forms.ValidationError(_("Email não verificado para a conta"))
+
+        return self.cleaned_data["email"]
+
+    def save(self):
+        for user in User.objects.filter(email__iexact=self.cleaned_data["email"]):
+            new_password = User.objects.make_random_password()
+            user.set_password(new_password)
+            user.save()
+            subject = _("Tintz Alterar Senha")
+            message = render_to_string("account/password_reset_message.txt", {
+                "user": user,
+                "new_password": new_password,
+            })
+
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], priority="high")
+
+        return self.cleaned_data["email"]
+
