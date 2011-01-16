@@ -270,6 +270,16 @@ body {
     right: 145px;
 }
 
+.message-user {
+    position: relative;
+    color: black;
+    font-weight: bold;
+    float: right;
+    right: 180px;
+    top: -30px;
+
+}
+
 .login-links li {
     text-decoration: none;
     font-size: 9pt;
