@@ -20,6 +20,8 @@ from account.models import Account
 
 from timezones.forms import TimeZoneField
 
+import datetime
+
 import logging
 
 alnum_re = re.compile(r'^\w+$')
@@ -152,7 +154,7 @@ class SignupCompleteForm(forms.Form):
                                  error_messages = {'required': u'Campo Nome é obrigatório.' } )
     last_name = forms.CharField(label=_(u'Sobrenome'),  max_length=70, widget=forms.TextInput(),
                                  error_messages = {'required': u'Campo Sobrenome é obrigatório.' } )
-    birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'),  widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True,
+    birth_date = forms.DateField(('%d/%m/%Y',), label=_(u'Data Nasc.(dd/mm/aaaa)'), widget=forms.DateTimeInput(format='%d/%m/%Y'), required=True,
                                  error_messages = {'required': u'Campo Data Nasc. é obrigatório.', 'invalid':u'Informe uma data válida.' } )
 
     about     = forms.CharField(label=u'Sobre', widget=forms.Textarea,  required=False)
@@ -166,6 +168,10 @@ class SignupCompleteForm(forms.Form):
 
 
     def clean(self):
+        birth_date = self.cleaned_data["birth_date"]
+        if birth_date >= datetime.date.today():
+            raise forms.ValidationError(_(u"Data de nascimento maior ou igual a data atual."))
+
         return self.cleaned_data
 
     def save(self, request):
