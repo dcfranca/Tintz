@@ -28,7 +28,9 @@ body{
                 <div class="page-full span-9">
                     {% if pages %}
                        {% for pagenr in pages.object_list %}
+                          <a href="javascript:Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1 })" >
                           <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+                          </a>
                        {% endfor %}
                     {% endif %}
                 </div>

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 import os
 from django.db import models
 from django.db import models
@@ -24,7 +24,7 @@ class Publication(models.Model):
     """
     A publication (Comic, charge, magazine, etc)
     """
-    LANG_CHOICE = ( ('pt_BR',u'Português'),
+    LANG_CHOICE = ( ('pt_BR',u'PortugÃªs'),
 	            ('en',u'English'),
 		  )
 

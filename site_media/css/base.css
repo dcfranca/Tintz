@@ -1165,3 +1165,12 @@ body {
     margin-left: 10px;
 }
 
+.click-prev {
+    width: 100px;
+    heigth: 300px;
+}
+
+.click-next {
+    width: 100px;
+    heigth: 300px;
+}
