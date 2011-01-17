@@ -31,9 +31,9 @@
         <div class="choose"><a href="{% url blog_new %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Novo Post</a></div>
         <div class="separator span-13 last"></div>
     {% endif %}
-        <div id="list-posts" class="span-14">
+        <div id="list-posts last" class="span-14">
         {% for post in blogs %}
-            <div class="blog-post-item">
+            <div class="blog-post-item last">
             <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 <div class="list-posts-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
               

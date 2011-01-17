@@ -372,7 +372,7 @@ body {
     position: relative;
     top: 20px;
     left: -20px;
-    min-height: 150px;
+    #min-height: 150px;
 }
 
 .list-posts-title, .list-posts-title a, .list-posts-title a:visited {
@@ -399,7 +399,8 @@ body {
     top: 40px;
     left: -20px;
     width: 500px;
-    min-height: 200px;
+    #min-height: 200px;
+    margin-bottom: 30px;
     text-align: left;
     font-size: 9pt;
 }
@@ -680,7 +681,8 @@ body {
 
 .separator {
     position: relative;
-    top: 30px;
+    margin-top: 8px;
+    #top: 30px;
     left: -20px;
     background-color: #E0E0E0;
     height: 1px;
@@ -1156,7 +1158,9 @@ body {
 
 .blog-post-item {
     position: relative;
-    min-height: 300px;
+    #min-height: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     top: 10px;
 }
 
