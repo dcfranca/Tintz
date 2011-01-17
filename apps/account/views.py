@@ -69,7 +69,7 @@ def signup(request, form_class=SignupForm,
         if form.is_valid():
             username, password, email = form.save()
             user =  User.objects.get(username=username) #  authenticate(username=username, password=password)
-            send_email_confirmation(user,  email)
+            #send_email_confirmation(user,  email)
             return  HttpResponseRedirect('/about/confirm_email')
     else:
         form = form_class()
