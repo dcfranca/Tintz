@@ -32,7 +32,9 @@
 	{% else %}
 
 	    <div class="publication_page last">
+           <a href="javascript:Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">
            <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_001_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+           </a>
 	    </div>
 
         <div class="navigator span-2">
