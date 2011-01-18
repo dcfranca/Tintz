@@ -17,7 +17,6 @@ void TestComicImages::TestRun()
 {
 
     QFile* fpFileNames = new QFile("../tintz_publications/filenames.txt");
-    //QFile* fpFileNames = new QFile("../tintz_publications/temp.txt");
 
     fpFileNames->open(QIODevice::ReadOnly|QIODevice::Text);
 

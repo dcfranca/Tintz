@@ -293,13 +293,15 @@ for publication in publications:
     language, output_encoding = locale.getdefaultlocale()
     print 'DEFAULT ENCODING: '+output_encoding
 
+    #try:
     try:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
     except UnicodeEncodeError:
-        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
+        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))        
 
 
     if ret:
+        print "Saving File: "+new_file_name
         publication.status = 1
         publication.nr_pages = pages
         publication.file_name = new_file_name
@@ -308,9 +310,8 @@ for publication in publications:
         Update.objects.update_followers(1, publication)
         print "Changing status to 1"
     else:
-        print "Error Converting to images"
+            print "Error Converting to images"
     #except:
-    #   print 'Error converting to images - '+publication.title
-    #   traceback.print_exception(exc_type, exc_value, exc_traceback,limit=2, file=sys.stdout)
+    #    print "****Error converting, passed****"
 
 print '******END*******'

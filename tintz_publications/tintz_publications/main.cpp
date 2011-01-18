@@ -38,7 +38,14 @@ static PyObject* TintzConvertToImages(PyObject *self, PyObject *args)
     
     int ret = comic.RunCommand(realType);
     int nrPages = comic.NrPages();
+    
+    
+    
     char* newFileName = comic.FullPathFileName().toAscii().data();
+    
+    newFileName[ comic.FullPathFileName().length() ] = 0x00;
+    
+    std::cout << "********NEW FILE NAME************* [" << comic.FullPathFileName().toStdString() << "]";
     
     return Py_BuildValue("iis", ret, nrPages, newFileName );
 }
