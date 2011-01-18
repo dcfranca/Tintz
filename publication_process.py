@@ -299,19 +299,19 @@ for publication in publications:
     except UnicodeEncodeError:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))        
 
-
-    if ret:
-        print "Saving File: "+new_file_name
-        publication.status = 1
-        publication.nr_pages = pages
-        publication.file_name = new_file_name
-        publication.images_ext = ".jpg"
-        publication.save()
-        Update.objects.update_followers(1, publication)
-        print "Changing status to 1"
-    else:
+    try:
+        if ret:
+            print "Saving File: "+new_file_name
+            publication.status = 1
+            publication.nr_pages = pages
+            publication.file_name = new_file_name
+            publication.images_ext = ".jpg"
+            publication.save()
+            Update.objects.update_followers(1, publication)
+            print "Changing status to 1"
+        else:
             print "Error Converting to images"
-    #except:
-    #    print "****Error converting, passed****"
+    except:
+        print "****Error converting, passed****"
 
 print '******END*******'
