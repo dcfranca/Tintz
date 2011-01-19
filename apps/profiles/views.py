@@ -100,7 +100,7 @@ def home(request, template_name="homepage.html"):
     followerUsers  = []
     
     logging.debug("Home - Enter")
-
+    
     if request.user.is_authenticated():
         logging.debug("home - Usuario logado") 
         followerUsers = getFollowers(request, request.user)
@@ -140,14 +140,14 @@ def button_follow(request, other_user):
     follow.UserFrom = request.user
     follow.UserTo = other_user
     Update.objects.update_followers(0, other_user, request.user)
-    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
+    request.user.message_set.create(message=_(u"Voc? agora est? seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
 @login_complete
 def button_unfollow(request, other_user):
     try:
         follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        request.user.message_set.create(message=_(u"Voc? n?o est? mais seguindo %(from_user)s") % {'from_user': other_user.username})
         follow.delete()
     except FollowAuthor.DoesNotExist:
         pass
@@ -158,7 +158,7 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
     other_user = get_object_or_404(User, username=username)
     publications = []
     is_follow = False
-
+    
     calc_age(other_user.get_profile())
 
     if request.user == other_user:
