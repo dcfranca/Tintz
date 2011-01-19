@@ -29,8 +29,6 @@
                 <div class="message-user span-7 last">{% trans 'Usu&aacute;rio '  %}{{ username }}</div>
                 <div class="message-user span-7 last" >{% block trans %} Clique <a href='{% url acct_logout %}'>aqui</a> para logar com outro usu&aacute;rio {% endblock %}</div>
 
-
-
                 <label for="{{form.first_name.auto_id}}" class="span-7 last login-label">*{{form.first_name.label}}</label>
                 <div class="span-7 last">{{ form.first_name }}</div>
 

@@ -168,9 +168,12 @@ class SignupCompleteForm(forms.Form):
 
 
     def clean(self):
-        birth_date = self.cleaned_data["birth_date"]
-        if birth_date >= datetime.date.today():
-            raise forms.ValidationError(_(u"Data de nascimento maior ou igual a data atual."))
+        try:
+            birth_date = self.cleaned_data["birth_date"]
+            if birth_date >= datetime.date.today():
+                raise forms.ValidationError(_(u"Data de nascimento maior ou igual a data atual."))
+        except:
+            return
 
         return self.cleaned_data
 

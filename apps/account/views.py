@@ -167,7 +167,7 @@ def email(request, form_class=AddEmailForm,
             add_email_form = form_class()
             if request.POST["action"] == "send":
                 email = request.POST["email"]
-                #send_email_confirmation(request,  email)
+                send_email_confirmation(request,  email)
             elif request.POST["action"] == "remove":
                 email = request.POST["email"]
                 try:
