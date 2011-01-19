@@ -282,6 +282,8 @@ for publication in publications:
     print '\n\nGenerating for: %s ' % publication.file_name.path
     exc_type, exc_value, exc_traceback = sys.exc_info()
 
+    old_file_name = publication.file_name.path.strip()
+
     #fp = open(publication.file_name.path.strip(),"r")
 
     #if fp:
@@ -289,15 +291,15 @@ for publication in publications:
     #else:
     #    print "Erro ao abrir arquivo em Python"
 
-    import locale
-    language, output_encoding = locale.getdefaultlocale()
-    print 'DEFAULT ENCODING: '+output_encoding
+    #import locale
+    #language, output_encoding = locale.getdefaultlocale()
+    #print 'DEFAULT ENCODING: '+output_encoding
 
     #try:
     try:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
     except UnicodeEncodeError:
-        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))        
+        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
 
     try:
         if ret:
@@ -308,7 +310,12 @@ for publication in publications:
             publication.images_ext = ".jpg"
             publication.save()
             Update.objects.update_followers(1, publication)
-            print "Changing status to 1"
+            print "Status Updated to 1"
+
+            os.remove(old_file_name)
+
+            print "File removed: "+old_file_name
+
         else:
             print "Error Converting to images"
     except:
