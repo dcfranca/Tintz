@@ -69,7 +69,7 @@ def signup(request, form_class=SignupForm,
         if form.is_valid():
             username, password, email = form.save()
             user =  User.objects.get(username=username) #  authenticate(username=username, password=password)
-            #send_email_confirmation(user,  email)
+            send_email_confirmation(user,  email)
             return  HttpResponseRedirect('/about/confirm_email')
     else:
         form = form_class()
@@ -167,7 +167,7 @@ def email(request, form_class=AddEmailForm,
             add_email_form = form_class()
             if request.POST["action"] == "send":
                 email = request.POST["email"]
-                send_email_confirmation(request,  email)
+                #send_email_confirmation(request,  email)
             elif request.POST["action"] == "remove":
                 email = request.POST["email"]
                 try:
@@ -198,6 +198,7 @@ def email(request, form_class=AddEmailForm,
     }, context_instance=RequestContext(request))
 
 def send_email_confirmation(user,  email):
+    import pdb; pdb.set_trace()
     logging.debug('Email - Send email: %s' % email)
     try:
         email_address = EmailAddress.objects.get(

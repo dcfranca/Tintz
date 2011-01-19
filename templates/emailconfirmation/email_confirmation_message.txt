@@ -1,0 +1,4 @@
+{% load i18n %}{% blocktrans with current_site.name as site_name %}Usu&aacute;rio '{{ user }}' do {{ site_name }} forneceu esse endere&ccedil;o de email.
+
+Para ativar sua conta, acesse {{ activate_url }}
+{% endblocktrans %}
