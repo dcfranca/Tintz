@@ -172,7 +172,7 @@ def publications(request, username, template_name="publications/list_publication
     return render_to_response(template_name, {
         "publications": publications, "username": username,
         "other_user": other_user, "is_me": is_me,
-        "title": u"Minhas Publica??es",
+        "title": u"Minhas Publicações",
         "followers": followerUsers,
         "followings": followingUsers,
         "is_follow": is_follow,
@@ -188,7 +188,7 @@ def destroypublication(request, id):
 
     title = publication.title
     if publication.author != request.user:
-        request.user.message_set.create(message=u"Voc? n?o possui permiss?o para excluir essa publica??o")
+        request.user.message_set.create(message=u"Voc? não possui permissão para excluir essa publicação")
         return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
     try:
@@ -196,10 +196,10 @@ def destroypublication(request, id):
     except IOError:
         pass
     except:
-        request.user.message_set.create(message=u"Erro ao tentar excluir a publica??o")
+        request.user.message_set.create(message=u"Erro ao tentar excluir a publicação")
         return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
-    request.user.message_set.create(message=_(u"Publica??o excluida com sucesso.'%s'") % title)
+    request.user.message_set.create(message=_(u"Publicação excluida com sucesso.'%s'") % title)
     return HttpResponseRedirect(reverse('publications', args=(publication.author, )))
 
 
@@ -222,7 +222,7 @@ def reportabuse(request, id, form_class=PublicationReportAbuseForm,
             report_abuse.reporter = request.user
             report_abuse.publication = publication
             report_abuse.save()
-            request.user.message_set.create(message=_(u"Publica??o denunciada com sucesso.'%s'") % publication.title)
+            request.user.message_set.create(message=_(u"Publicação denunciada com sucesso.'%s'") % publication.title)
             return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id, )))
 
     return render_to_response(template_name, {
@@ -248,7 +248,7 @@ def editpublication(request, id, form_class=PublicationEditForm,
             if publication_form.is_valid():
                 publicationobj = publication_form.save(commit=False)
                 publicationobj.save()
-                request.user.message_set.create(message=_(u"Publica??o atualizada com sucesso '%s'") % publication.title)
+                request.user.message_set.create(message=_(u"Publicação atualizada com sucesso '%s'") % publication.title)
 
                 return HttpResponseRedirect(reverse('publication_details', args=(publication.author, publication.id,)))
         else:
