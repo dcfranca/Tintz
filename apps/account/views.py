@@ -198,7 +198,7 @@ def email(request, form_class=AddEmailForm,
     }, context_instance=RequestContext(request))
 
 def send_email_confirmation(user,  email):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     logging.debug('Email - Send email: %s' % email)
     try:
         email_address = EmailAddress.objects.get(
