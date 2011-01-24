@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseForbidden,HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext
 
 from profiles.models import Profile
@@ -50,11 +50,11 @@ def getFollowers(request, other_user):
     followers = FollowAuthor.objects.filter( UserTo = other_user )
     followerUsers = []
     for follow in followers:
-        followerUsers.append( follow.UserFrom )    
+        followerUsers.append( follow.UserFrom )
     return followerUsers
 
 def getFollowings(request, other_user):
-    #Finding followings            
+    #Finding followings
     followings = FollowAuthor.objects.filter( UserFrom = other_user )
     followinUsers = []
     for  follow in followings:
@@ -63,11 +63,11 @@ def getFollowings(request, other_user):
 
 def getPosts(request, other_user):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
-    return blogs.filter(author=other_user)    
+    return blogs.filter(author=other_user)
 
 def getUpdates(request,followingUsers):
     updates = []
-    
+
     for following in followingUsers:
         publications = getPublications(request,following, False)
         for publication in publications:
@@ -78,13 +78,13 @@ def getUpdates(request,followingUsers):
                 up.date_post = publication.date_added
                 updates.append(up)
 
-        posts = getPosts(request,following)        
+        posts = getPosts(request,following)
         for post in posts:
             up = Update()
             up.type = '2'
             up.post = post
             up.date_post = post.publish
-            updates.append(up)        
+            updates.append(up)
 
         #Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
 
@@ -93,28 +93,28 @@ def getUpdates(request,followingUsers):
 
 @login_complete
 def home(request, template_name="homepage.html"):
-    
+
     updates = []
     publications   = []
     followingUsers = []
     followerUsers  = []
-    
+
     logging.debug("Home - Enter")
-    
+
     if request.user.is_authenticated():
-        logging.debug("home - Usuario logado") 
+        logging.debug("home - Usuario logado")
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
         updates = getUpdates(request,followingUsers)[:10]
-            
+
         publications = getPublications(request, request.user, True)
     else:
         logging.debug("Home - Usario nao logado")
         return HttpResponseRedirect(reverse('acct_login'))
-        
+
     logging.debug("Home - Leave")
-    
+
     return render_to_response(template_name, {
         "other_user": request.user,
         "is_me": True,
@@ -124,10 +124,10 @@ def home(request, template_name="homepage.html"):
         "publications": publications,
         "followers":followerUsers,
         "followings":followingUsers,
-    }, context_instance=RequestContext(request))    
-    
+    }, context_instance=RequestContext(request))
 
-def profiles(request, template_name="profiles/profiles.html"):    
+
+def profiles(request, template_name="profiles/profiles.html"):
     return render_to_response(template_name, {
         "other_profiles": User.objects.all().order_by("-date_joined"),
         "title": "Perfis",
@@ -140,14 +140,14 @@ def button_follow(request, other_user):
     follow.UserFrom = request.user
     follow.UserTo = other_user
     Update.objects.update_followers(0, other_user, request.user)
-    request.user.message_set.create(message=_(u"Voc? agora est? seguindo %(from_user)s") % {'from_user': other_user.username})
+    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
 @login_complete
 def button_unfollow(request, other_user):
     try:
         follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-        request.user.message_set.create(message=_(u"Voc? n?o est? mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
         follow.delete()
     except FollowAuthor.DoesNotExist:
         pass
@@ -158,7 +158,7 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
     other_user = get_object_or_404(User, username=username)
     publications = []
     is_follow = False
-    
+
     calc_age(other_user.get_profile())
 
     if request.user == other_user:
@@ -195,7 +195,11 @@ def profile(request, username, to_follow = None, template_name="profiles/profile
                     profile = profile_form.save()
                     profile.user = other_user
                     profile.save()
+                    request.user.message_set.create(message=_(u"Perfil atualizado com sucesso"))
+                    template_name="profiles/profile_edit.html"
+                    is_edit = True
                 else:
+                    template_name="profiles/profile_edit.html"
                     is_edit = True
             elif request.POST["action"] == "edit":
                 template_name="profiles/profile_edit.html"
@@ -252,7 +256,7 @@ def calc_age(profile):
         profile.age = date.today().year - profile.birth_date.year - 1
     else:
         profile.age = date.today().year - profile.birth_date.year
-   
+
 
 @login_complete
 def searchresults(request, template_name="profiles/results.html", search_text=""):

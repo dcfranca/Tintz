@@ -16,6 +16,22 @@
         {% url acct_login as login_url %}
         <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
     {% endif %}
+
+    <script type="text/javascript">
+
+        document.getElementById("id_birth_date").onkeyup = date_mask;
+
+        function date_mask() {
+            birth_date = document.getElementById("id_birth_date").value
+            if ( birth_date.length == 2 || birth_date.length == 5 )
+                document.getElementById("id_birth_date").value += "/"
+            else if ( birth_date.length > 10 )
+                document.getElementById("id_birth_date").value = birth_date.substring( 0, 10 )
+
+        }
+
+    </script>
+
 {% endblock %}
 
 {% block main_content %}
