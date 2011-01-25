@@ -9,7 +9,7 @@ from publications.models import Publication
 from blog.models import Post
 import datetime
 from tintzsettings.models import TintzSettings
-from emailconfirmation.models import EmailAddress
+#from emailconfirmation.models import EmailAddress
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
@@ -43,8 +43,8 @@ class EmailHtml(Thread):
        msg.send()
 
 class FollowAuthor(models.Model):
-    
-    UserFrom = models.ForeignKey(User, related_name="following", verbose_name=_('follower'))    
+
+    UserFrom = models.ForeignKey(User, related_name="following", verbose_name=_('follower'))
     UserTo = models.ForeignKey(User, related_name="follower", verbose_name=_('following'))
 
 class UpdateManager(models.Manager):
@@ -52,7 +52,7 @@ class UpdateManager(models.Manager):
     #Update followers timeline
     def update_followers(self, type, item_to_update, user=None):
 
-                
+
         update = Update()
 
         if type == 1:
@@ -61,19 +61,19 @@ class UpdateManager(models.Manager):
         elif type == 2:
             update.post = item_to_update
             update.type = 2
-        
+
         if type == 0:
             subject = _("Tintz - Novo Seguidor")
             message_html = render_to_string("follow/new_follower_message.html", {
                 "follower": user,
             })
-            
+
             tsettings = None
             try:
                 tsettings = TintzSettings.objects.get( user = item_to_update )
             except:
                 pass
-            
+
             if tsettings and tsettings.email_follow:
                 email_follower = EmailHtml(subject, message_html, settings.DEFAULT_FROM_EMAIL, [item_to_update.email])
                 email_follower.start()
