@@ -55,6 +55,9 @@
                 <label for="{{form.country.auto_id}}" class="span-7 last login-label">{{form.country.label}}</label>
                 <div class="span-7 last">{{ form.country }}</div>
 
+                <label for="{{form.terms.auto_id}}" class="span-7 last login-label">{{form.terms.label}} com os <a href="{% url terms %}"> termos de servi&ccedil;o</a></label>
+                <div class="span-7 last">{{ form.terms }}</div>
+
                 <div class="span-1 pull-1 last">
                     <input type="image" id="login-bt-ok" src="{{MEDIA_URL}}images/button_ok.png" title="Login" />
                 </div>

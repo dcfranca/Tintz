@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 from django import forms
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
@@ -6,20 +6,20 @@ from publications.models import Publication, PublicationReportAbuse
 
 class PublicationUploadForm(forms.ModelForm):
 
-    title = forms.CharField(label=u'TÌtulo', max_length=300,
-            error_messages = {'required': u'Campo TÌtulo È obrigatÛrio.' } )
+    title = forms.CharField(label=u'T√≠tulo', max_length=300,
+            error_messages = {'required': u'Campo T√≠tulo √© obrigat√≥rio.' } )
     file_name = forms.FileField(label=u'Arquivo',
-            error_messages = {'required': u'Campo Arquivo È obrigatÛrio.' } )
-    description = forms.CharField(label=u'DescriÁ„o', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024,
-            error_messages = {'required': u'Campo DescriÁ„o È obrigatÛrio.' } )
-    rated       = forms.ChoiceField(label=u'ClassificaÁ„o', widget=forms.Select,  choices=Publication.RATED_CHOICE,
-            error_messages = {'required': u'Campo ClassificaÁ„o È obrigatÛrio.' } )
+            error_messages = {'required': u'Campo Arquivo √© obrigat√≥rio.' } )
+    description = forms.CharField(label=u'Descri√ß√£o', widget=forms.Textarea(attrs={'rows':2, 'cols':20}), max_length=1024,
+            error_messages = {'required': u'Campo Descri√ß√£o √© obrigat√≥rio.' } )
+    rated       = forms.ChoiceField(label=u'Classifica√ß√£o', widget=forms.Select,  choices=Publication.RATED_CHOICE,
+            error_messages = {'required': u'Campo Classifica√ß√£o √© obrigat√≥rio.' } )
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE,
-            error_messages = {'required': u'Campo Idioma È obrigatÛrio.' } )
+            error_messages = {'required': u'Campo Idioma √© obrigat√≥rio.' } )
     is_public   = forms.BooleanField(label=u'Publico', required=False)
-    allow_comments  = forms.BooleanField(label=u'Permitir Coment·rios', required=False,  initial=True)
-    
-    rated.widget.attrs["onchange"]="javascript:enable_public();" 
+    allow_comments  = forms.BooleanField(label=u'Permitir Coment√°rios', required=False,  initial=True)
+
+    rated.widget.attrs["onchange"]="javascript:enable_public();"
 
     class Meta:
         model = Publication
@@ -31,15 +31,15 @@ class PublicationUploadForm(forms.ModelForm):
 
 class PublicationEditForm(forms.ModelForm):
 
-    title       = forms.CharField(label=u'TÌtulo', max_length=300,
-                  error_messages = {'required': u'Campo TÌtulo È obrigatÛrio.' } )
-    description = forms.CharField(label=u'DescriÁ„o', widget=forms.Textarea, max_length=1024)
+    title       = forms.CharField(label=u'T√≠tulo', max_length=300,
+                  error_messages = {'required': u'Campo T√≠tulo √© obrigat√≥rio.' } )
+    description = forms.CharField(label=u'Descri√ß√£o', widget=forms.Textarea, max_length=1024)
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE)
-    rated       = forms.ChoiceField(label=u'ClassificaÁ„o', widget=forms.Select,  choices=Publication.RATED_CHOICE)
+    rated       = forms.ChoiceField(label=u'Classifica√ß√£o', widget=forms.Select,  choices=Publication.RATED_CHOICE)
     is_public   = forms.BooleanField(label=u'Publico', required=False, initial=False)
-    allow_comments  = forms.BooleanField(label=u'Permitir Coment·rios', required=False,  initial=True)
-    
-    rated.widget.attrs["onchange"]="javascript:enable_public();" 
+    allow_comments  = forms.BooleanField(label=u'Permitir Coment√°rios', required=False,  initial=True)
+
+    rated.widget.attrs["onchange"]="javascript:enable_public();"
 
     class Meta:
         model = Publication
@@ -59,4 +59,4 @@ class PublicationReportAbuseForm(forms.ModelForm):
 
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
-        super(PublicationReportAbuseForm, self).__init__(*args, **kwargs)        
+        super(PublicationReportAbuseForm, self).__init__(*args, **kwargs)

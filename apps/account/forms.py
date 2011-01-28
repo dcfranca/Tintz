@@ -163,6 +163,7 @@ class SignupCompleteForm(forms.Form):
     state    = forms.ChoiceField(label=u'Estado', widget=forms.Select, choices=Profile.STATE_CHOICE,  required=False)
     country  = forms.CharField(label=u'País', required=False)
     website  = forms.URLField(label=u'Website', required=False)
+    terms    = forms.BooleanField(label=u'Li e concordo', required=False,  initial=False)
     #account_type  = forms.ModelChoiceField(label=u'Tipo da Conta',queryset=AccountType.objects.all(), required=True,
     #                                       error_messages = {'required': u'Favor escolher o tipo da conta.' })
 
@@ -172,6 +173,9 @@ class SignupCompleteForm(forms.Form):
             birth_date = self.cleaned_data["birth_date"]
             if birth_date >= datetime.date.today():
                 raise forms.ValidationError(_(u"Data de nascimento maior ou igual a data atual."))
+
+        if "terms" not in self.cleaned_data or not self.cleaned_data["terms"]:
+            raise forms.ValidationError(_(u"É obrigatório ler e concordar com os termos de uso para continuar."))
 
         return self.cleaned_data
 
@@ -231,10 +235,10 @@ class AddEmailForm(UserForm):
             EmailAddress.objects.get(email=self.cleaned_data["email"])
         except EmailAddress.DoesNotExist:
             return self.cleaned_data["email"]
-        raise forms.ValidationError(_(u"Este email j� est� associado com uma conta."))
+        raise forms.ValidationError(_(u"Este email já está associado com uma conta."))
 
     def save(self):
-        #self.user.message_set.create(message=ugettext(u"Confirma��o enviada para %(email)s") % {'email': self.cleaned_data["email"]})
+        #self.user.message_set.create(message=ugettext(u"Confirmação enviada para %(email)s") % {'email': self.cleaned_data["email"]})
         return EmailAddress.objects.add_email(self.user, self.cleaned_data["email"])
 
 class ChangePasswordForm(UserForm):
@@ -251,7 +255,7 @@ class ChangePasswordForm(UserForm):
     def clean_password2(self):
         if "password1" in self.cleaned_data and "password2" in self.cleaned_data:
             if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
-                raise forms.ValidationError(_(u"Senhas n�o conferem."))
+                raise forms.ValidationError(_(u"Senhas não conferem."))
 
         return self.cleaned_data["password2"]
 
