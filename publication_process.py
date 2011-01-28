@@ -2,9 +2,10 @@
 
 import sys,os, shutil, traceback, libtintz
 from datetime import *
-sys.path.append("/home/danielfranca/workspace/")
-sys.path.append("/home/danielfranca/workspace/tintz/apps")
-sys.path.append("/home/danielfranca/workspace/pinax-env/lib/python2.6/site-packages/pinax/apps/")
+sys.path.append('/home/tintz/workspace/tintz')
+sys.path.append('/home/tintz/workspace/tintz/apps')
+sys.path.append('/usr/lib/python2.6/dist-packages/pinax/apps')
+sys.path.append('/home/tintz/workspace')
 
 os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
 
