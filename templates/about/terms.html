@@ -1,0 +1,64 @@
+{% extends "site_base_logout.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Tintz - O que &eacute; Tintz" %}{% endblock %}
+
+{% block login %}
+
+   <img class="img-login" src="{{ MEDIA_URL }}images/previa1.jpg"></img>
+
+    <div class="span-8  last" id="cont-login">
+        <div class="login-img">
+            <img src="{{ MEDIA_URL }}images/tintz_login.png">
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <div class="span-6" id="whats_tintz">
+
+        <p>{% trans "Termos de servi&ccedil;o" %}
+        <br>
+
+        <p>{% trans "Bem vindo &agrave; Tintz" %}
+
+        <p>{% trans "1. Aceita&ccedil;&atilde;o dos termos" %}
+        <br>{% trans "A Tintz oferece a sua plataforma de rede social com foco em quadrinhos e outras publica&ccedil;&otilde;es a voc&ecirc;, sujeito aos termos de uso. O uso desta rede social constitui sua total concord&acirc;ncia com os termos listados abaixo." %}
+
+        <p>{% trans "2. Rescis&atilde;o" %}
+        <br>{% trans "A Tintz pode rescindir, a seu crit&eacute;rio exclusivo, seu acesso &agrave; parte ou a toda a rede social Tintz, com ou sem aviso, e com efeito imediato." %}
+
+        <br>
+
+        <p>{% trans "3. Sem uso ilegal ou proibido" %}
+        <br>{% trans "Como condi&ccedil;&atilde;o de uso do Tintz, você n&atilde;o poder&aacute; us&aacute;-lo para qualquer finalidade que seja de cunho ilegal, tal como publica&ccedil;&otilde;es sem a devida propriedade intelectual ou que infrinja leis nacionais e internacionais de copyright. Você concorda em cumprir todas as leis e regulamenta&ccedil;&otilde;es nacionais e internacionais aplic&aacute;veis e &eacute; o &uacute;nico respons&aacute;vel por todos os atos que ocorrerem na sua conta. Voc&ecirc; deve notificar a Tintz imediatamente no caso de abuso da sua conta, ou mesmo no caso de encontrar material no site que viole estes termos." %}
+
+        <br>
+
+        <p>{% trans "4. Altera&ccedil;&otilde;es nos termos de servi&ccedil;o" %}
+        <br>{% trans "A Tintz pode alterar estes termos de servi&ccedil;o sem aviso pr&eacute;vio. As altera&ccedil;&otilde;es ser&atilde;o publicadas nesta p&aacute;gina e passar&aacute;o a ter efeito imediato, por isso &eacute; importante que visite periodicamente esta p&aacute;gina." %}
+
+        <br><br><br>
+
+        <p>{% trans "Agradecemos a compreens&atilde;o e divirta-se. Tintz." %}
+
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <ul class="span-4 last login-links">
+        <li><a href="{% url acct_forgot_password %}">{% trans "Perdeu sua senha?" %}</a></li>
+        <li><a href="{% url acct_signup %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+        <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    $("#id_username").focus();
+</script>
+{% endblock %}

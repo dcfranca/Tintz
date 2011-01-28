@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load svn_app_version %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block extra_head_base %}
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+<div id="main-body">
+    <div class="container">
+	    <div class="span-24 push-5">
+	    {% block login %}
+	    {% endblock %}
+	    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_elements %}
+
+{% endblock %}
+
+{% block footer %}
+<div class="footer span-24 last">
+    {% trans "Tintz" %}
+     <a href="{% url about %}">{% trans "Sobre" %}</a>
+     <a href="{% url terms %}">{% trans "Termos de uso" %}</a>
+</div>
+{% endblock %}
