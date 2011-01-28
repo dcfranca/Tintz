@@ -1,7 +1,6 @@
 {% extends "site_base_logout.html" %}
 
 {% load i18n %}
-{% load ifsetting_tag %}
 
 {% block head_title %}{% trans "Tintz - O que &eacute; Tintz" %}{% endblock %}
 
@@ -55,10 +54,4 @@
 
     </div>
 
-{% endblock %}
-
-{% block extra_body %}
-<script>
-    $("#id_username").focus();
-</script>
 {% endblock %}

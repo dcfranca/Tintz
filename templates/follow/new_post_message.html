@@ -10,15 +10,15 @@
 Ola, {{ update.user.get_profile.first_name }} {{ update.user.get_profile.last_name }}
 <br>
 
-<a href="http://127.0.0.1:8000{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}"><img src="http://127.0.0.1:8000{%  avatar_url update.post.author 70 %}" alt="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}" width="70" height="70" /></a>
+<a href="http://tintz.com.br{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}"><img src="http://tintz.com.br{%  avatar_url update.post.author 70 %}" alt="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}" width="70" height="70" /></a>
 <br>
 {{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }} Postou em seu blog
 
 <br>
-<a href="http://127.0.0.1:8000{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}</a>
+<a href="http://tintz.com.br{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}</a>
 
 <br>
-<a href="http://127.0.0.1:8000{{ update.post.get_absolute_url }}">{{ update.post.title }}</a>
+<a href="http://tintz.com.br{{ update.post.get_absolute_url }}">{{ update.post.title }}</a>
 
 </body>
 </html>
