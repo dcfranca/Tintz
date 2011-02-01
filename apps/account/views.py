@@ -19,6 +19,7 @@ from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
 
 from publications.models import Publication
+from publications.views import getSuggestions
 
 #from pagseguropy import *
 import logging
@@ -42,6 +43,8 @@ def login(request, form_class=LoginForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class()
+
+    publications = getSuggestions()
 
     return render_to_response(template_name, {
         "form": form,

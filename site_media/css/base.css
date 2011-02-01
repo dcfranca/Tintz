@@ -1182,3 +1182,14 @@ body {
 .img-login {
     margin-top: 20px;
 }
+
+.suggestions {
+    margin-top: 15px;
+}
+
+.suggestions h {
+    font-size: 13pt;
+    font-weight: bold;
+    color: red;
+    text-shadow: #black 2px -2px 2px;
+}

@@ -25,9 +25,7 @@ from haystack.query import SearchQuerySet
 from django.db import transaction
 
 import os
-import datetime
-
-import logging
+import datetime, logging, random
 
 from account.utils import login_complete
 
@@ -37,6 +35,13 @@ SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
     os.path.join(settings.PROJECT_ROOT, 'site_media'))
 
 search_text = ''
+
+def getSuggestions():
+    publications = list(Publication.objects.filter(is_public=True, status=1).order_by('-date_added')[1:50])
+
+    random.shuffle(publications)
+
+    return publications[:9]
 
 def getPublications(request, other_user, is_me):
     publications = []

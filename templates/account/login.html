@@ -7,7 +7,21 @@
 
 {% block login %}
 
-   <img class="img-login" src="{{ MEDIA_URL }}images/previa1.jpg"></img>
+    <div class="span-12 suggestions">
+        <h>{% trans "Sugest&otilde;es de leitura" %}</h>
+        <div class="suggestions">
+            <table>
+                {% for publication in publications %}
+                    {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
+                    <td class="span-4 publication-profile">
+                         <a href="{% url publication_details publication.author publication.id %}">
+                         <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details publication.author publication.id %}" alt="{{ publication.title }}"/></a>
+                    </td>
+                {% endfor %}
+                {% if publications|length|divisibleby:"3" %}{% else %}</tr>{% endif %}
+            </table>
+        </div>
+    </div>
 
     <div class="span-8  last" id="cont-login">
         <div class="login-img">
