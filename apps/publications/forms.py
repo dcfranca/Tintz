@@ -16,7 +16,7 @@ class PublicationUploadForm(forms.ModelForm):
             error_messages = {'required': u'Campo Classificação é obrigatório.' } )
     language    = forms.ChoiceField(label=u'Idioma', widget=forms.Select, choices=Publication.LANG_CHOICE,
             error_messages = {'required': u'Campo Idioma é obrigatório.' } )
-    is_public   = forms.BooleanField(label=u'Publico', required=False)
+    is_public   = forms.BooleanField(label=u'Publico', required=False, initial=True)
     allow_comments  = forms.BooleanField(label=u'Permitir Comentários', required=False,  initial=True)
 
     rated.widget.attrs["onchange"]="javascript:enable_public();"

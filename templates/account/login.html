@@ -7,6 +7,7 @@
 
 {% block login %}
 
+    {% if publications %}
     <div class="span-12 suggestions">
         <h>{% trans "Sugest&otilde;es de leitura" %}</h>
         <div class="suggestions">
@@ -22,6 +23,9 @@
             </table>
         </div>
     </div>
+    {% else %}
+    <img class="img-login" src="{{ MEDIA_URL }}images/previa1.jpg"></img>
+    {% endif %}
 
     <div class="span-8  last" id="cont-login">
         <div class="login-img">
