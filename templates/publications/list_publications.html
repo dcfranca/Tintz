@@ -9,15 +9,6 @@
 
 {% block head_title %}{% trans "Tintz - Publica&ccedil;&otilde;es" %}{% endblock %}
 
-{% block extra_body %}
-    {% if user.is_authenticated %}
-    {% else %}
-        {% url acct_signup as signup_url %}
-        {% url acct_login as login_url %}
-        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
-    {% endif %}     
-{% endblock %}
-
 {% block main_content %}
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
@@ -64,8 +55,8 @@
 
     <div class="more span-10 last" onclick="Dajaxice.publications.more_publications('Dajax.process',{ 'other_user_id': {{ other_user.id }}, 'last_publication':document.getElementById('last_publication').innerHTML })">{% trans "Publica&ccedil;&otilde;es anteriores" %} >></div>
 
-    
-    
+
+
 </div>
 {% endblock %}
 
@@ -79,5 +70,5 @@
 		    location = del_url
 	    }
     }
-    </script>    
+    </script>
 {% endblock %}

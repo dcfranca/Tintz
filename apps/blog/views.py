@@ -24,7 +24,6 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
-@login_complete
 def blogs(request, username=None, template_name="blog/blogs.html"):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     is_me = False
@@ -35,30 +34,33 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
         blogs = blogs.filter(author=user)[0:10]
     else:
         blogs = blogs.filter(author=request.user)[0:10]
-    
+
 
     if user == None:
         user = request.user
-    
-    is_follow = False
-    try:
-        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
-        if follow:
-            is_follow = True
-        else:
-            is_follow = False
-    except FollowAuthor.DoesNotExist:
-        pass
 
+    is_follow = False
+    if request.user.is_authenticated():
+        try:
+            follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+            if follow:
+                is_follow = True
+            else:
+                is_follow = False
+        except FollowAuthor.DoesNotExist:
+            pass
 
     if request.user == user:
-        is_me = True     
+        is_me = True
+
+    is_profile = not request.user.is_authenticated()
 
     return render_to_response(template_name, {
         "blogs": blogs,
         "other_user": user,
         "is_me": is_me,
         "is_follow":is_follow,
+        "is_profile": is_profile,
     }, context_instance=RequestContext(request))
 
 
@@ -72,7 +74,7 @@ def post(request, username, year, month, slug,
 
     if post[0].status == 1 and post[0].author != request.user:
        raise Http404
-       
+
     is_me = False
     if post[0].author == request.user:
         is_me = True
@@ -89,8 +91,8 @@ def post(request, username, year, month, slug,
 
     return render_to_response(template_name, {
         "post": post[0],
-        "is_me": is_me, 
-        "other_user":post[0].author, 
+        "is_me": is_me,
+        "other_user":post[0].author,
         "is_follow": is_follow,
     }, context_instance=RequestContext(request))
 
@@ -100,7 +102,7 @@ def destroy(request, id):
     user = request.user
     title = post.title
     if post.author != request.user:
-            request.user.message_set.create(message=_(u'Você não pode apagar posts de outros usuários'))
+            request.user.message_set.create(message=_(u'Voc? n?o pode apagar posts de outros usu?rios'))
             return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
 
     post.delete()
@@ -116,7 +118,7 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                 blog = blog_form.save(commit=False)
                 blog.author = request.user
                 blog.slug    = slugfy( blog.title , '-')
-                
+
                 logging.debug('New Post' )
                 #try:
                 ind = 1
@@ -128,18 +130,18 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
                     blog.slug    = slugfy( temp_title, '-')
                     logging.debug('slug= %s' % blog.slug )
                     ind = ind + 1
-                    exist_blog = Post.objects.filter(author=request.user,  slug=blog.slug)                        
+                    exist_blog = Post.objects.filter(author=request.user,  slug=blog.slug)
                     logging.debug('exist_blog 2= %s' % exist_blog)
                 #except:
                  #   logging.debug('Except in exist_blog')
                  #   pass
-                
+
                 if settings.BEHIND_PROXY:
                     blog.creator_ip = request.META["HTTP_X_FORWARDED_FOR"]
                 else:
                     blog.creator_ip = request.META['REMOTE_ADDR']
                 blog.save()
-                
+
                 request.user.message_set.create(message=_("Postado com sucesso '%s'") % blog.title)
 
                 Update.objects.update_followers(2, blog)
@@ -162,9 +164,9 @@ def new(request, form_class=BlogForm, template_name="blog/new.html"):
 def edit(request, id, form_class=BlogForm, template_name="blog/edit.html"):
     post = get_object_or_404(Post, id=id)
 
-    if request.method == "POST": 
+    if request.method == "POST":
         if post.author != request.user:
-            request.user.message_set.create(message=_(u"Você não pode editar posts de outros usuários"))
+            request.user.message_set.create(message=_(u"Voc? n?o pode editar posts de outros usu?rios"))
             return HttpResponseRedirect(reverse("blog_list_yours"))
         if request.POST["action"] == "update":
             blog_form = form_class(request.user, request.POST, instance=post)
@@ -176,7 +178,7 @@ def edit(request, id, form_class=BlogForm, template_name="blog/edit.html"):
                     #if blog.status == 2: # published
                         #if friends: # @@@ might be worth having a shortcut for sending to all friends
                         #    notification.send((x['friend'] for x in Friendship.objects.friends_for_user(blog.author)), "blog_follow_post", {"post": blog})
-                
+
                 return HttpResponseRedirect(reverse("blog_list_user",args=(request.user.username,)))
         else:
             blog_form = form_class(instance=post)
@@ -197,9 +199,9 @@ def slugfy(text, separator):
       ret += htmlentitydefs.codepoint2name[ord(c)]
     except:
       ret += c
- 
+
   ret = re.sub("([a-zA-Z])(uml|acute|grave|circ|tilde|cedil)", r"\1", ret)
   ret = re.sub("\W", " ", ret)
   ret = re.sub(" +", separator, ret)
- 
+
   return ret.strip()[0:49]

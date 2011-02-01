@@ -11,15 +11,6 @@
 
 {% block head_title %}{% trans "Tintz - Blog" %}{% endblock %}
 
-{% block extra_body %}
-    {% if user.is_authenticated %}
-    {% else %}
-        {% url acct_signup as signup_url %}
-        {% url acct_login as login_url %}
-        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
-    {% endif %}
-{% endblock %}
-
 {% block main_content %}
 <div class="span-8" id="left-panel">
     {% include "profiles/profile_left_panel.html" %}
@@ -36,14 +27,14 @@
             <div class="blog-post-item last">
             <a class="span-5 list-posts-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 <div class="list-posts-subtitle last">{{ post.publish|date:"d/m/Y" }}</div>
-              
+
               {% if is_me %}
                 <div class="span-2 list-posts-buttons">
                   <div class="span-1 list-posts-button"><a href="{% url blog_edit post.id %}" ><img src="{{ MEDIA_URL }}images/publication_edit.png" title="Editar Post"></img></a></div>
                   <div class="span-1 list-posts-button last"><a href="{% url blog_destroy post.id %}" onclick=" ConfirmChoice('{% url blog_destroy post.id %}'); return false;"><img src="{{ MEDIA_URL }}images/publication_delete.png" title="Excluir Post"></img></a></div>
                 </div>
-              {% endif %}            
-            
+              {% endif %}
+
             <div class="span-10 list-posts-description last">
             {% with post.tease|truncatewords:"50" as body %}
                 {% if post.markup %}
@@ -57,7 +48,7 @@
                 {% endif %}
             {% endwith %}
             </div>
-                        
+
             <div class="separator span-13 last"></div>
             </div>
         {% endfor %}

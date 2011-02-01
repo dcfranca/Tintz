@@ -196,11 +196,14 @@ def more_publications(request, other_user_id, last_publication):
                        <div class="span-1 list-pub-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Publica&ccedil;&atilde;o"></img></a></div>"""
     #import pdb; pdb.set_trace()
 
-    if is_me == True:
-        publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[last_pub:last_pub+more_num]
+    if request.user.is_authenticated():
+        if is_me == True:
+            publications = Publication.objects.filter( author = other_user ).order_by('-date_added')[last_pub:last_pub+more_num]
+        else:
+            request.user.get_profile().calc_age()
+            publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[last_pub:last_pub+more_num]
     else:
-        request.user.get_profile().calc_age()
-        publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age ).order_by('-date_added')[last_pub:last_pub+more_num]
+        publications = Publication.objects.filter( author = other_user, is_public=True ).order_by('-date_added')[last_pub:last_pub+more_num]
 
     htmlOutput = ""
 

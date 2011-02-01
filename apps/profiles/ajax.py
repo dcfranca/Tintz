@@ -26,11 +26,11 @@ def more_profiles(request, other_user_id, last_profile, type):
     users = []
 
     if type == 'Seguidores':
-        followers = FollowAuthor.objects.filter( UserTo = other_user )
+        followers = FollowAuthor.objects.filter( UserTo = other_user ).order_by('-id')
         for  follow in followers:
             users.append( follow.UserFrom )
     elif type == 'Seguindo':
-        followings = FollowAuthor.objects.filter( UserFrom = other_user )
+        followings = FollowAuthor.objects.filter( UserFrom = other_user ).order_by('-id')
         for  follow in followings:
             users.append( follow.UserTo )
 
@@ -44,8 +44,11 @@ def more_profiles(request, other_user_id, last_profile, type):
         lastname = user.get_profile().last_name
         username = user.username
         avatar = avatar_url(user, 70)
+        if len(name) == 0:
+            name = username
         htmlOutput += template % ( link_prof_details, name, lastname, avatar, username, link_prof_details, name, lastname,
-                                   name, lastname, user.get_profile().get_small_about() )
+                               name, lastname, user.get_profile().get_small_about() )
+
 
     dajax = Dajax()
     dajax.append('#list-profiles','innerHTML', htmlOutput)

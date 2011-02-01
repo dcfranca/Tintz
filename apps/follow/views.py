@@ -16,65 +16,70 @@ from follow.models import FollowAuthor, Update
 
 from account.utils import login_complete
 
-@login_complete
-def followers(request,  username): 
+def followers(request,  username):
     users = []
     user = get_object_or_404(User, username=username)
-    if request.user.is_authenticated():        
-        followers = FollowAuthor.objects.filter( UserTo = user )    
-        for  follow in followers:        
-            users.append( follow.UserFrom ) 
-            
+    #if request.user.is_authenticated():
+    followers = FollowAuthor.objects.filter( UserTo = user ).order_by('-id')
+    for  follow in followers:
+        users.append( follow.UserFrom )
+
     users = users[0:10]
 
     is_follow = False
-    try:
-        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
-        if follow:
-            is_follow = True
-        else:
-            is_follow = False
-    except FollowAuthor.DoesNotExist:
-        pass
+    if request.user.is_authenticated():
+        try:
+            follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+            if follow:
+                is_follow = True
+            else:
+                is_follow = False
+        except FollowAuthor.DoesNotExist:
+            pass
 
     if request.user == user:
         is_me = True
     else:
         is_me = False
-    
+
+    is_profile = not request.user.is_authenticated()
+
     return render_to_response("profiles/profiles.html", {
         "other_profiles": users,
-        "title": "Seguidores", 
+        "title": "Seguidores",
         "is_me": is_me,
         "other_user": user,
         "is_follow": is_follow,
+        "is_profile": is_profile,
     }, context_instance=RequestContext(request))
 
-@login_complete
-def following(request,  username): 
+def following(request,  username):
     users = []
     user = get_object_or_404(User, username=username)
-    if request.user.is_authenticated():
-        followings = FollowAuthor.objects.filter( UserFrom = user )
-        for  follow in followings:
-            users.append( follow.UserTo )
+    #if request.user.is_authenticated():
+    followings = FollowAuthor.objects.filter( UserFrom = user ).order_by('-id')
+    for  follow in followings:
+        users.append( follow.UserTo )
 
     users = users[0:10]
 
     is_follow = False
-    try:
-        follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
-        if follow:
-            is_follow = True
-        else:
-            is_follow = False
-    except FollowAuthor.DoesNotExist:
-        pass
-        
+    if request.user.is_authenticated():
+        try:
+            follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=user )
+            if follow:
+                is_follow = True
+            else:
+                is_follow = False
+        except FollowAuthor.DoesNotExist:
+            pass
+
     if request.user == user:
         is_me = True
     else:
         is_me = False
+
+    is_profile = not request.user.is_authenticated()
 
     return render_to_response("profiles/profiles.html", {
         "other_profiles": users,
@@ -82,6 +87,7 @@ def following(request,  username):
         "is_me": is_me,
         "other_user": user,
         "is_follow": is_follow,
-    }, context_instance=RequestContext(request))   
+        "is_profile": is_profile,
+    }, context_instance=RequestContext(request))
 
 

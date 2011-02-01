@@ -130,7 +130,6 @@ def uploadpublication(request, form_class=PublicationUploadForm,
     }, context_instance=RequestContext(request))
 
 
-@login_complete
 def publications(request, username, template_name="publications/list_publications.html"):
     """"
     Show publications
@@ -138,25 +137,26 @@ def publications(request, username, template_name="publications/list_publication
 
     other_user = get_object_or_404(User, username=username)
     publications = []
-    calc_age(request.user.get_profile())
 
     followingUsers = []
     followerUsers = []
 
     is_follow = False
-    try:
-        follow = FollowAuthor.objects.get(UserFrom=request.user, UserTo=other_user)
-        if follow:
-            is_follow = True
-        else:
-            is_follow = False
+    if request.user.is_authenticated():
+        try:
+            follow = FollowAuthor.objects.get(UserFrom=request.user, UserTo=other_user)
+            if follow:
+                is_follow = True
+            else:
+                is_follow = False
 
-    except FollowAuthor.DoesNotExist:
-        pass
+        except FollowAuthor.DoesNotExist:
+            pass
 
     if request.user.is_authenticated():
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
+        calc_age(request.user.get_profile())
     else:
         HttpResponseRedirect(reverse('acct_login'))
 
@@ -167,18 +167,25 @@ def publications(request, username, template_name="publications/list_publication
 
     logging.debug("Publications - Step 2")
 
-    if is_me == True:
-        publications = Publication.objects.filter(author = other_user).order_by('-date_added')[0:6]
+    if request.user.is_authenticated():
+        if is_me == True:
+            publications = Publication.objects.filter(author = other_user).order_by('-date_added')[0:6]
+        else:
+            publications = Publication.objects.filter(author = other_user, rated__lte=request.user.get_profile().age).order_by('-date_added')[0:6]
     else:
-        publications = Publication.objects.filter(author = other_user, rated__lte=request.user.get_profile().age).order_by('-date_added')[0:6]
+        publications = Publication.objects.filter(author = other_user, is_public=True).order_by('-date_added')[0:6]
 
     logging.debug("Publications - Leave")
+
+    is_profile = not request.user.is_authenticated()
+
 
     return render_to_response(template_name, {
         "publications": publications, "username": username,
         "other_user": other_user, "is_me": is_me,
         "title": u"Minhas Publicações",
         "followers": followerUsers,
+        "is_profile": is_profile,
         "followings": followingUsers,
         "is_follow": is_follow,
     }, context_instance=RequestContext(request))
