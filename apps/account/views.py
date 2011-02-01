@@ -18,6 +18,8 @@ from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginFor
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
 
+from publications.models import Publication
+
 #from pagseguropy import *
 import logging
 #from apps.pagseguropy.pagseguro import Pagseguro
@@ -45,6 +47,7 @@ def login(request, form_class=LoginForm,
         "form": form,
         "is_me": True,
         "other_user": request.user,
+        "publications": publications,
     }, context_instance=RequestContext(request))
 
 def logout(request):

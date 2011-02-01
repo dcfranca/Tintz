@@ -20,7 +20,7 @@
     <a href="tintz.com.br{% url publication_details update.publication.author update.publication.id %}">
     <br>
 
-    <img src="tintz.com.br/site_media/{{ update.publication.get_thumbnail150_name }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+    <img src="tintz.com.br/site_media/{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
     <br>
 
     <a href="tintz.com.br{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
