@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.models import User
@@ -148,14 +148,14 @@ def button_follow(request, other_user):
     follow.UserFrom = request.user
     follow.UserTo = other_user
     Update.objects.update_followers(0, other_user, request.user)
-    request.user.message_set.create(message=_(u"Voc? agora est? seguindo %(from_user)s") % {'from_user': other_user.username})
+    request.user.message_set.create(message=_(u"Você agora está seguindo %(from_user)s") % {'from_user': other_user.username})
     follow.save()
 
 @login_complete
 def button_unfollow(request, other_user):
     try:
         follow = FollowAuthor.objects.get(  UserFrom=request.user,  UserTo=other_user )
-        request.user.message_set.create(message=_(u"Voc? n?o est? mais seguindo %(from_user)s") % {'from_user': other_user.username})
+        request.user.message_set.create(message=_(u"Você não está mais seguindo %(from_user)s") % {'from_user': other_user.username})
         follow.delete()
     except FollowAuthor.DoesNotExist:
         pass
