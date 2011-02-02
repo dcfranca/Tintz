@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: iso-8859-1 -*-
 from django import forms
 from tintzsettings.models import TintzSettings
 from emailconfirmation.models import EmailAddress
@@ -11,7 +11,7 @@ class TintzSettingsForm(forms.ModelForm):
     email       = forms.CharField(label=_('Email'), widget=forms.TextInput(attrs={'readonly':'readonly'}), required=True)
 
     email_follow   = forms.BooleanField(label=_(u'Seguidores'), required=False)
-    email_publication   = forms.BooleanField(label=_(u'Publica√ß√µes'), required=False)
+    email_publication   = forms.BooleanField(label=_(u'PublicaÁıes'), required=False)
     email_post   = forms.BooleanField(label=_(u'Posts'), required=False)
 
     oldpassword = forms.CharField(label=_("Senha Atual"), widget=forms.PasswordInput(render_value=False), required=False)
@@ -24,7 +24,7 @@ class TintzSettingsForm(forms.ModelForm):
 
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
-
+        
 	instance = getattr(self, 'instance', None)
         if instance and instance.id:
             self.fields['email'].widget.attrs['readonly'] = True
@@ -42,12 +42,12 @@ class TintzSettingsForm(forms.ModelForm):
         if "password1" in self.cleaned_data and "password2" in self.cleaned_data and "oldpassword" in self.cleaned_data:
             oldpassword = self.cleaned_data["oldpassword"]
             password1 = self.cleaned_data["password1"]
-            password2 = self.cleaned_data["password2"]
-
+            password2 = self.cleaned_data["password2"]	
+    
             if len(password1) == 0 and len(oldpassword) > 0:
                 raise forms.ValidationError(_(u"Nova Senha vazia."))
             if password1 != password2:
-                raise forms.ValidationError(_(u"Senhas n√£o conferem."))
+                raise forms.ValidationError(_(u"Senhas n„o conferem."))
         return self.cleaned_data["password2"]
 
     def save( self, request ):
@@ -81,7 +81,7 @@ class TintzSettingsForm(forms.ModelForm):
             self.user.save()
             request.user.message_set.create(message=ugettext(u"Senha alterada com sucesso."))
         #except forms.ValidationError:
-        #raise forms.ValidationError(_(u"Senhas n√£o conferem."))
+        #raise forms.ValidationError(_(u"Senhas n„o conferem."))
         #except:
         #    raise forms.ValidationError(_(u"Erro ao atualizar senha."))
 
