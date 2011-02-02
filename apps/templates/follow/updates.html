@@ -1,0 +1,53 @@
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load markup %}
+{% load switchcase %}
+{% load avatar_tags %}
+
+{% block body %}
+    <div class="title"><img src="{{MEDIA_URL}}/images/updates.png">Atualiza&ccedil;&otilde;es</div>
+
+
+    <div class="show_updates span-14">
+        {% if updates %}
+            <class id="list-updates">
+            {% for update in updates %}
+                <div class="update-item span-14">
+                {% ifequal update.type "2" %}
+                    <div class="update-avatar span-2"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{% avatar update.post.author 70 %}</a></div>
+                    <div class="update-name span-5 last"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}</a></div>
+
+                    <a class="span-10 update-posts-title last" href="{{ update.post.get_absolute_url }}">{{ update.post.title }}</a>
+                    <div class="span-10 update-posts-description last">
+                        {{ update.post.get_small_text|force_escape|linebreaks|safe }}
+                    </div>
+                {% else %}
+                    <div class="update-avatar span-2"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{% avatar update.publication.author 70 %}</a></div>
+                    <div class="update-name span-3 last"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a></div>
+
+                    <div class="update-pub-cover span-4 last">
+                    <a href="{% url publication_details update.publication.author update.publication.id %}">
+                    <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+                    </div>
+                    <div class="update-pub-title span-10 last">
+                    <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
+                    </div>
+                    <div class="update-pub-description span-10 last"><p>{{ update.publication.get_small_text }}</div>
+                    
+                {% endifequal %}
+                </div>
+                
+            {% endfor %}
+
+            </div>
+
+            <div id="last_update" style="display: none">10</div>
+
+            <div class="more span-10 last" onclick="Dajaxice.follow.more_updates('Dajax.process',{ 'last_update':document.getElementById('last_update').innerHTML })">{% trans "Atualiza&ccedil;&otilde;es anteriores" %} >></div>
+
+
+        {% endif %}
+    </div>
+
+{% endblock %}

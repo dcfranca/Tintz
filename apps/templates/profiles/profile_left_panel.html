@@ -1,0 +1,58 @@
+{% load avatar_tags %}
+{% load i18n %}
+{% load tagging_tags %}
+
+{% if other_user.id %}
+    {% if is_me %}
+	    <div id="profile_avatar" onmouseover="document.getElementById('avatar_replace').style.visibility='visible'" onmouseout="document.getElementById('avatar_replace').style.visibility='hidden'">
+	        <a href="{% url profile_detail other_user %}">{% avatar other_user 260 %}</a>
+	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
+	    </div> 
+    {% else %}
+	    <div id="profile_avatar">
+	        <a href="{% url profile_detail other_user %}">{% avatar other_user 260 %}</a>
+	        <div id="avatar_replace" style="visibility: hidden"><a href="{% url tintz_settings %}">Substituir</a></div>
+	    </div> 
+    {% endif %}
+
+	<div class="username">{{ other_user.get_profile.first_name }} {{ other_user.get_profile.last_name }}</div>
+    {% if is_profile %}
+	<div class="about">{{ other_user.get_profile.about|linebreaks }}</div>
+    {% if other_user.get_profile.interests %}
+    <div class="about"><b>Interesses</b>{{ other_user.get_profile.interests|linebreaks }}</div>
+    {% endif %}
+    <div class="about"><b>{{ other_user.get_profile.location }} {{ other_user.get_profile.state }} {{ other_user.get_profile.country }}</b> </div>
+    {% endif %}
+
+    {% if is_me and is_profile %}
+        <form method="POST" action="{% url profile_detail other_user %}">
+           <input class="submit-edit" type="submit" value="Editar" title="{% trans "Editar" %}"/>
+           <input type="hidden" name="action" value="edit" />
+        </form>
+
+    {% endif %}
+
+{% endif %}
+
+{% if user.is_authenticated %}
+    {% if not is_me %}
+        {% if is_follow %}
+            <div class="left-button"><a href="{% url profile_detail other_user 0 %}"><img src="{{MEDIA_URL}}/images/bt_cancel.png">Excluir</a></div>
+        {% else %}
+            <div class="left-button"><a href="{% url profile_detail other_user 1 %}"><img src="{{MEDIA_URL}}/images/bt_follow.png">Seguir</a></div>
+        {% endif %}
+    {% endif %}
+
+
+    <div class="left-button"><a href="{% url publications other_user %}"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</a></div>
+    <div class="left-button"><a href="{% url blog_list_user other_user %}"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</a></div>
+    <div class="left-button"><a href="{% url following other_user %}"><img src="{{MEDIA_URL}}/images/bt_contacts.png">Seguindo</a></div>
+    <div class="left-button"><a href="{% url followers other_user %}"><img src="{{MEDIA_URL}}/images/bt_contacts.png">Seguidores</a></div>
+{% endif %}
+
+<div class="tag_cloud">    
+  {% tag_cloud_for_model publications.Publication as publication_tags with steps=5 min_count=1  distribution=log %}
+  {% for tag in publication_tags %}
+  <a href="{% url search_results tag.name %}" ><font size="{{tag.font_size}}"> {{tag.name}}</font></a>
+  {% endfor %}
+</div>

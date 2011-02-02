@@ -1,0 +1,76 @@
+{% load i18n %}
+{% load dajaxice_templatetags %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
+        <!--[if IE]><style>
+            div {
+                zoom: 1; /* trigger hasLayout */
+            }
+        </style><![endif]-->
+        <link rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/screen.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/print.css" type="text/css" media="print">
+        <link rel="stylesheet" href="{{MEDIA_URL}}css/base.css" type="text/css" >
+
+        <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ MEDIA_URL }}js/jquery.dajax.core.js" type="text/javascript" charset="utf-8"></script>
+
+
+        {% dajaxice_js_import %}
+
+        <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ MEDIA_URL }}js/jquery.dajax.core.js" type="text/javascript" charset="utf-8"></script>
+
+
+        {% dajaxice_js_import %}
+
+        <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ MEDIA_URL }}js/jquery.dajax.core.js" type="text/javascript" charset="utf-8"></script>
+
+
+        {% dajaxice_js_import %}
+
+        {% if LANGUAGE_BIDI %}
+        <style type="text/css" media="screen">
+            div.right_panel {
+                float: left; /* hotfix for sidebar */
+            }
+        </style>
+        {% endif %}
+        {% block extra_head_base %}
+            {% block extra_head %}{% endblock %}
+        {% endblock %}
+    </head>
+
+    {% if site_wide_announcements %}
+        <div id="site_wide_announcements">
+            <ul>
+                {% for announcement in site_wide_announcements %}
+                <li>
+                    <a href="{{ announcement.get_absolute_url }}">{{ announcement }}</a> -
+                    <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}">{% trans "Hide announcement" %}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <body>
+    {% block body %}
+    {% endblock %}
+
+
+    {% block extra_body_base %}
+        {% block extra_body %}{% endblock %}
+    {% endblock %}
+
+    {% block extra_elements %}{% endblock %}
+
+    </body>
+
+    <div id="footer" class="container">{% block footer %}{% endblock %}</div>
+
+</html>

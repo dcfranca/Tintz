@@ -1,0 +1,83 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
+
+{% block head_title %}{% trans "Tintz - Publica&ccedil;&otilde;es" %}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-14 last">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Resultados</div>
+
+    <div class="type-result">
+        <a href="{% url search_results search_text %}"><b>{% trans "Publica&ccedil;&otilde;es" %}</b></a>
+        {% if find_prof %}
+            <a href="{% url search_results_prof search_text %}">{% trans "Pessoas" %}</a>
+        {% endif %}
+    </div>
+
+    <div id="list-publications">
+        {% for publication in publications %}
+
+            <div class="span-4 publications-cover">
+                 <a href="{% url publication_details publication.author publication.id %}">
+                 <img src="{{ MEDIA_URL }}{{ publication.get_thumbnail150_name }}" href="{% url publication_details publication.author publication.id %}" title="{{ publication.title }}"/></a>
+            </div>
+
+            <div class="span-8 list-pub-title">
+            <a href="{% url publication_details publication.author publication.id %}">{{ publication.title }}</a>
+            </div>
+            <div class="span-8 list-pub-author">
+                <a href="{% url profile_detail publication.author.username %}">{{ publication.author.username }}</a>
+            </div>
+
+            <div class="span-8 last list-pub-description">{{ publication.get_small_text|linebreaks }}</div>
+
+            <div class="list-pub-subtitle last"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
+
+            
+            <div class="list-pub-rate span-1 last">
+                {% if publication.rate %}
+                {% trans 'Nota ' %}{{ publication.rate|stringformat:".0f" }}/100
+                {% endif %}
+            </div>
+
+            <div class="list-pub-views span-2 last">{% trans "Visualiza&ccedil;&otilde;es " %}{{ publication.views }}</div>
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block extra_elements %}
+    <script type="text/javascript">
+    function ConfirmChoice(del_url)
+    {
+	    answer = confirm("Tem certeza que deseja excluir essa publicacao?")
+	    if (answer !=0)
+	    {
+		    location = del_url
+	    }
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
+
+{% block head_title %}{% trans "Tintz - Configura&ccedil;&otilde;es" %}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
+    {% endif %}     
+{% endblock %}
+
+{% block main_content %}
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-14 last">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Configura&ccedil;&otilde;es</div>
+
+        <form enctype="multipart/form-data" class="standard-form" method="POST" action="">
+            <fieldset class="standard-fieldset">
+                <div class="span-12 errorlist pull-1">
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <label for="{{form.avatar_file.auto_id}}" class="span-3 tintz-label">{{form.avatar_file.label}}:</label>
+                <div class="span-10 last">{{ form.avatar_file }}</div>
+
+                <label for="{{form.email.auto_id}}" class="span-3 tintz-label">{{form.email.label}}:</label>
+                <div class="span-10 last">{{ form.email }}</div>
+
+                <div class="message-form span-13 last push-7">{% trans "Avisar por e-mail para novos:" %}</div>
+
+                <label for="{{form.email_follow.auto_id}}" class="span-3 tintz-label">{{form.email_follow.label}}:</label>
+                <div class="span-10 last">{{ form.email_follow }}</div>
+
+                <label for="{{form.email_publication.auto_id}}" class="span-3 tintz-label">{{form.email_publication.label}}:</label>
+                <div class="span-10 last">{{ form.email_publication }}</div>
+		
+                <label for="{{form.email_post.auto_id}}" class="span-3 tintz-label">{{form.email_post.label}}:</label>
+                <div class="span-10 last">{{ form.email_post }}</div>
+
+                <div class="message-form span-13 last push-7">{% trans "Alterar a senha" %}</div>
+                
+                <label for="{{form.oldpassword.auto_id}}" class="span-3 tintz-label">{{form.oldpassword.label}}:</label>
+                <div class="span-10 last">{{ form.oldpassword }}</div>
+
+                <label for="{{form.password1.auto_id}}" class="span-3 tintz-label">{{form.password1.label}}:</label>
+                <div class="span-10 last">{{ form.password1 }}</div>
+
+                <label for="{{form.password2.auto_id}}" class="span-3 tintz-label">{{form.password2.label}}:</label>
+                <div class="span-10 last">{{ form.password2 }}</div>
+
+                <div class="span-10 pull-5 last">
+		    <input type="hidden" name="action" value="update" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
+                </div>		
+                
+            </fieldset>            
+        </form>
+</div>
+{% endblock %}
+
+

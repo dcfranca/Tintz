@@ -1,0 +1,75 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
+
+{% block head_title %}{% trans "Tintz - Enviar Publica&ccedil;&atilde;o" %}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
+    {% endif %}     
+{% endblock %}
+
+{% block main_content %}
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-14 last">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Enviar Publica&ccedil;&atilde;o</div>
+
+        <form enctype="multipart/form-data" class="standard-form" method="POST" action="upload">
+            <fieldset class="standard-fieldset">
+                <div class="span-12 errorlist pull-1">
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="message-form span-13 last push-5">{% trans "Formatos suportados: cbr, cbz, rar, zip, jpg, gif, png, pdf" %}</div>
+
+                <label for="{{form.title.auto_id}}" class="span-3 tintz-label">{{form.title.label}}:</label>
+                <div class="span-10 last">{{ form.title }}</div>
+
+                <label for="{{form.file_name.auto_id}}" class="span-3 tintz-label">{{form.file_name.label}}:</label>
+                <div class="span-10 last">{{ form.file_name }}</div>
+		
+                <label for="{{form.description.auto_id}}" class="span-3 tintz-label">{{form.description.label}}:</label>
+                <div class="span-10 last">{{ form.description }}</div>
+		
+                <label for="{{form.tags.auto_id}}" class="span-3 tintz-label">{{form.tags.label}}:</label>
+                <div class="span-10 last">{{ form.tags }}</div>
+		
+                <label for="{{form.rated.auto_id}}" class="span-3 tintz-label">{{form.rated.label}}:</label>
+                <div class="span-10 last">{{ form.rated }}</div>
+		
+                <label for="{{form.language.auto_id}}" class="span-3 tintz-label">{{form.language.label}}:</label>
+                <div class="span-10 last">{{ form.language }}</div>
+		
+                <label for="{{form.is_public.auto_id}}" class="span-3 tintz-label">{{form.is_public.label}}:</label>
+                <div class="span-10 last">{{ form.is_public }}</div>		
+		
+                <label for="{{form.allow_comments.auto_id}}" class="span-3 tintz-label">{{form.allow_comments.label}}:</label>
+                <div class="span-10 last">{{ form.allow_comments }}</div>		
+		
+                <div class="span-10 pull-5 last">
+		    <input type="hidden" name="action" value="upload" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
+                </div>		
+                
+            </fieldset>            
+        </form>
+</div>
+{% endblock %}
+
+

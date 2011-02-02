@@ -1,0 +1,182 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load humanize i18n %}
+{% load pagination_tags %}
+{% load timezone_filters %}
+{% load tagging_tags %}
+{% load threadedcommentstags %}
+{% load pagination_tags %}
+{% load comments_tag %}
+
+{% block head_title %}{% trans "Tintz - Publica&ccedil;&atilde;o" %}{% endblock %}
+
+{% block extra_body %}
+    {% if user.is_authenticated %}
+    {% else %}
+        {% url acct_signup as signup_url %}
+        {% url acct_login as login_url %}
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}
+<div class="span-8" id="left-panel">
+    {% include "profiles/profile_left_panel.html" %}
+</div>
+<div class="span-14 last" onload="Dajaxice.publications.change_page('Dajax.process',{'image_file': 'teste1234567890', 'publication':'ola', 'change':-1 })">
+    <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es / {{ publication.title }}</div>
+    {% if publication %}
+	{% if not publication.is_public and not user.is_authenticated %}
+	    Publica&ccedil;&atilde;o não compartilhada, favor logar para visualiza-la
+	{% else %}
+
+	    <div class="publication_page last">
+           <a href="javascript:Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">
+           <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_001_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+           </a>
+	    </div>
+
+        <div class="navigator span-2">
+
+            <div class="prev_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })"><<</div>
+            <div id="page_number_text" class="page_number">{% trans "P&aacute;gina" %} {{ pages.number|stringformat:"03d" }}</div>
+            <div class="next_arrow" onclick="Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })">>></div>
+
+	    </div>
+
+	    <div class="fullscreen span-1"><div class="fullscreen-text" >{% trans "Tela cheia" %}</div><a href="javascript:openWindow('{% url publication_viewer user publication.id %}');" ><img src="{{MEDIA_URL}}/images/fullscreen.png" onclick=></a></div>
+
+	    <div id="share" class="share span-1" onclick="show_share_box(false);"><div class="share-text">{% trans "Compartilhe" %}</div><img src="{{MEDIA_URL}}/images/share.png" onmouseover="show_share_box(true);"></div>
+
+	    <div class="rate span-1"><div class="rate-text">{% trans "Avalia&ccedil;&atilde;o" %}</div><a href=""></a></div>
+
+	    <div class="stars span-2">
+            {% if is_me %}
+                <img class="star" id="star1" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star2" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star3" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star4" src="{{MEDIA_URL}}/images/star_empty.png" />
+                <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" />
+            {% else %}
+                <img class="star" id="star1" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':1 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':1 })" />
+                <img class="star" id="star2" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':2 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':2 })" />
+                <img class="star" id="star3" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':3 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':3 })" />
+                <img class="star" id="star4" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':4 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':4 })" />
+                <img class="star" id="star5" src="{{MEDIA_URL}}/images/star_empty.png" onmouseout="Dajaxice.publications.cur_score('Dajax.process',{'publication_id':{{publication.id}}})" onmouseover="Dajaxice.publications.set_stars('Dajax.process',{'score':5 })" onclick="Dajaxice.publications.vote_star('Dajax.process',{'publication_id':{{publication.id}}, 'score':5 })" />
+            {% endif %}
+        </div>
+        <div class="publication-rate span-1 last">
+            {% if publication.rate %}
+                {{ publication.rate|stringformat:".0f" }}/100
+            {% endif %}
+        </div>
+        <div class="publication-views last">{{ publication.views }} {% trans "Visualiza&ccedil;&otilde;es" %}</div>
+
+        <div id="share-box" class="share-box">
+            <div class="share-items">
+            <a target="_blank" href="http://twitter.com/?status={{ "Publicação: "|urlencode }}{{ publication.title|urlencode }}%20http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/twitter_32.png" alt=""></a>
+            <a target="_blank" href="http://facebook.com/share.php?u=http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/facebook_32.png" alt=""></a>
+            <a target="_blank" href="http://digg.com/submit?url=http://www.tintz.com.br{% url publication_details publication.author publication.id %}&title={{ publication.title|urlencode }}&topic=comics"><img src="{{ MEDIA_URL }}images/digg_32.png" alt=""></a>
+            <a target="_blank" href="http://www.google.com/buzz/post?message={{ publication.title|urlencode }}&url=http://www.tintz.com.br{% url publication_details publication.author publication.id %}"><img src="{{ MEDIA_URL }}images/buzz_32.png" alt=""></a>
+            </div>
+        </div>
+
+        {% if not is_me %}
+        <div class="report-abuse span-1 last"><a href="{% url report_abuse publication.id %}"><img src="{{ MEDIA_URL }}/images/abuse.png" alt="Denunciar abuso" title="Denunciar abuso"/></a></div>
+        {% endif %}
+
+        <div class="list_related-publications">
+        <table>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr>
+            {%  for related_publication in related_publications %}
+                <td>
+                <div class="related-publication">
+                    <a href="{% url publication_details related_publication.author related_publication.id %}">
+                    <img src="{{ MEDIA_URL }}{{ related_publication.get_thumbnail150_name }}" href="javascript:fullscreen('{% url publication_details related_publication.author related_publication.id %}')" title="{{ related_publication.title }}"/></a>
+                </div>
+                </td>
+            {% endfor %}
+        </tr>
+        </table>
+        </div>
+
+	    {% if publication.allow_comments %}
+            <div class="comments">
+            {% comments publication %}
+            </div>
+        {% endif %}
+	{% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_elements %}
+
+    <script type="text/javascript">
+    window.onload=Dajaxice.publications.set_stars('Dajax.process',{'score':{{publication_score}} });
+    </script>
+
+    <!--script type="text/javascript">
+
+    window.onload=Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1 })
+    </script-->
+
+    <script type="text/JavaScript">
+    function fullScreen(theURL) {
+    window.open(theURL, '', 'fullscreen=yes, scrollbars=auto');
+    }
+
+
+    function handleArrowKeys(evt) {
+        evt = (evt) ? evt : ((window.event) ? event : null);
+        if (evt) {
+            switch (evt.keyCode) {
+                //Left
+                case 37:
+                    Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':-1 })
+                    break;
+                //Right
+                case 39:
+                    Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1  })
+                    break;
+             }
+        }
+    }
+
+    function show_share_box(show_share) {
+        if (show_share)
+        {
+            share_box = document.getElementById("share-box").style.display = "block";
+        }
+        else
+        {
+            share_box = document.getElementById("share-box").style.display = "none";
+        }
+    }
+
+    document.onkeyup = handleArrowKeys;
+    document.getElementById('form-bt-comment').onclick=click_comment;
+    document.getElementById('id_comment').onkeyup=calc_numchars;
+
+    function click_comment() {
+       if ( document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length == 0 || document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length > 300 )
+          return false;
+    }
+
+    function calc_numchars() {
+        document.getElementById('id-typed-chars').innerHTML = 300 - document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length;
+    }
+
+    function openWindow(url)
+    {
+      openedWindow = window.open(url);
+    }
+
+function fullscreen(el, opts) {
+  newwindow = window.open( urllink ,'newwin')
+}
+    </script>
+
+{% endblock %}

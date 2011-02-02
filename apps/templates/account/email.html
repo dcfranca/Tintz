@@ -1,0 +1,71 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Minha Conta" %}{% endblock %}
+
+{% block body %}
+    <div class="tintz-title">{% trans "Minha Conta" %}</div>
+    
+    <div class="tintz-title2">{% trans "Endere&ccedil;os de Email" %}</div>
+    
+    {% if user.emailaddress_set.all %}
+        <table class="email_list">
+            {% for emailaddress in user.emailaddress_set.all %}
+                <tr>
+                    <td>{% if emailaddress.primary %}<b>{{ emailaddress.email }}</b>{% else %}{{ emailaddress.email }}{% endif %}</td>
+                    {% if emailaddress.verified %}
+                        <td>
+                            <span class="verified">{% trans "verified" %}</span>
+                            {% if emailaddress.primary %}
+                                - <span class="primary">{% trans "Principal" %}</span>
+                            {% else %}
+                                <form style="display: none;" id="primary_{{ forloop.counter }}" method="post" action="">
+                                    <input type="hidden" name="email" value="{{ emailaddress.email }}"/>
+                                    <input type="hidden" name="action" value="primary"/>
+                                </form>
+                                -
+                                <a href="#" onclick="$('#primary_{{ forloop.counter }}').submit();">{% trans "Tornar Principal" %}</a>
+                            {% endif %}
+                        </td>
+                    {% else %}
+                        <td>
+                            <span class="unverified">{% trans "N&atilde;o verificado" %}</span>
+                            <form style="display: none;" id="send_{{ forloop.counter }}" method="post" action="">
+                                <input type="hidden" name="email" value="{{ emailaddress.email }}"/>
+                                <input type="hidden" name="action" value="send"/>
+                            </form>
+                            -
+                            <a href="#" onclick="$('#send_{{ forloop.counter }}').submit();">{% trans "re-enviar verifica&ccedil;&atilde;o de email" %}</a>
+                        </td>
+                    {% endif %}
+                    <td>
+                        {% if emailaddress.primary %}
+                        {% else %}
+                            <form style="display: none;" id="remove_{{ forloop.counter }}" method="post" action="">
+                                <input type="hidden" name="email" value="{{ emailaddress.email }}"/>
+                                <input type="hidden" name="action" value="remove"/>
+                            </form>
+                            <a class="remove" href="#" onclick="$('#remove_{{ forloop.counter }}').submit()">{% trans "Remover" %}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %} {# no user.emailaddress_set.all #}
+        <p><span class="warning">{% trans "None" %}</span>. {% trans "&Eacute; recomendado que se inclua email para que possa receber notifica&ccedil;&otilde;es, recuperar senha, etc." %}</p>
+    {% endif %}
+    
+    <div class="tintz-title2">{% trans "Adicionar Email" %}</div>
+    
+    <form method="post" action="" class="uniForm">
+        <fieldset class="inlineLabels">
+            {{ add_email_form|as_uni_form }}
+             <div class = "form_block">
+                 <input type="hidden" name="action" value="add"/>
+                 <input type="submit" value="{% trans "Adicionar" %}"/>
+            </div>
+        </fieldset>
+    </form>
+    
+{% endblock %}

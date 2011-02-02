@@ -1,0 +1,40 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Tintz - O que &eacute; Tintz" %}{% endblock %}
+
+{% block login %}
+
+   <img class="img-login" src="{{ MEDIA_URL }}images/previa1.jpg"></img>
+
+    <div class="span-8  last" id="cont-login">
+        <div class="login-img">
+            <img src="{{ MEDIA_URL }}images/tintz_login.png">
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <div class="span-6" id="whats_tintz">
+            <p>{% trans "Tintz &eacute; uma rede social de quadrinhos focada em criar uma comunidade ativa de quadrinistas e leitores unidos pela paix&atilde;o por quadrinhos." %}
+            <p>{% trans "Com o Tintz voc&ecirc; pode publicar quadrinhos, tiras, charges, opini&otilde;es, coment&aacute;rios, dar nota e muitas outras coisas, atrav&eacute;s de uma plataforma facilitadora para aproximar os quadrinhos de seus f&atilde;s." %}
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <ul class="span-4 last login-links">
+        <li><a href="{% url acct_forgot_password %}">{% trans "Perdeu sua senha?" %}</a></li>
+        <li><a href="{% url acct_signup %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+        <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    $("#id_username").focus();
+</script>
+{% endblock %}
