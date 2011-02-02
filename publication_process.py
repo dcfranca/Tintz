@@ -2,10 +2,10 @@
 
 import sys,os, shutil, traceback, libtintz
 from datetime import *
-sys.path.append('/home/tintz/workspace/tintz')
-sys.path.append('/home/tintz/workspace/tintz/apps')
+sys.path.append('/home/tintz/workspace/prod/tintz')
+sys.path.append('/home/tintz/workspace/prod/tintz/apps')
 sys.path.append('/usr/lib/python2.6/dist-packages/pinax/apps')
-sys.path.append('/home/tintz/workspace')
+sys.path.append('/home/tintz/workspace/prod')
 
 os.environ['DJANGO_SETTINGS_MODULE'] ='tintz.settings'
 
@@ -194,7 +194,7 @@ def convert2images(publication):
     old_file_ext = file_ext
 
     #Create directory if it doesnt exist
-    dirname = "/home/danielfranca/workspace/tintz/site_media/publications/"+publication.author.__unicode__()
+    dirname = "/home/tintz/workspace/prod/tintz/site_media/publications/"+publication.author.__unicode__()
     if not os.path.isdir(dirname):
         os.mkdir(dirname,0666)
 
