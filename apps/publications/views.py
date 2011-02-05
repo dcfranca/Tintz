@@ -313,6 +313,7 @@ def detailspublication(request, id, username, template_name="publications/detail
         is_me = True
     else:
         is_me = False
+        mypublication.incr_views()
     is_voted = False
 
     #import pdb; pdb.set_trace()
