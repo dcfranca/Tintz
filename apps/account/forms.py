@@ -20,6 +20,8 @@ from account.models import Account
 
 from timezones.forms import TimeZoneField
 
+from tintzsettings.models import TintzSettings
+
 import datetime
 
 import logging
@@ -206,6 +208,15 @@ class SignupCompleteForm(forms.Form):
         profile.country = country
         profile.website = website
         profile.save()
+
+        #Creating default settings
+        tintzSettings = TintzSettings()
+
+        tintzSettings.email_follow = True
+        tintzSettings.email_publication = True
+        tintzSettings.email_post = True
+        tintzSettings.user = new_user
+        tintzSettings.save()
 
         return new_user.username, new_user.password, new_user.email # required for authenticate()
 
