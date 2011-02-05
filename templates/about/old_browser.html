@@ -1,0 +1,38 @@
+{% extends "site_base_logout.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Tintz - Browser Incompat&iacute;vel" %}{% endblock %}
+
+{% block login %}
+
+    <div class="span-8  last" id="cont-login">
+        <div class="login-img">
+            <img src="{{ MEDIA_URL }}images/tintz_top_logo.png">
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <div class="span-6" id="whats_tintz">
+
+        <p>{% trans "O seu navegador &eacute; incompat&iacute;vel, favor utilizar um dos navegadores abaixo:" %}
+        <br>
+        <br>
+
+        <a href="http://www.google.com/chrome"><img src="{{ MEDIA_URL }}images/chrome.png" title="Google Chrome"/></a>
+        <a href="http://www.mozilla.com"><img src="{{ MEDIA_URL }}images/firefox.png" title="Mozilla Firefox"/></a>
+        <a href="http://www.apple.com/safari"><img src="{{ MEDIA_URL }}images/safari.png" title="Apple Safari"/></a>
+        <a href="http://www.opera.com"><img src="{{ MEDIA_URL }}images/opera.png" title="Opera"/></a>
+        <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx" title="Internet Explorer 8"><img src="{{ MEDIA_URL }}images/IE8.png"/></a>
+        <a href="http://windows.microsoft.com/pt-br/internet-explorer/products/ie-9/home"><img src="{{ MEDIA_URL }}images/IE9.png" title="Internet Explorer 9"/></a>
+
+
+
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+
+    </div>
+
+{% endblock %}
