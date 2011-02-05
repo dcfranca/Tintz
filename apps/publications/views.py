@@ -473,6 +473,8 @@ def searchresults(request, template_name="publications/results.html", search_tex
     publications = []
     users = []
 
+    calc_age(request.user.get_profile())
+
     results = SearchQuerySet().filter(content=search_text).order_by('-date_added')
 
     for result in results:
@@ -480,6 +482,8 @@ def searchresults(request, template_name="publications/results.html", search_tex
             publications.append(result.object)
         elif isinstance( result.object, Profile):
             users.append(result.object.user)
+
+    publications = [pub for pub in publications if pub.rated <= request.user.get_profile().age]
 
     if len(publications) == 0:
         return HttpResponseRedirect(reverse('search_results_prof',args=(search_text.encode('utf-8'),)))
