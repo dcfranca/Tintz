@@ -28,11 +28,13 @@ def more_profiles(request, other_user_id, last_profile, type):
     if type == 'Seguidores':
         followers = FollowAuthor.objects.filter( UserTo = other_user ).order_by('-id')
         for  follow in followers:
-            users.append( follow.UserFrom )
+            if follow.UserFrom.get_profile():
+                users.append( follow.UserFrom )
     elif type == 'Seguindo':
         followings = FollowAuthor.objects.filter( UserFrom = other_user ).order_by('-id')
         for  follow in followings:
-            users.append( follow.UserTo )
+            if follow.UserTo.get_profile():
+                users.append( follow.UserTo )
 
     users = users[last_prof:last_prof+more_num]
 
@@ -40,8 +42,14 @@ def more_profiles(request, other_user_id, last_profile, type):
 
     for user in users:
         link_prof_details = reverse('profile_detail', args=(user,))
-        name = user.get_profile().first_name
-        lastname = user.get_profile().last_name
+
+        if len(user.get_profile().first_name) > 0:
+            name = user.get_profile().first_name
+            lastname = user.get_profile().last_name
+        else:
+            name = user.username
+            lastname = ''
+
         username = user.username
         avatar = avatar_url(user, 70)
         if len(name) == 0:
