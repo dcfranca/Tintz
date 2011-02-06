@@ -313,9 +313,8 @@ for publication in publications:
             Update.objects.update_followers(1, publication)
             print "Status Updated to 1"
 
-            os.remove(old_file_name)
-
-            print "File removed: "+old_file_name
+            #os.remove(old_file_name)
+            #print "File removed: "+old_file_name
 
         else:
             print "Error Converting to images"
