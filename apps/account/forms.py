@@ -139,16 +139,42 @@ class ForgotPasswordForm(forms.Form):
             new_password = User.objects.make_random_password()
             user.set_password(new_password)
             user.save()
-            subject = _("Tintz - Alterar Senha")
-            message = render_to_string(u"account/password_reset_message.txt", {
-                "user": user,
-                "new_password": new_password,
-            })
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], priority="high")
+
+            self.user = user
+            self.new_password = new_password
+            self.email_address = email
 
         except Exception, e:
             raise forms.ValidationError(_(u"Este email não possui conta associada."))
             return
+
+class ResendConfirmationForm(forms.Form):
+
+    email       = forms.EmailField(label=_(u"E-mail"), required=True, widget=forms.TextInput(),
+                                              error_messages = {'required': u'Campo Email é obrigatório.','invalid':u'E-mail informado é inválido' } )
+
+    def clean(self):
+        if self._errors:
+            return
+        email = self.cleaned_data["email"].lower()
+
+        try:
+            self.user = User.objects.get(email = email)
+        except User.DoesNotExist:
+            raise forms.ValidationError(_(u"Não existe usuário associado a esse email."))
+
+        self.email_address = EmailAddress.objects.get_primary(self.user)
+
+        if self.user:
+            if self.user.is_active and self.email_address != None:
+                raise forms.ValidationError(_(u"Esta conta não está inativa."))
+
+        self.email_address = email
+
+        return self.cleaned_data
+
+
+
 
 class SignupCompleteForm(forms.Form):
 

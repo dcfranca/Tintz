@@ -14,12 +14,15 @@ from django.contrib.auth.views import logout as django_logout
 
 from account.utils import get_default_redirect
 from account.models import OtherServiceInfo
-from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, ForgotPasswordForm
+from account.forms import SignupForm, SignupCompleteForm, AddEmailForm, LoginForm, ForgotPasswordForm, ResendConfirmationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from django.contrib.auth.models import User
 
 from publications.models import Publication
 from publications.views import getSuggestions
+
+from django.template.loader import render_to_string
+from follow.models import EmailHtml
 
 #from pagseguropy import *
 import logging
@@ -120,7 +123,40 @@ def forgot_password(request, form_class=ForgotPasswordForm,
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
+
+            subject = _("Tintz - Nova Senha")
+            message = render_to_string(u"account/password_reset_message.txt", {
+                "user": form.user,
+                "new_password": form.new_password,
+            })
+
+            email_password = EmailHtml(subject, message, settings.DEFAULT_FROM_EMAIL, [form.email_address.email])
+            email_password.start()
+
             sent_email = u"Nova senha enviada para o email informado"
+    else:
+        form = form_class()
+
+    return render_to_response(template_name, {
+        "form": form,
+        "sent_email": sent_email,
+    }, context_instance=RequestContext(request))
+
+
+def resend_confirmation(request, form_class=ResendConfirmationForm,
+        template_name="account/resend_confirmation.html", success_url=None):
+
+    sent_email = None
+
+    if success_url is None:
+        success_url = get_default_redirect(request)
+
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            if form.user and form.email_address:
+                send_email_confirmation(form.user,  form.email_address)
+                sent_email = u"Nova confirmação enviada para o email informado"
     else:
         form = form_class()
 
