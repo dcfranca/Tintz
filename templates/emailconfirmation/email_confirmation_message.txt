@@ -1,4 +1,7 @@
-{% load i18n %}{% blocktrans with current_site.name as site_name %}Usu&aacute;rio '{{ user }}' do {{ site_name }} forneceu esse endere&ccedil;o de email.
+{% load i18n %}{% blocktrans with current_site.name as site_name %}
+O Tintz lhe da boas vindas, sua forma de ler ou publicar quadrinhos est&aacute; prestes a mudar.
+
+Usu&aacute;rio '{{ user }}' do {{ site_name }} forneceu esse endere&ccedil;o de email.
 
 Para ativar sua conta, acesse {{ activate_url }}
 {% endblocktrans %}

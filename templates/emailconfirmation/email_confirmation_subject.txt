@@ -1,1 +1,1 @@
-{% load i18n %}{% blocktrans with current_site.name as site_name %}Confirme o endere&ccedil;o de email para {{ site_name }}{% endblocktrans %}
+{% load i18n %}{% blocktrans with current_site.name as site_name %}Tintz - Confirme o endere&ccedil;o de email para {{ site_name }}{% endblocktrans %}
