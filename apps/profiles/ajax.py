@@ -43,12 +43,10 @@ def more_profiles(request, other_user_id, last_profile, type):
     for user in users:
         link_prof_details = reverse('profile_detail', args=(user,))
 
-
-        if user.get_profile():
-            if len(user.get_profile().first_name) > 0:
-                name = user.get_profile().first_name
-                lastname = user.get_profile().last_name
-        else:
+        try:
+            name = user.get_profile().first_name
+            lastname = user.get_profile().last_name
+        except:
             name = user.username
             lastname = ''
 
