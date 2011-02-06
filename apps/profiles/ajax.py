@@ -46,16 +46,18 @@ def more_profiles(request, other_user_id, last_profile, type):
         try:
             name = user.get_profile().first_name
             lastname = user.get_profile().last_name
+            small_about = user.get_profile().get_small_about()
         except:
             name = user.username
             lastname = ''
+            small_about = ''
 
         username = user.username
         avatar = avatar_url(user, 70)
         if len(name) == 0:
             name = username
         htmlOutput += template % ( link_prof_details, name, lastname, avatar, username, link_prof_details, name, lastname,
-                               name, lastname, user.get_profile().get_small_about() )
+                               name, lastname, small_about )
 
 
     dajax = Dajax()
