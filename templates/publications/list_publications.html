@@ -30,7 +30,7 @@
 
                 <div class="span-8 list-pub-title">
                 {% ifequal publication.status 0 %}
-                    <a href="">{{ publication.title }}</a>
+                    {{ publication.title }} <i>{% trans " [Aguarde processamento]" %}</i>
                 {% else %}
                     <a href="{% url publication_details publication.author publication.id %}">{{ publication.title }}</a>
                 {% endifequal %}
