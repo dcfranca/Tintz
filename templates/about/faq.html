@@ -1,0 +1,68 @@
+{% extends "site_base_logout.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Tintz - FAQ" %}{% endblock %}
+
+{% block login %}
+
+   <img class="img-login" src="{{ MEDIA_URL }}images/previa2.jpg"></img>
+
+    <div class="span-8  last" id="cont-login">
+        <div class="login-img">
+            <a href="{% url home %}"><img src="{{ MEDIA_URL }}images/tintz_top_logo.png"></a>
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <div class="span-6" id="whats_tintz">
+            <p><b>{% trans "Como eu me publico meus quadrinhos no Tintz?" %}</b>
+            <br>{% trans "Para publicar no Tintz basta clicar em 'Publicar' no menu superior, escolha o arquivo que deseja publicar, preencha os campos e clique em salvar, aguarde o t&eacute;rmino do upload." %}
+            <br>{% trans "Enquanto sua publica&ccedil;o n&atilde;o for processada pelo Tintz ela mostrar&aacute uma capa default, o processamento leva em torno de 5 minutos. Ap&oacute;s esse tempo voc&ecirc; e seus seguidores j&aacute; poder&atilde;o ver sua nova publica&ccedil;&atilde;o." %}
+
+            <p><p><b>{% trans "Minha publica&ccedil;&atilde;o est&aacute; demorando para aparecer, o que fa&ccedil;o?" %}</b>
+            <br>{% trans "Geralmente a processamento de sua publica&ccedil;&atilde;o demora cerca de 5 minutos, caso o tempo aguardado seja muito superior voc&ecirc; pode entrar em contato com o Tintz pelo twitter @tintz_ ou pelo email tintz@tintz.com.br." %}
+
+            <p><p><b>{% trans "Posso publicar ilustra&ccedil;oes?" %}</b>
+            <br>{% trans "Claro." %}
+
+            <p><p><b>{% trans "Posso publicar roteiros?" %}</b>
+            <br>Pode tanto em formato PDF ou mesmo escrevendo diretamente no blog dispon&iacute;vel.
+
+            <p><p><b>{% trans "Posso publicar quadinhos com v&aacute;rias p&aacute;ginas?" %}</b>
+            <br>{% trans "Claro, para isso basta que seu quadrinho atenda os formatos suportados." %}
+
+            <p><p><b>{% trans "Quais os formatos suportados?" %}</b>
+            <br>{% trans "Imagens simples podem ser publicadas nos seguintes formatos: JPG, PNG e GIF." %}
+            <p>{% trans "Quadrinhos com v&aacute;rias p&aacute;ginas podem ser postados nos formatos CBR, CBZ, RAR, ZIP e PDF." %}
+            <p>{% trans "Arquivos compactados n&atilde;o podem estar protegidos por senha para que possam ser processados pelo Tintz." %}
+
+            <p><p><b>{% trans "Encontrei uma publica&ccedil;&atilde;o de cunho racista ou preconceituosa e gostaria de denunciar, como procedo?" %}</b>
+            <br>{% trans "Para denunciar, entre na p&aacute;gina da publica&ccedil;&atilde;o e clique no &iacute;cone da bomba logo abaixo da publica&ccedil;&atilde;o que deseja denunciar." %}
+
+            <p><p><b>{% trans "Encontrei uma publica&ccedil;&atilde;o que o conte&uacute;do n&atilde;o condiz com a sua classifica&ccedil;&atilde;. Posso denuncia-la?" %}</b>
+            <br>{% trans "Sim, para denuncia-la clique no &iacute;cone da bomba logo abaixo da publica&ccedil;&atilde;o que deseja denunciar e preencha o campo informando a situa&ccedil;&aacute;o." %}
+
+            <p><p><b>{% trans "O Tintz possuir&aacute algum direito sobre minha obra?" %}</b>
+            <br>{% trans "N&atilde;o, a publica&ccedil;&atilde;o pertence inteiramente &agrava; pessoa que publicou." %}
+
+            <p><p><b>{% trans "O que significa o campo 'Publico' ao fazer uma publica&ccedil;o?" %}</b>
+            <br>{% trans "Significa que sua publica&ccedil;&atilde;o ser&aacute; vis&iacute;vel para pessoas que n&atilde;o possuem cadastro no Tintz ou n&atilde;o est&atilde;o logadas, s&oacute; &eacute; poss&iacute;vel deixar uma publica&ccedil;o publica caso sua classifica&ccedil;&atilde;o seja livre." %}
+            <br>{% trans "Caso esse campo esteja desmarcado a publica&ccedil;&atilde;o ser&aacute; vis&iacute;vel apenas para usu&aacute;rios logados e com idade permitida pela classifica&ccedil;&atilde;o da publica&ccedil;&atilde;o." %}
+
+            <p><p><p><p>{% trans "Outras perguntas podem ser feitas pelo twitter " %}<a href="http://www.twitter.com/tintz_">@tintz_</a> {% trans " ou pelo email: tintz@tintz.com.br" %}
+
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <ul class="span-4 last login-links">
+        <li><a href="{% url acct_forgot_password %}">{% trans "Perdeu sua senha?" %}</a></li>
+        <li><a href="{% url acct_signup %}">{% trans "Ainda n&atilde;o &eacute; cadastrado?" %}</a></li>
+        <li><a href="{% url whats_tintz %}">{% trans "O que &eacute; Tintz?" %}</a></li>
+        </ul>
+
+    </div>
+
+{% endblock %}
+
