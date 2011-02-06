@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^whats_tintz/$', direct_to_template, {"template": "about/whats_tintz.html"}, name="whats_tintz"),
     url(r'^confirm_email/$', direct_to_template, {"template": "about/confirm_email.html"}, name="confirm_email"),
     url(r'^old_browser/$', direct_to_template, {"template": "about/old_browser.html"}, name="old_browser"),
+    url(r'^faq/$', direct_to_template, {"template": "about/faq.html"}, name="faq"),
 )
