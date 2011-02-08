@@ -44,8 +44,11 @@ class LoginForm(forms.Form):
         username = self.cleaned_data["username"].lower()
 
         if username.find('@') > -1:
-            email = EmailAddress.objects.filter(email__iexact=username, verified=True)[0]
-            username = email.user.username
+            try:
+                email = EmailAddress.objects.filter(email__iexact=username, verified=True)[0]
+                username = email.user.username
+            except IndexError:
+                raise forms.ValidationError(_(u"Usuário ou senha incorretos."))
 
         user = authenticate(username=username, password=self.cleaned_data["password"])
 
