@@ -370,10 +370,9 @@ body {
 }
 
 .publications-cover {
-    position: relative;
     top: 20px;
     left: -20px;
-    #min-height: 150px;
+    min-height: 70px;
 }
 
 .list-posts-title, .list-posts-title a, .list-posts-title a:visited {
@@ -423,7 +422,6 @@ body {
 }
 
 .list-pub-title, .list-pub-title a, .list-pub-title a:visited {
-    position: relative;
     top: 10px;
     left: -10px;
     font-size: 13pt;
@@ -432,7 +430,6 @@ body {
 }
 
 .list-pub-author, .list-pub-author a, .list-pub-author a:visited {
-    position: relative;
     top: 10px;
     left: -10px;
     font-size: 9pt;
@@ -442,7 +439,6 @@ body {
 
 .list-pub-subtitle {
     color: red;
-    position: relative;
     top: 0px;
     left: -30px;
     float: right;
@@ -450,7 +446,6 @@ body {
 }
 
 .list-pub-description {
-    position: relative;
     top: 30px;
     left: -20px;
     text-align: left;
@@ -458,7 +453,6 @@ body {
 }
 
 .list-pub-rate {
-    position: relative;
     top: 10px;
     left: -2px;
     font-size: 9pt;
@@ -466,7 +460,6 @@ body {
 }
 
 .list-pub-views {
-    position: relative;
     top: 30px;
     left: 0px;
     font-size: 8pt;
@@ -1133,7 +1126,7 @@ body {
 }
 
 .result-item {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 #messages {
