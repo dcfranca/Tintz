@@ -1132,6 +1132,10 @@ body {
 
 }
 
+.result-item {
+    margin-bottom: 15px;
+}
+
 #messages {
     position: relative;
     top: 0px;
