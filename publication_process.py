@@ -302,8 +302,8 @@ for publication in publications:
     except UnicodeEncodeError:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
 
-    try:
-        if ret:
+    #try:
+    if ret:
             print "Saving File: "+new_file_name
             publication.status = 1
             publication.nr_pages = pages
@@ -316,9 +316,9 @@ for publication in publications:
             #os.remove(old_file_name)
             #print "File removed: "+old_file_name
 
-        else:
+    else:
             print "Error Converting to images"
-    except:
-        print "****Error converting, passed****"
+    #except:
+    #    print "****Error converting, passed****"
 
 print '******END*******'
