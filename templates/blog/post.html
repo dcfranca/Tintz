@@ -14,35 +14,26 @@
 
 {% block head_title %}{% trans "Tintz - Blog" %}{% endblock %}
 
-{% block extra_body %}
-    {% if user.is_authenticated %}
-    {% else %}
-        {% url acct_signup as signup_url %}
-        {% url acct_login as login_url %}
-        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
-    {% endif %}
-{% endblock %}
-
 {% block main_content %}
-<div class="span-8" id="left-panel">
-    {% include "profiles/profile_left_panel.html" %}
-</div>
-<div class="span-14 last">
-    <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
-
-    <a class="span-14 post-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date:"d/m/Y" }}</div></a>
-
-    <div class="post-body span-14 last">
-        {{ post.body|force_escape|linebreaks|safe }}
+    <div class="span-8" id="left-panel">
+        {% include "profiles/profile_left_panel.html" %}
     </div>
-    <div class="span-14 last blog-meta"><p>Postado por: <a href="{% url profile_detail post.author.username %}">{{ post.author.username }}</a></p></div>
+    <div class="span-14 last">
+        <div class="title"><img src="{{MEDIA_URL}}/images/bt_blog.png">Blog</div>
 
-    {% if post.allow_comments %}
-    <div class="comments">
-        {% comments post %}
+        <a class="span-14 post-title" href="{{ post.get_absolute_url }}">{{ post.title }} <div class="list-subtitle">{{ post.publish|date:"d/m/Y" }}</div></a>
+
+        <div class="post-body span-14 last">
+            {{ post.body|force_escape|linebreaks|safe }}
+        </div>
+        <div class="span-14 last blog-meta"><p>Postado por: <a href="{% url profile_detail post.author.username %}">{{ post.author.username }}</a></p></div>
+
+        {% if post.allow_comments and user.is_authenticated %}
+        <div class="comments">
+            {% comments post %}
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
 {% endblock %}
 
 {% block extra_elements %}
@@ -64,7 +55,7 @@
           return false;
     }
 
-    function calc_numchars() {               
+    function calc_numchars() {
         document.getElementById('id-typed-chars').innerHTML = 300 - document.getElementById('id_comment').value.replace(/^\s+|\s+$/g,"").length;
     }
 

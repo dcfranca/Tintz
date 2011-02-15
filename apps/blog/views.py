@@ -64,7 +64,6 @@ def blogs(request, username=None, template_name="blog/blogs.html"):
     }, context_instance=RequestContext(request))
 
 
-@login_complete
 def post(request, username, year, month, slug,
          template_name="blog/post.html"):
 
@@ -84,16 +83,19 @@ def post(request, username, year, month, slug,
         follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=post[0].author )
         if follow:
             is_follow = True
-        else:
-            is_follow = False
     except FollowAuthor.DoesNotExist:
         pass
+    except TypeError:
+        pass
+
+    is_profile = not request.user.is_authenticated()
 
     return render_to_response(template_name, {
         "post": post[0],
         "is_me": is_me,
         "other_user":post[0].author,
         "is_follow": is_follow,
+        "is_profile": is_profile,
     }, context_instance=RequestContext(request))
 
 @login_complete
