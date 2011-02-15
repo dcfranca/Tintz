@@ -1053,10 +1053,10 @@ body {
 }
 
 .update-pub-cover {
-    position: relative;
-    top: 45px;
+    margin-top: 45px;
     margin-left: -140px;
     float: left;
+    margin-bottom: 10px;
     min-height: 255px;
 }
 
@@ -1083,6 +1083,7 @@ body {
 
 .update-item {
     position: relative;
+    margin-bottom: 15px;
 }
 
 .thumb-page-click {
