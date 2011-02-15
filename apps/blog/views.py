@@ -83,9 +83,7 @@ def post(request, username, year, month, slug,
         follow = FollowAuthor.objects.get( UserFrom=request.user,  UserTo=post[0].author )
         if follow:
             is_follow = True
-    except FollowAuthor.DoesNotExist:
-        pass
-    except TypeError:
+    except:
         pass
 
     is_profile = not request.user.is_authenticated()
