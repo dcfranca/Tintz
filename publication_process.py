@@ -306,7 +306,7 @@ for publication in publications:
             print "\nSaving File: "+new_file_name
             publication.status = 1
             publication.nr_pages = pages
-            publication.file_name = new_file_name
+            publication.file_name = "ogaaaacyjmijvl8ji-s4r3-g_wmorto2jzxlw8beynd8x4goyprkx1denihh-mp8fhrfgknuwkaqj-zttf4e4lu2ateam1t1uhpd0ggh-9svruporxua-tx4w57v2_Tue Feb 15 06:57:11 2011/ogaaaacyjmijvl8ji-s4r3-g_wmorto2jzxlw8beynd8x4goyprkx1denihh-mp8fhrfgknuwkaqj-zttf4e4lu2ateam1t1uhpd0ggh-9svruporxua-tx4w57v2" #new_file_name
             publication.images_ext = ".jpg"
             publication.save()
             Update.objects.update_followers(1, publication)
