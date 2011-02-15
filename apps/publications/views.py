@@ -91,6 +91,10 @@ def is_valid_format(filename, content_type):
         logging.debug('VALID FORMAT = FALSE')
         return False
 
+    if len( filename ) > 80:
+        logging.debug('LEN > 80: '+filename)
+        return False
+
     logging.debug('VALID FORMAT = TRUE')
     return True
 
@@ -110,7 +114,7 @@ def uploadpublication(request, form_class=PublicationUploadForm,
             publication_form = form_class(request.user, request.POST, request.FILES, instance=publication)
             if publication_form.is_valid():
                 if not is_valid_format(request.FILES['file_name'].name, request.FILES['file_name'].content_type):
-                    request.user.message_set.create(message=u"Tipo de arquivo inv?lido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG)")
+                    request.user.message_set.create(message=u"Tipo de arquivo inválido (Somente arquivos PDF/CBR/CBZ ou Imagem: JPG/GIF/PNG) ou nome do arquivo muito longo")
                 else:
                     publication = publication_form.save(commit=False)
                     publication.date_added = datetime.datetime.now()
