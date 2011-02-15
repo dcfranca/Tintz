@@ -298,9 +298,9 @@ for publication in publications:
 
     #try:
     #try:
-    #    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
+    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
     #except UnicodeEncodeError:
-    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
+    #ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
 
     #try:
     if ret:
