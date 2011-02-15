@@ -307,7 +307,10 @@ for publication in publications:
             print "Saving File: "+new_file_name
             publication.status = 1
             publication.nr_pages = pages
-            publication.file_name = new_file_name
+            #try:
+            #    publication.file_name = new_file_name
+            #except:
+            publication.file_name = new_file_name.encode('utf-8')
             publication.images_ext = ".jpg"
             publication.save()
             Update.objects.update_followers(1, publication)
