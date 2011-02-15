@@ -297,9 +297,9 @@ for publication in publications:
     #print 'DEFAULT ENCODING: '+output_encoding
 
     #try:
-    #    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
+    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
+    #ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
     #except UnicodeEncodeError:
-    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
 
     #try:
     if ret:
