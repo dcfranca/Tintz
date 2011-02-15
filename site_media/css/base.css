@@ -419,8 +419,7 @@ body {
 }
 
 .list-pub-item {
-    min-height: 100px;
-    max-height: 100px;
+    margin-top: 15px;
 }
 
 .list-pub-title, .list-pub-title a, .list-pub-title a:visited {
@@ -454,7 +453,6 @@ body {
     position: relative;
     top: 30px;
     left: -20px;
-    min-height: 200px;
     text-align: left;
     font-size: 9pt;
 }

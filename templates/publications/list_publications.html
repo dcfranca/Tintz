@@ -17,7 +17,7 @@
     <div class="title"><img src="{{MEDIA_URL}}/images/bt_publications.png">Publica&ccedil;&otilde;es</div>
     <div id="list-publications">
         {% for publication in publications %}
-            <div class="list-pub-item last">
+            <div class="list-pub-item span-14">
 
                 <div class="span-4 publications-cover">
                 {% ifequal publication.status 0 %}
@@ -36,7 +36,7 @@
                 {% endifequal %}
                 </div>
 
-                <div class="span-8 last list-pub-description last">{{ publication.get_small_text|linebreaks }}</div>
+                <div class="span-8 last list-pub-description">{{ publication.get_small_text|linebreaks }}</div>
 
                 <div class="span-2 list-pub-subtitle last"> {{publication.nr_pages}} p&aacute;gina{{publication.nr_pages|pluralize}}</div>
 

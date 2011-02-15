@@ -177,24 +177,27 @@ def more_publications(request, other_user_id, last_publication):
     else:
         is_me = False
 
+    template = """<div class="list-pub-item span-14">
+                    <div class="span-4 publications-cover">
+                        <a href="%s">
+                            <img src="%s%s" href="%s" alt="%s"/>
+                        </a>
+                    </div>
 
-    template = """<div class="span-4 publications-cover">
-                    <a href="%s">
-                    <img src="%s%s" href="%s" alt="%s"/></a>
-                  </div>
+                    <div class="span-8 list-pub-title">
+                        <a href="%s">%s</a>
+                    </div>
 
-                  <div class="span-8 list-pub-title">
-                    <a href="%s">%s</a>
-                  </div>
-
-                  <div class="span-8 last list-pub-description">%s</div>
-                  <div class="list-pub-subtitle"> %s </div>
+                    <div class="span-8 last list-pub-description">%s</div>
+                    <div class="list-pub-subtitle"> %s </div>
                   """
 
     if is_me:
         template += """<div class="span-1 list-pub-button"><a href="%s" ><img src="%simages/publication_edit.png" title="Editar Publica&ccedil;&atilde;o"></img></a></div>
                        <div class="span-1 list-pub-button last"><a href="%s" onclick=" ConfirmChoice('%s'); return false;"><img src="%simages/publication_delete.png" title="Excluir Publica&ccedil;&atilde;o"></img></a></div>"""
-    #import pdb; pdb.set_trace()
+
+
+    template += "</div>"
 
     if request.user.is_authenticated():
         if is_me == True:
@@ -224,6 +227,8 @@ def more_publications(request, other_user_id, last_publication):
         pub_image = 'images/cover_default150.png'
         if publication.status != 0:
             pub_image = publication.get_thumbnail150_name()
+
+        #import pdb; pdb.set_trace()
 
         if is_me:
             htmlOutput += template % ( link_details, media_url, pub_image, link_details, publication.title,
