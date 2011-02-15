@@ -296,12 +296,10 @@ for publication in publications:
     #language, output_encoding = locale.getdefaultlocale()
     #print 'DEFAULT ENCODING: '+output_encoding
 
-    try:
-        ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
-    except UnicodeEncodeError:
+    #try:
+    #    ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip())
+    #except UnicodeEncodeError:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
-
-    new_file_name = new_file_name.encode('utf-8')
 
     #try:
     if ret:
