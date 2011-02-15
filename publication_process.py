@@ -301,6 +301,8 @@ for publication in publications:
     except UnicodeEncodeError:
         ret, pages, new_file_name = libtintz.ConvertToImages(publication.file_name.path.strip().encode('utf-8'))
 
+    new_file_name = new_file_name.encode('utf-8')
+
     #try:
     if ret:
             print "\nSaving File: "+new_file_name
