@@ -91,8 +91,8 @@ def is_valid_format(filename, content_type):
         logging.debug('VALID FORMAT = FALSE')
         return False
 
-    if len( filename ) > 80:
-        logging.debug('LEN > 80: '+filename)
+    if len( filename ) > 50:
+        logging.debug('LEN > 50: '+filename)
         return False
 
     logging.debug('VALID FORMAT = TRUE')
