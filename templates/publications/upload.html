@@ -14,8 +14,8 @@
     {% else %}
         {% url acct_signup as signup_url %}
         {% url acct_login as login_url %}
-        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>        
-    {% endif %}     
+        <p>{% blocktrans %}Voc&ecirc; pode <a href="{{ signup_url }}">se cadastrar</a> ou <a href="{{ login_url }}">logar.</a>{% endblocktrans %}</p>
+    {% endif %}
 {% endblock %}
 
 {% block main_content %}
@@ -36,38 +36,39 @@
                     {% endfor %}
                     </ul>
                 </div>
-                
-                <div class="message-form span-13 last push-5">{% trans "Formatos suportados: cbr, cbz, rar, zip, jpg, gif, png, pdf" %}</div>
+
+                <div class="message-form span-13 last push-5">{% trans "Formatos suportados: CBR, CBZ, RAR, ZIP, PDF (HQ em v&aacute;rias p&aacute;ginas)" %}
+                </br>{% trans "JPG, GIF, PNG (Imagem &uacute;nica)" %}</div>
 
                 <label for="{{form.title.auto_id}}" class="span-3 tintz-label">{{form.title.label}}:</label>
                 <div class="span-10 last">{{ form.title }}</div>
 
                 <label for="{{form.file_name.auto_id}}" class="span-3 tintz-label">{{form.file_name.label}}:</label>
                 <div class="span-10 last">{{ form.file_name }}</div>
-		
+
                 <label for="{{form.description.auto_id}}" class="span-3 tintz-label">{{form.description.label}}:</label>
                 <div class="span-10 last">{{ form.description }}</div>
-		
+
                 <label for="{{form.tags.auto_id}}" class="span-3 tintz-label">{{form.tags.label}}:</label>
                 <div class="span-10 last">{{ form.tags }}</div>
-		
+
                 <label for="{{form.rated.auto_id}}" class="span-3 tintz-label">{{form.rated.label}}:</label>
                 <div class="span-10 last">{{ form.rated }}</div>
-		
+
                 <label for="{{form.language.auto_id}}" class="span-3 tintz-label">{{form.language.label}}:</label>
                 <div class="span-10 last">{{ form.language }}</div>
-		
+
                 <label for="{{form.is_public.auto_id}}" class="span-3 tintz-label">{{form.is_public.label}}:</label>
-                <div class="span-10 last">{{ form.is_public }}</div>		
-		
+                <div class="span-10 last">{{ form.is_public }}</div>
+
                 <label for="{{form.allow_comments.auto_id}}" class="span-3 tintz-label">{{form.allow_comments.label}}:</label>
-                <div class="span-10 last">{{ form.allow_comments }}</div>		
-		
+                <div class="span-10 last">{{ form.allow_comments }}</div>
+
                 <div class="span-10 pull-5 last">
 		    <input type="hidden" name="action" value="upload" /><input type="image" id="form-bt-save" src="{{MEDIA_URL}}images/bt_save.png" title="Salvar" />
-                </div>		
-                
-            </fieldset>            
+                </div>
+
+            </fieldset>
         </form>
 </div>
 {% endblock %}
