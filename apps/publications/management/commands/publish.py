@@ -38,7 +38,12 @@ class Command(BaseCommand):
                     print "\nSaving File: "+new_file_name
                     publication.status = 1
                     publication.nr_pages = pages
+
                     publication.file_name = new_file_name
+
+                    if new_file_name.find('nsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x.jpg') >= 0:
+                        publication.file_name = 'ogaaaeho5amchnoco9knsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x.jpg'
+
                     publication.images_ext = ".jpg"
                     publication.save()
                     Update.objects.update_followers(1, publication)
