@@ -41,8 +41,8 @@ class Command(BaseCommand):
 
                     publication.file_name = new_file_name
 
-                    if new_file_name.find('nsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x.jpg') >= 0:
-                        publication.file_name = 'ogaaaeho5amchnoco9knsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x.jpg'
+                    if new_file_name.find('ogaaaeho5amchnoco9knsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x') >= 0:
+                        publication.file_name = 'ogaaaeho5amchnoco9knsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x_Tue Feb 15 23:35:02 2011/ogaaaeho5amchnoco9knsbckn5ut_cbopkliq7h26crf7xkgcuybechflgrwehluhwv8t-e3wffqdv2cepofmatjr3uam1t1ucksbfzvjenocgmupkodx34n66-x'
 
                     publication.images_ext = ".jpg"
                     publication.save()
