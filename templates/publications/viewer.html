@@ -27,7 +27,7 @@ body{
                     {% if pages %}
                        {% for pagenr in pages.object_list %}
                           <a href="javascript:Dajaxice.publications.change_page('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'change':1 })" >
-                          <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
+                          <img id="page_publication" src="{{ MEDIA_URL }}{{ publication.get_basename|urlencode }}_{{pagenr|stringformat:"03d"}}_thumb700{{file_ext}}" alt="{{ publication.title }}"/>
                           </a>
                        {% endfor %}
                     {% endif %}
@@ -50,7 +50,7 @@ body{
                            {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
                               <td class="thumb-page">
                                 <div class="thumb-page-click" onclick="Dajaxice.publications.change_to_newpage('Dajax.process',{'image_file': document.getElementById('page_publication').src, 'publication_id': {{ publication.id }},'new_page':{{ pagenr }} })">
-                                <img src="{{ MEDIA_URL }}{{ publication.get_basename }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" title="P&aacute;gina    {{ pagenr }}"/>
+                                <img src="{{ MEDIA_URL }}{{ publication.get_basename|urlencode }}_{{pagenr|stringformat:"03d"}}_thumb064{{file_ext}}" title="P&aacute;gina    {{ pagenr }}"/>
                                 </div>
                               </td>
                               {% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
