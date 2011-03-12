@@ -28,3 +28,16 @@ class RedirectBrowser:
             else:
                 return None
 
+# Create your views here.
+class Support:
+    """
+    Redirect support page
+    """
+    def process_request(self, request):
+
+        #import pdb; pdb.set_trace()
+
+        if request.path.startswith(settings.MEDIA_URL) or request.path.startswith("/about/support/"):
+            return None
+
+        return HttpResponseRedirect(reverse('support'))
