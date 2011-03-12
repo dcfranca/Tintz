@@ -1,0 +1,31 @@
+{% extends "site_base_logout.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Tintz - P&aacute;gina n&atilde;o encontrada" %}{% endblock %}
+
+{% block login %}
+
+    <div class="span-8  last" id="cont-login">
+        <div class="login-img">
+            <a href="{% url home %}"><img src="{{ MEDIA_URL }}images/tintz_top_logo.png"></a>
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <div class="span-6" id="whats_tintz">
+        <p>{% trans "O Tintz est&aacute; em manuten&ccedil;&atilde;o." %}
+        <p>{% trans "Tente novamente mais tarde" %}
+        </div>
+
+        <img class="hline" src="{{ MEDIA_URL }}images/hline.png">
+
+        <ul class="span-4 last login-links">
+        <li><a href="{% url home %}">{% trans "Ir para o Ínicio" %}</a></li>
+        </ul>
+
+    </div>
+
+{% endblock %}
+
