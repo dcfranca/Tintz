@@ -25,7 +25,7 @@ from blog.models import Post
 
 from haystack.query import SearchQuerySet
 
-import logging
+import logging, random
 
 from account.utils import login_complete
 
@@ -68,6 +68,49 @@ def getFollowings(request, other_user):
     for  follow in followings:
         followinUsers.append( follow.UserTo )
     return followinUsers
+
+def getRecommendedFollowings(request, other_user):
+    #Finding who to follow
+
+    usersToFollow = []
+
+    if request.user.is_authenticated():
+        usersToFollow = User.objects.raw("""
+                                        SELECT f2."UserTo_id" as id,count(*)
+                                        FROM follow_followauthor f1, follow_followauthor f2
+                                        WHERE f1."UserFrom_id" = %s
+                                        AND f2."UserFrom_id" = f1."UserTo_id"
+                                        AND f2."UserTo_id" != %s
+                                        group by 1
+                                        order by count desc;
+                                        """,[ other_user.id,other_user.id ])[:12]
+    else:
+        usersToFollow = User.objects.raw("""
+                                        SELECT f1."UserTo_id" as id,count(*)
+                                        FROM follow_followauthor f1
+                                        group by 1
+                                        order by count desc;
+                                        """)[:50]
+
+    random.shuffle(usersToFollow)
+
+    return usersToFollow[:4]
+
+def getRecommendedPublications(request, other_user):
+    publications = []
+
+    publications = Publication.objects.raw("""
+                                SELECT *
+                                FROM publications_publication
+                                WHERE date_added
+                                BETWEEN (now() - '3 month'::interval)::timestamp AND now()
+                                order by views desc;
+                                """)[:20]
+
+    random.shuffle(publications)
+
+    return publications[:6]
+
 
 def getPosts(request, other_user):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
@@ -132,6 +175,47 @@ def home(request, template_name="homepage.html"):
         "publications": publications,
         "followers":followerUsers,
         "followings":followingUsers,
+    }, context_instance=RequestContext(request))
+
+
+def home2(request, template_name="homepage2.html"):
+
+    updates = []
+    publications   = []
+    followingUsers = []
+    followerUsers  = []
+
+    logging.debug("Home - Enter")
+
+    if request.user.is_authenticated():
+        logging.debug("home - Usuario logado")
+        followerUsers = getFollowers(request, request.user)
+        followingUsers = getFollowings(request, request.user)
+
+        updates = getUpdates(request,followingUsers)[:10]
+
+        publications = getPublications(request, request.user, True)
+
+    else:
+        logging.debug("Home - Usario nao logado")
+        #return HttpResponseRedirect(reverse('acct_login'))
+
+    usersToFollow = getRecommendedFollowings(request, request.user)
+    recommended_pubs = getRecommendedPublications(request,request.user)
+
+    logging.debug("Home - Leave")
+
+    return render_to_response(template_name, {
+        "other_user": request.user,
+        "is_me": True,
+        "updates": updates,
+        "notices": None,
+        "home": True,
+        "publications": publications,
+        "related_publications": recommended_pubs,
+        "followers":followerUsers,
+        "followings":followingUsers,
+        "other_profiles": usersToFollow,
     }, context_instance=RequestContext(request))
 
 

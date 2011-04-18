@@ -7,8 +7,6 @@
 
 {% block body %}
     <div class="title"><img src="{{MEDIA_URL}}/images/updates.png">Atualiza&ccedil;&otilde;es</div>
-
-
     <div class="show_updates span-14">
         {% if updates %}
             <class id="list-updates">
@@ -34,10 +32,10 @@
                     <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
                     </div>
                     <div class="update-pub-description span-10 last"><p>{{ update.publication.get_small_text }}</div>
-                    
+
                 {% endifequal %}
                 </div>
-                
+
             {% endfor %}
 
             </div>

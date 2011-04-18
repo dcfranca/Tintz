@@ -27,6 +27,26 @@ body {
     padding-left: 20px;
 }
 
+@font-face {
+   font-family: 'LADYIL';
+   src: url('/site_media/fonts/LADYIL_.ttf');
+}
+
+@font-face {
+   font-family: 'LADYIB';
+   src: url('/site_media/fonts/LADYIB_.ttf');
+}
+
+@font-face {
+   font-family: 'LADYIC';
+   src: url('/site_media/fonts/LADYIC_.ttf');
+}
+
+@font-face {
+   font-family: 'LADYIEX';
+   src: url('/site_media/fonts/LADYIEX.ttf');
+}
+
 .left-button {
     margin-top: 10px;
     background: #232323;
@@ -48,6 +68,8 @@ body {
     color: white;
     font-weight: bold;
     text-decoration: none;
+    font-family: 'LADYIEX';
+    font-size: 12pt;
 }
 
 .tag_cloud, .tag_cloud a, .tag_cloud a:visited {
@@ -88,18 +110,28 @@ body {
 
 .title-profile {
     position: relative;
-    left: -40px;
     background: #232323;
-    color: white;
-    font-weight: bold;
-    font-size: 9pt;
     height: 23px;
     width: 300px;
     -moz-border-radius: 3px; /* Firefox */
     -webkit-border-radius: 3px; /* Safari and Chrome */
     border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
     margin-bottom: 30px;
+    padding: 5px 0px 2px 5px;
 
+}
+
+.title-profile h2 {
+    font-family: 'LADYIEX';
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+    margin-top: -24px;
+    margin-left: 20px;
+}
+
+.title-profile img {
+    margin-top: 3px;
 }
 
 .title-profile a, .title-profile a:visited {
@@ -318,10 +350,10 @@ body {
 }
 
 .username {
+    font-family: 'LADYIB';
     position: relative;
-    top: -10px;
-    font-size: 18pt;
-    font-weight: bold;
+    margin-top: -10px;
+    font-size: 20pt;
 }
 
 .about {
@@ -960,8 +992,7 @@ body {
 
 .preview-contacts {
     position: relative;
-    left: -40px;
-    top: -45px;
+    margin-top: -45px;
     min-width: 300px;
 }
 
@@ -976,18 +1007,25 @@ body {
     top: 0px;
     left: 0px;
     color: red;
+    font-family: 'LADYIC';
+    font-size: 11pt;
     font-weight: bold;
     text-decoration: none;
 }
 
 .profiles {
     position: relative;
-    top: 20px;
 }
 
 .profiles-item {
-    min-height: 130px;
     word-wrap: break-word;
+}
+
+.profiles-item img {
+-moz-border-radius: 5px; /* Firefox */
+-moz-border-radius: 5px; /* Firefox */
+-webkit-border-radius: 5px; /* Safari and Chrome */
+-webkit-border-radius: 5px; /* Safari and Chrome */
 }
 
 .publication-views {
@@ -1001,36 +1039,44 @@ body {
 
 .update-avatar {
     position: relative;
-    top: 15px;
-    left: -30px;
+}
+
+.update-avatar img {
+-moz-border-radius: 5px; /* Firefox */
+-moz-border-radius: 5px; /* Firefox */
+-webkit-border-radius: 5px; /* Safari and Chrome */
+-webkit-border-radius: 5px; /* Safari and Chrome */
+border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+
 }
 
 .update-name, .update-name a, .update-name a:visited {
+
+    font-family: 'LADYIC';
     position: relative;
-    top: 5px;
-    left: -15px;
+    margin-top: -3px;
     color: red;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 8pt;
+    font-size: 11pt;
 }
 
 .update-posts-title {
+    font-family: 'LADYIEX';
     position: relative;
-    top: 10px;
-    left: -30px;
-    font-size: 13pt;
+    margin-top: 0px;
+    font-size: 15pt;
     text-decoration: none;
     color: black;
+
 }
 
 .update-posts-description {
+    #font-family: 'LADYIL';
+    font-family: Arial, sans-serif, Verdana;;
     position: relative;
-    top: 10px;
-    left: -30px;
-    min-height: 70px;
+    top: 1px;
     text-align: left;
-    font-size: 9pt;
+    font-size: 10pt;
     margin: 0 0 20px 0;
 }
 
@@ -1073,7 +1119,7 @@ body {
 
 .update-item {
     position: relative;
-    margin-bottom: 15px;
+    margin-top: 8px;
 }
 
 .thumb-page-click {
@@ -1091,6 +1137,18 @@ body {
     position: relative;
     left: 8px;
     top: -23px;
+}
+
+.recommended-publications {
+    position: relative;
+    margin-left: 10px;
+    margin-top: -30px;
+}
+
+.recomend-publication {
+    position: relative;
+    margin-bottom: 20px;
+    margin-left: 10px;
 }
 
 .list_related-publications {
@@ -1190,4 +1248,9 @@ body {
     margin-left: 80px;
     color: red;
     text-shadow: #black 2px -2px 2px;
+}
+
+#right-panel {
+    position: relative;
+    margin-left: 15px;
 }

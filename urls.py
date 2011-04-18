@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$', 'profiles.views.home', name='home'),
+    url(r'^home2$', 'profiles.views.home2', name='home2'),
 
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),
