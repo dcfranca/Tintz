@@ -79,9 +79,9 @@ class Publication(models.Model):
       return PublicationRate.getobjects( who_vote = author )
 
     def get_small_text(self):
-        if len(self.description) < 300:
+        if len(self.description) < 100:
             return self.description
-        return self.description[0:296]+"..."
+        return self.description[0:96]+"..."
 
     def format_rate(self):
       return "%5.2f%%" % float(self.rate)

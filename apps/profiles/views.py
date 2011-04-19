@@ -81,9 +81,12 @@ def getRecommendedFollowings(request, other_user):
                                         WHERE f1."UserFrom_id" = %s
                                         AND f2."UserFrom_id" = f1."UserTo_id"
                                         AND f2."UserTo_id" != %s
+                                        AND NOT EXISTS (SELECT id FROM follow_followauthor
+                                                        WHERE "UserFrom_id" = %s
+                                                        AND "UserTo_id" = f2."UserTo_id" )
                                         group by 1
                                         order by count desc;
-                                        """,[ other_user.id,other_user.id ])[:12]
+                                        """,[ other_user.id,other_user.id, other_user.id ])[:12]
     else:
         usersToFollow = User.objects.raw("""
                                         SELECT f1."UserTo_id" as id,count(*)

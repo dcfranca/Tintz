@@ -1055,6 +1055,7 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     font-family: 'LADYIC';
     position: relative;
     margin-top: -3px;
+    margin-left: 20px;
     color: red;
     text-decoration: none;
     font-size: 11pt;
@@ -1064,7 +1065,8 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     font-family: 'LADYIEX';
     position: relative;
     margin-top: 0px;
-    font-size: 15pt;
+    margin-left: 40px;
+    font-size: 13pt;
     text-decoration: none;
     color: black;
 
@@ -1077,7 +1079,7 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     top: 1px;
     text-align: left;
     font-size: 10pt;
-    margin: 0 0 20px 0;
+    margin: 0 0 20px 50px;
 }
 
 .update-separator {
@@ -1090,28 +1092,37 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
 }
 
 .update-pub-cover {
-    margin-top: 45px;
-    margin-left: -140px;
-    float: left;
-    margin-bottom: 10px;
+	float:left;
+	margin:20px 10px 0px -130px;
+	overflow:hidden; /* this is important */
+	position:relative; /* this is important too */
+	width:100px;
+	height:120px;
+}
+
+.update-pub-cover img{
+    position:absolute;
+	top:-40px;
+	left:-15px;
 }
 
 .update-pub-title, .update-pub-title a, .update-pub-title a:visited {
+    font-family: 'LADYIEX';   
     position: relative;
-    top: 20px;
-    margin-left: 5px;
+    top: -60px;
+    margin-left: 75px;
     width: 200px;
-    font-size: 11pt;
+    font-size: 13pt;
     text-decoration: none;
     color: black;
-    font-weight: bold;
 }
 
 .update-pub-description {
+    font-family: Arial, sans-serif, Verdana;;    
     position: relative;
-    top: 40px;
+    top: -110px;
     max-width: 300px;
-    margin-left: 10px;
+    margin-left: 150px;
     text-align: left;
     font-size: 9pt;
     word-wrap: break-word;
