@@ -44,6 +44,7 @@
                 </div>
             {% endfor %}
             </div>
+            <div id="more_updates" class="more span-4 last">{% trans "Atualiza&ccedil;&otilde;es anteriores" %} >></div>
         {% else %}
             <class id="list-updates">
                 <div class="update-item span-7">
@@ -62,18 +63,20 @@
     <div class="recommended-publications">
         <table>
             <tr>
-            <td class="recomend-publication">&nbsp;</td>
-            <td class="recomend-publication">&nbsp;</td>
-            <td class="recomend-publication">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
             </tr>
             {% for related_publication in related_publications %}
-                {% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
+                {% if forloop.counter0|divisibleby:"5" %}<tr>{% endif %}
                 <td class="recomend-publication span-2 last">
                     <a href="{% url publication_details related_publication.author related_publication.id %}">
                     <img src="{{ MEDIA_URL }}{{ related_publication.get_basename|urlencode }}_001_thumb064{{related_publication.images_ext}}" href="javascript:fullscreen('{% url publication_details related_publication.author related_publication.id %}')" title="{{ related_publication.title }}"/></a>
                 </td>
             {% endfor %}
-            {% if followings|length|divisibleby:"3" %}{% else %}</tr>{% endif %}
+            {% if followings|length|divisibleby:"5" %}{% else %}</tr>{% endif %}
         </table>
     </div>
 
@@ -82,17 +85,17 @@
     <div id="list-profiles" class="profiles">
     {% for profile in other_profiles %}
        <tr><td>
-       <div class="profiles-item">
+       <div class="profiles-item span-8">
        <div class="avatar span-2"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{% avatar profile 70 %}</a></div>
 
        {% if profile.get_profile.last_name %}
-          <div class="profiles-details span-5 last"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}</a></div>
+          <div class="profiles-details span-4 last"><a href="{% url profile_detail profile.username %}" title="{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}">{{ profile.get_profile.first_name }} {{ profile.get_profile.last_name }}</a></div>
        {% else %}
-            <div class="profiles-details span-5 last"><a href="{% url profile_detail profile.username %}" title="{{ profile.username }}">{{ profile.username }}</a></div>
+            <div class="profiles-details span-4 last"><a href="{% url profile_detail profile.username %}" title="{{ profile.username }}">{{ profile.username }}</a></div>
        {% endif %}
 
 
-       <div class="profiles-about span-8 last">{{ profile.get_profile.get_small_about|linebreaks }}</div>
+       <div class="profiles-about span-4 last">{{ profile.get_profile.get_small_about|linebreaks }}</div>
        </div>
        </td></tr>
     {% endfor %}
@@ -101,4 +104,23 @@
 
 
 </div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#more_updates").click(function(){
+            $.ajax({
+                type: "GET",
+                url: "/profiles/get_updates/",
+                dataType: "json",
+                success: function(update){
+                    $.each(update, function(i, item){
+                        $("#list-updates").append('<h1>Ola mundo</h1>')
+                    });
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

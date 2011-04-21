@@ -6,4 +6,6 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\w\._-]+)/$', 'profiles.views.profile', name='profile_detail'),
     url(r'^(?P<username>[\w\._-]+)/(?P<to_follow>[\d])$', 'profiles.views.profile', name='profile_detail'),
     url(r'^search/(?P<search_text>[^/]+)/$', 'profiles.views.searchresults', name="search_results_prof"),
+    
+    url(r'^get_updates/$', "profiles.views.getUpdates", name="get_updates"),
 )

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden,HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext
@@ -84,16 +85,19 @@ def getRecommendedFollowings(request, other_user):
                                         AND NOT EXISTS (SELECT id FROM follow_followauthor
                                                         WHERE "UserFrom_id" = %s
                                                         AND "UserTo_id" = f2."UserTo_id" )
+                                        
                                         group by 1
-                                        order by count desc;
-                                        """,[ other_user.id,other_user.id, other_user.id ])[:12]
+                                        order by count desc
+                                        limit 20;
+                                        """,[ other_user.id,other_user.id, other_user.id ])[:20]
     else:
         usersToFollow = User.objects.raw("""
                                         SELECT f1."UserTo_id" as id,count(*)
-                                        FROM follow_followauthor f1
+                                        FROM follow_followauthor f1            
                                         group by 1
-                                        order by count desc;
-                                        """)[:50]
+                                        order by count desc
+                                        limit 20;
+                                        """)[:20]
 
     random.shuffle(usersToFollow)
 
@@ -107,12 +111,13 @@ def getRecommendedPublications(request, other_user):
                                 FROM publications_publication
                                 WHERE date_added
                                 BETWEEN (now() - '3 month'::interval)::timestamp AND now()
-                                order by views desc;
+                                order by views desc
+                                limit 20;
                                 """)[:20]
 
     random.shuffle(publications)
 
-    return publications[:6]
+    return publications[:5]
 
 
 def getPosts(request, other_user):
@@ -140,10 +145,13 @@ def getUpdates(request,followingUsers):
             up.date_post = post.publish
             updates.append(up)
 
-        #Update.objects.filter(user = request.user).order_by('-date_post')[0:10]
-
-    #import pdb; pdb.set_trace()
-    return sorted(updates, key=lambda update: update.date_post, reverse=True)
+    sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[:8]
+    
+    if request.is_ajax():
+        return_updates = serializers.serialize("json",sorted_updates)
+        return HttpResponse(return_updates,mimetype="text/javascript")
+    else:
+        return sorted_updates
 
 @login_complete
 def home(request, template_name="homepage.html"):
