@@ -1138,6 +1138,16 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     word-wrap: break-word;
 }
 
+.center-panel-message {
+    font-family: Arial, sans-serif, Verdana;;    
+    position: relative;
+    max-width: 300px;
+    text-align: left;
+    font-size: 9pt;
+    word-wrap: break-word;
+}
+
+
 .update-item {
     position: relative;
     margin-top: 8px;

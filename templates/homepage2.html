@@ -17,38 +17,13 @@
     <div class="show_updates span-8">
         {% if updates %}
             <class id="list-updates">
-                {% for update in updates %}
-                    <div class="update-item span-8">
-                        {% ifequal update.type "2" %}
-                            <div class="update-avatar span-1"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{% avatar update.post.author 70 %}</a></div>
-                            <div class="update-name span-3 last"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}</a></div>
-
-                            <a class="span-5 update-posts-title last" href="{{ update.post.get_absolute_url }}">{{ update.post.title }}</a>
-                            <div class="span-5 update-posts-description last">
-                                {{ update.post.get_small_text|force_escape|linebreaks|safe }}
-                            </div>
-                        {% else %}
-                            <div class="update-avatar span-1"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{% avatar update.publication.author 70 %}</a></div>
-                            <div class="update-name span-3 last"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a></div>
-
-                            <p class="update-pub-cover span-3 last">
-                                <a href="{% url publication_details update.publication.author update.publication.id %}">
-                                <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
-                            </p>
-
-                            <div class="update-pub-title span-5 last">
-                                <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
-                            </div>
-                            <div class="update-pub-description span-5 last"><p>{{ update.publication.get_small_text }}</div>
-                    {% endifequal %}
-                </div>
-            {% endfor %}
+                {% include "follow/updates.html" %}
             </div>
             <div id="more_updates" class="more span-4 last">{% trans "Atualiza&ccedil;&otilde;es anteriores" %} >></div>
         {% else %}
             <class id="list-updates">
                 <div class="update-item span-7">
-                    <div class="span-7 update-pub-description">
+                    <div class="span-7 center-panel-message">
                         <p>{% trans "Voc&ecirc; ainda n&atilde;o possui atualiza&ccedil;&otilde;es." %}
                         <p>{% trans "Comece agora mesmo a navegar e seguir novos usu&aacute;rios." %}
                         <p>{% trans "Veja nossas sugest&otilde;es de leitura e pessoas no canto direito da p&aacute;gina." %}
@@ -101,26 +76,20 @@
     {% endfor %}
 
     </div>
-
+>
 
 </div>
 {% endblock %}
 
 {% block extra_body %}
 <script type="text/javascript">
-    $(document).ready(function(){
-        $("#more_updates").click(function(){
-            $.ajax({
-                type: "GET",
-                url: "/profiles/get_updates/",
-                dataType: "json",
-                success: function(update){
-                    $.each(update, function(i, item){
-                        $("#list-updates").append('<h1>Ola mundo</h1>')
-                    });
-                }
-            });
-        });
-    });
+function more_updates() {
+    $("#more_updates").click(
+        function() {
+            $('.show_updates').load("/profiles/get_updates .show_updates");
+        }
+    );
+}
+$(document).ready(more_updates);
 </script>
 {% endblock %}

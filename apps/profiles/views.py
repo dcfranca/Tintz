@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseForbidden,HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.template import loader, Context
 
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext
@@ -14,6 +15,7 @@ from profiles.models import Profile
 from profiles.forms import ProfileForm
 from publications.models import Publication
 from follow.models import FollowAuthor,Update
+
 #from notification.models import *
 
 from datetime import *
@@ -124,8 +126,11 @@ def getPosts(request, other_user):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     return blogs.filter(author=other_user)
 
-def getUpdates(request,followingUsers):
+def get_updates(request, followingUsers=None):
     updates = []
+    
+    if followingUsers == None:
+        followingUsers = getFollowings(request, request.user)
 
     for following in followingUsers:
         publications = getPublications(request,following, False)
@@ -145,11 +150,14 @@ def getUpdates(request,followingUsers):
             up.date_post = post.publish
             updates.append(up)
 
-    sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[:8]
+    sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[start:10]
     
     if request.is_ajax():
-        return_updates = serializers.serialize("json",sorted_updates)
-        return HttpResponse(return_updates,mimetype="text/javascript")
+        t = loader.get_template("follow/updates.html");
+        c = Context({ "updates":sorted_updates })
+        rendered = t.render(c)
+        #return_updates = serializers.serialize("json",sorted_updates)
+        return HttpResponse(rendered,mimetype="text/plain")
     else:
         return sorted_updates
 
@@ -168,7 +176,7 @@ def home(request, template_name="homepage.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = getUpdates(request,followingUsers)[:10]
+        updates = get_updates(request,followingUsers)[:10]
 
         publications = getPublications(request, request.user, True)
     else:
@@ -203,7 +211,7 @@ def home2(request, template_name="homepage2.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = getUpdates(request,followingUsers)[:10]
+        updates = get_updates(request,followingUsers)[:10]
 
         publications = getPublications(request, request.user, True)
 
