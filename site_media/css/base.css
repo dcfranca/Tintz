@@ -1295,3 +1295,7 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     position: relative;
     margin-left: 15px;
 }
+
+#last_update {
+    display: none;
+}

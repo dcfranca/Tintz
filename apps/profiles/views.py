@@ -113,6 +113,7 @@ def getRecommendedPublications(request, other_user):
                                 FROM publications_publication
                                 WHERE date_added
                                 BETWEEN (now() - '3 month'::interval)::timestamp AND now()
+                                AND is_public = 't'
                                 order by views desc
                                 limit 20;
                                 """)[:20]
@@ -126,7 +127,7 @@ def getPosts(request, other_user):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     return blogs.filter(author=other_user)
 
-def get_updates(request, followingUsers=None):
+def get_updates(request, inicio='0', followingUsers=None):
     updates = []
     
     if followingUsers == None:
@@ -150,14 +151,19 @@ def get_updates(request, followingUsers=None):
             up.date_post = post.publish
             updates.append(up)
 
-    sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[start:10]
+    last_update = int(inicio) + 10
+    
+    if last_update > len(updates):
+        last_update = len(updates)
+        
+    sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[:last_update]
     
     if request.is_ajax():
         t = loader.get_template("follow/updates.html");
-        c = Context({ "updates":sorted_updates })
+        c = Context({ "updates":sorted_updates, "last_update":last_update, "MEDIA_URL":'/site_media/', })
         rendered = t.render(c)
         #return_updates = serializers.serialize("json",sorted_updates)
-        return HttpResponse(rendered,mimetype="text/plain")
+        return HttpResponse(rendered,mimetype="text/html")
     else:
         return sorted_updates
 
@@ -176,7 +182,7 @@ def home(request, template_name="homepage.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = get_updates(request,followingUsers)[:10]
+        updates = get_updates(request,followingUsers=followingUsers)[:10]
 
         publications = getPublications(request, request.user, True)
     else:
@@ -211,7 +217,7 @@ def home2(request, template_name="homepage2.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = get_updates(request,followingUsers)[:10]
+        updates = get_updates(request,followingUsers=followingUsers)[:10]
 
         publications = getPublications(request, request.user, True)
 
@@ -235,6 +241,7 @@ def home2(request, template_name="homepage2.html"):
         "followers":followerUsers,
         "followings":followingUsers,
         "other_profiles": usersToFollow,
+        "last_update": 10,
     }, context_instance=RequestContext(request))
 
 

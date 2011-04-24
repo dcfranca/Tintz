@@ -14,7 +14,7 @@
 </div>
 <div class="span-8" id="center-panel">
     <div class="title-profile"><img src="{{MEDIA_URL}}/images/updates.png"><h2>Atualiza&ccedil;&otilde;es</h2></div>
-    <div class="show_updates span-8">
+    <div id="id_show_updates" class="show_updates span-8">
         {% if updates %}
             <class id="list-updates">
                 {% include "follow/updates.html" %}
@@ -76,7 +76,6 @@
     {% endfor %}
 
     </div>
->
 
 </div>
 {% endblock %}
@@ -86,7 +85,7 @@
 function more_updates() {
     $("#more_updates").click(
         function() {
-            $('.show_updates').load("/profiles/get_updates .show_updates");
+            $('#id_show_updates').load("/profiles/get_updates/"+ document.getElementById('last_update').innerText);
         }
     );
 }
