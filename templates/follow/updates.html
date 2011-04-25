@@ -5,7 +5,7 @@
 {% load avatar_tags %}
 
 {% for update in updates %}
-    <div class="update-item span-8">
+    <div class="update-item span-9">
         {% ifequal update.type "2" %}
             <div class="update-avatar span-1"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{% avatar update.post.author 70 %}</a></div>
             <div class="update-name span-3 last"><a href="{% url profile_detail update.post.author %}" title="{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}">{{ update.post.author.get_profile.first_name }} {{ update.post.author.get_profile.last_name }}</a></div>
@@ -18,15 +18,17 @@
             <div class="update-avatar span-1"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{% avatar update.publication.author 70 %}</a></div>
             <div class="update-name span-3 last"><a href="{% url profile_detail update.publication.author %}" title="{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}">{{ update.publication.author.get_profile.first_name }} {{ update.publication.author.get_profile.last_name }}</a></div>
 
-            <p class="update-pub-cover span-3 last">
-                <a href="{% url publication_details update.publication.author update.publication.id %}">
-                <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
-            </p>
-
             <div class="update-pub-title span-5 last">
                 <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
             </div>
             <div class="update-pub-description span-5 last"><p>{{ update.publication.get_small_text }}</div>
+
+            <div class="update-pub-cover span-3">
+                <a href="{% url publication_details update.publication.author update.publication.id %}">
+                <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
+            </div>
+
+            
         {% endifequal %}
     </div>
 {% endfor %}
