@@ -47,7 +47,7 @@
     }
     </script>
 
-   {% if user.is_authenticated or is_profile %}
+   {% if user.is_authenticated or is_profile or is_home %}
    <hr/>
    <div class="span-10" id="tintz_logo">
     <a href="{% url home %}"><img class="prepend-top" src="{{MEDIA_URL}}/images/tintz_top_logo.png"></a>
@@ -76,7 +76,7 @@
 	    </div>
     {% endif %}
 
-    {% if user.is_authenticated or is_profile %}
+    {% if user.is_authenticated or is_profile or is_home %}
 
 	    {% if messages %}
 		<table id="messages">

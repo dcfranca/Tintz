@@ -349,8 +349,21 @@ body {
 }
 
 #whats_tintz {
+    color: black;
+    font-size: 10pt;
+    font-family: 'LADYIEX';
+}
+
+#whats_tintz h2{
+    color: red;
+    font-size: 14pt;
+    font-family: 'LADYIEX';
+}
+
+#whats_tintz a{
     color: red;
     font-size: 10pt;
+    font-family: 'LADYIEX';
 }
 
 .username {
@@ -1089,7 +1102,8 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
     top: 1px;
     text-align: left;
     font-size: 10pt;
-    margin: 0 0 20px 50px;
+    word-wrap: break-word;
+    margin: 0 0 -20px 43px;
 }
 
 .update-separator {
@@ -1102,7 +1116,7 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
 }
 
 .update-pub-cover {
-	margin:-60px 0px 0px 30px;
+	margin:-30px 0px 0px 0px;
 	overflow:hidden; /* this is important */
 	position:relative; /* this is important too */
 	width:100px;
@@ -1113,25 +1127,27 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
 
 .update-pub-cover img{
     position:absolute;
-	top:-40px;
 	left:-15px;
 }
 
 .update-pub-title, .update-pub-title a, .update-pub-title a:visited {
     font-family: 'LADYIEX';   
     position: relative;
-    margin-left: 50px;
+    margin-left: 55px;
     font-size: 11pt;
     text-decoration: none;
+    margin-top: 10px;
     color: black;
+    white-space: nowrap;
 }
 
 .update-pub-description {
     font-family: Arial, sans-serif, Verdana;;    
     position: relative;
-    margin-left: 105px;
+    margin-left: 155px;
     text-align: left;
     font-size: 9pt;
+    margin-top: -80px;
     word-wrap: break-word;
 }
 
@@ -1169,7 +1185,7 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
 
 .recommended-publications {
     position: relative;
-    margin-left: 10px;
+    margin-left: 40px;
     margin-top: -50px;
 }
 
@@ -1178,15 +1194,14 @@ border-radius: 3px; /* Opera 10.5+, future browsers, and now also Internet Explo
 	margin: 10px 10px 0px 0px;
 	overflow:hidden; /* this is important */
 	position:relative; /* this is important too */
-	width:40px;
-	height:60px;
+	width:100px;
+	height:130px;
 	box-shadow: 3px 3px 1px #888;
 	-moz-box-shadow: 3px 3px 1px #888;
 }
 
 .recomend-publication img {
     position:absolute;
-	top:-10px;
 	left:-10px;
 }
 

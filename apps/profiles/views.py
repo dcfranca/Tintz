@@ -43,8 +43,11 @@ def getPublications(request, other_user, is_me):
         if is_me == True:
             publications = Publication.objects.filter( author = other_user, status=1 ).order_by('-date_added')
         else:
-            calc_age(request.user.get_profile())
-            publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age, status=1 ).order_by('-date_added')
+            if request.user.is_authenticated():
+                calc_age(request.user.get_profile())
+                publications = Publication.objects.filter( author = other_user, rated__lte=request.user.get_profile().age, status=1 ).order_by('-date_added')
+            else:
+                publications = Publication.objects.filter( author = other_user, is_public=True ).order_by('-date_added')
     except Publication.DoesNotExist:
         pass
     return publications
@@ -54,7 +57,7 @@ def getPublicPublications(request, other_user):
     try:
         publications = Publication.objects.filter(author = other_user, is_public=True)
     except Publication.DoesNotExist:
-        pass
+        return None
     return publications
 
 def getFollowers(request, other_user):
@@ -72,7 +75,7 @@ def getFollowings(request, other_user):
         followinUsers.append( follow.UserTo )
     return followinUsers
 
-def getRecommendedFollowings(request, other_user):
+def getRecommendedFollowings(request, other_user=None):
     #Finding who to follow
 
     usersToFollow = []
@@ -105,33 +108,48 @@ def getRecommendedFollowings(request, other_user):
 
     return usersToFollow[:4]
 
-def getRecommendedPublications(request, other_user):
+def getRecommendedPublications(request):
     publications = []
 
-    publications = Publication.objects.raw("""
-                                SELECT *
-                                FROM publications_publication
-                                WHERE date_added
-                                BETWEEN (now() - '3 month'::interval)::timestamp AND now()
-                                AND is_public = 't'
-                                order by views desc
-                                limit 20;
-                                """)[:20]
+    if request.user.is_authenticated():
+        publications = Publication.objects.raw("""
+                                    SELECT *
+                                    FROM publications_publication
+                                    WHERE date_added
+                                    BETWEEN (now() - '3 month'::interval)::timestamp AND now()
+                                    AND is_public = 't'
+                                    AND author_id <> %s
+                                    order by views desc
+                                    limit 20;
+                                    """,[ request.user.id ])[:20]
+    else:
+        publications = Publication.objects.raw("""
+                                    SELECT *
+                                    FROM publications_publication
+                                    WHERE date_added
+                                    BETWEEN (now() - '3 month'::interval)::timestamp AND now()
+                                    AND is_public = 't'
+                                    order by views desc
+                                    limit 20;
+                                    """)[:20]
 
     random.shuffle(publications)
 
-    return publications[:5]
+    return publications[:4]
 
 
 def getPosts(request, other_user):
     blogs = Post.objects.filter(status=2).select_related(depth=1).order_by("-publish")
     return blogs.filter(author=other_user)
 
-def get_updates(request, inicio='0', followingUsers=None):
+def get_updates(request, inicio='0', followingUsers=None, is_ajax=True):
     updates = []
     
-    if followingUsers == None:
-        followingUsers = getFollowings(request, request.user)
+    if request.user.is_authenticated():
+        if followingUsers == None:
+            followingUsers = getFollowings(request, request.user)
+    else:
+        followingUsers = User.objects.all()
 
     for following in followingUsers:
         publications = getPublications(request,following, False)
@@ -158,7 +176,7 @@ def get_updates(request, inicio='0', followingUsers=None):
         
     sorted_updates = sorted(updates, key=lambda update: update.date_post, reverse=True)[:last_update]
     
-    if request.is_ajax():
+    if is_ajax: #request.is_ajax():
         t = loader.get_template("follow/updates.html");
         c = Context({ "updates":sorted_updates, "last_update":last_update, "MEDIA_URL":'/site_media/', })
         rendered = t.render(c)
@@ -182,7 +200,7 @@ def home(request, template_name="homepage.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = get_updates(request,followingUsers=followingUsers)[:10]
+        updates = get_updates(request,followingUsers=followingUsers, is_ajax=False)[:10]
 
         publications = getPublications(request, request.user, True)
     else:
@@ -217,16 +235,18 @@ def home2(request, template_name="homepage2.html"):
         followerUsers = getFollowers(request, request.user)
         followingUsers = getFollowings(request, request.user)
 
-        updates = get_updates(request,followingUsers=followingUsers)[:10]
+        updates = get_updates(request,followingUsers=followingUsers, is_ajax=False)[:10]
 
         publications = getPublications(request, request.user, True)
+        usersToFollow = getRecommendedFollowings(request, request.user)
+        recommended_pubs = getRecommendedPublications(request)
 
     else:
         logging.debug("Home - Usario nao logado")
-        #return HttpResponseRedirect(reverse('acct_login'))
-
-    usersToFollow = getRecommendedFollowings(request, request.user)
-    recommended_pubs = getRecommendedPublications(request,request.user)
+        
+        updates = get_updates(request, is_ajax=False)[:10]
+        usersToFollow = getRecommendedFollowings(request)
+        recommended_pubs = getRecommendedPublications(request)
 
     logging.debug("Home - Leave")
 
@@ -242,6 +262,7 @@ def home2(request, template_name="homepage2.html"):
         "followings":followingUsers,
         "other_profiles": usersToFollow,
         "last_update": 10,
+        "is_home": True,
     }, context_instance=RequestContext(request))
 
 

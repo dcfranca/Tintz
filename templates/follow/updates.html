@@ -21,12 +21,13 @@
             <div class="update-pub-title span-5 last">
                 <a href="{% url publication_details update.publication.author update.publication.id %}">{{ update.publication.title }}</a>
             </div>
-            <div class="update-pub-description span-5 last"><p>{{ update.publication.get_small_text }}</div>
-
             <div class="update-pub-cover span-3">
                 <a href="{% url publication_details update.publication.author update.publication.id %}">
                 <img src="{{ MEDIA_URL }}{{ update.publication.get_thumbnail150_name|urlencode }}" href="{% url publication_details update.publication.author update.publication.id %}" alt="{{ update.publication.title }}"/></a>
             </div>
+
+            <div class="update-pub-description span-5 last">{{ update.publication.get_small_text }}</div>
+
 
             
         {% endifequal %}

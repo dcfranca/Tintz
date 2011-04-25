@@ -10,7 +10,11 @@
 
 {% block main_content %}
 <div class="span-7" id="left-panel">
-    {% include "profiles/profile_left_panel.html" %}
+    {% if user.is_authenticated %}    
+        {% include "profiles/profile_left_panel.html" %}
+    {% else %}
+        {% include "about/left_about.html" %}
+    {% endif %}
 </div>
 <div class="span-9" id="center-panel">
     <div class="title-profile"><img src="{{MEDIA_URL}}/images/updates.png"><h2>Atualiza&ccedil;&otilde;es</h2></div>
@@ -34,9 +38,9 @@
     </div>
 
 <div class="span-8 last" id="right-panel">
-    <div class="title-profile"><img src="{{MEDIA_URL}}/images/bt_publications.png"><h2>Sugest&otilde;es</h2></div>
-    <div class="recommended-publications">
-        <table>
+    <div class="title-profile last"><img src="{{MEDIA_URL}}/images/bt_publications.png"><h2>Sugest&otilde;es</h2></div>
+    <div class="recommended-publications last">
+        <table style="width:700px">
             <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -45,13 +49,13 @@
             <td>&nbsp;</td>
             </tr>
             {% for related_publication in related_publications %}
-                {% if forloop.counter0|divisibleby:"5" %}<tr>{% endif %}
+                {% if forloop.counter0|divisibleby:"2" %}<tr>{% endif %}
                 <td class="recomend-publication span-2 last">
                     <a href="{% url publication_details related_publication.author related_publication.id %}">
-                    <img src="{{ MEDIA_URL }}{{ related_publication.get_basename|urlencode }}_001_thumb064{{related_publication.images_ext}}" href="javascript:fullscreen('{% url publication_details related_publication.author related_publication.id %}')" title="{{ related_publication.title }}"/></a>
+                    <img src="{{ MEDIA_URL }}{{ related_publication.get_basename|urlencode }}_001_thumb130{{related_publication.images_ext}}" href="javascript:fullscreen('{% url publication_details related_publication.author related_publication.id %}')" title="{{ related_publication.title }}"/></a>
                 </td>
             {% endfor %}
-            {% if followings|length|divisibleby:"5" %}{% else %}</tr>{% endif %}
+            {% if followings|length|divisibleby:"2" %}{% else %}</tr>{% endif %}
         </table>
     </div>
 
